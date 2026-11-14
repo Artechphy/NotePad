@@ -93,7 +93,7 @@ def m01_first():
     d.click('验收临时笔记',by='text');fields('验收临时笔记','安卓验收正文','学习');back_editor()
     d.capture('m01-1-created')
     d.record('M01-1','PASS','从5条新增至6条，标题/正文/学习分类重开一致。',['m01-1-created.png'])
-    d.record('UC01-B','PASS','新建、选择分类、完成保存及重开均通过。',['03-first-note-edit.png','m01-1-created.png'])
+    d.record('UC01-B','PASS','新建、选择分类、完成保存及重开均通过。',['m01-1-created.png'])
     category('学习');query('安卓');results(['安卓复习计划','验收临时笔记'])
     d.capture('m01-2-study-search')
     d.record('M01-2','PASS','学习+安卓仅D01与新笔记，共2条。',['m01-2-study-search.png'])

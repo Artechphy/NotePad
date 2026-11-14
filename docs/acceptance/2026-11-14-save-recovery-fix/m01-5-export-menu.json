@@ -1,0 +1,146 @@
+[
+  {
+    "class": "android.widget.FrameLayout",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[565,205][1080,583]"
+  },
+  {
+    "class": "android.widget.FrameLayout",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[565,205][1080,583]"
+  },
+  {
+    "class": "android.widget.ListView",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[565,205][1080,583]"
+  },
+  {
+    "class": "android.widget.LinearLayout",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": true,
+    "bounds": "[565,205][1080,331]"
+  },
+  {
+    "id": "android:id/content",
+    "class": "android.widget.LinearLayout",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[565,205][1080,331]"
+  },
+  {
+    "class": "android.widget.RelativeLayout",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[607,237][1038,299]"
+  },
+  {
+    "id": "android:id/title",
+    "text": "完成",
+    "class": "android.widget.TextView",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[607,237][1038,299]"
+  },
+  {
+    "class": "android.widget.LinearLayout",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": true,
+    "bounds": "[565,331][1080,457]"
+  },
+  {
+    "id": "android:id/content",
+    "class": "android.widget.LinearLayout",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[565,331][1080,457]"
+  },
+  {
+    "class": "android.widget.RelativeLayout",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[607,363][1038,425]"
+  },
+  {
+    "id": "android:id/title",
+    "text": "导出为文本",
+    "class": "android.widget.TextView",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[607,363][1038,425]"
+  },
+  {
+    "class": "android.widget.LinearLayout",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": true,
+    "bounds": "[565,457][1080,583]"
+  },
+  {
+    "id": "android:id/content",
+    "class": "android.widget.LinearLayout",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[565,457][1080,583]"
+  },
+  {
+    "class": "android.widget.RelativeLayout",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[607,489][1038,551]"
+  },
+  {
+    "id": "android:id/title",
+    "text": "删除笔记",
+    "class": "android.widget.TextView",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[607,489][1038,551]"
+  }
+]

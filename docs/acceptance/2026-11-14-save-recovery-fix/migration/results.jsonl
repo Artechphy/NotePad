@@ -1,0 +1,2 @@
+{"case": "UC07-B1", "status": "PASS", "detail": "在真实旧APK中通过新建和保存准备2条中文样本；旧列表可见，数据库版本2，已保存精确字段副本。", "evidence": ["uc07-v2-two-notes.png", "uc07-v2-before.json"], "at": "2026-11-14T13:27:41.131258+00:00"}
+{"case": "UC07-B", "status": "PASS", "detail": "独立实例真实v2 APK到候选APK同签名覆盖安装；旧2条ID/标题/正文/创建与修改毫秒值完全保留，新分类默认未分类；U01设置学习后重启保留，U02未变。", "evidence": ["uc07-install-update.txt", "uc07-v2-two-notes.png", "uc07-v3-two-old-notes.png", "uc07-v2-before.json", "uc07-v3-after.json", "uc07-classified-after-restart.png"], "at": "2026-11-14T13:28:04.145235+00:00"}

@@ -65,6 +65,8 @@
     <string name="editing">尚未保存 · 返回自动保存</string>
     <string name="new_draft">开始记录</string>
     <string name="save_failed">保存失败，请重试</string>
+    <string name="autosave_failed">自动保存失败，内容仍保留，请返回重试</string>
+    <string name="menu_save_as_new">另存为新笔记</string>
     <string name="delete_confirm">确定删除这篇笔记？</string>
     <string name="cancel">取消</string>
     <string name="menu_export">导出为文本</string>

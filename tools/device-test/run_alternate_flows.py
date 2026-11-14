@@ -6,6 +6,7 @@ source as controlled fault injection. All user editing and retry actions use UI.
 import argparse
 import os
 import re
+import subprocess
 import time
 import run_basic_flows as t
 
@@ -328,9 +329,20 @@ def failures():
         return '受控删除合成来源导致保存前读取失败：手动完成留在编辑页且保留输入；恢复同ID来源后UI重试成功。此为来源消失条件，不代表全部I/O故障。'
     case('UC02-A07',manual)
     def automatic():
-        inject_source_removal();d.click(ID+'editor_back');t.list_ready();t.all_notes();t.count(5)
-        d.capture('UC02-A08-left-after-failure');t.query('保存失败样本');t.results([])
-        raise AssertionError('受控移除来源后点返回，自动保存失败但页面仍退出；无保留或恢复尚未保存输入的入口，GAP01复现。')
+        before=t.db_snapshot('UC02-A08-baseline')
+        inject_source_removal();t.edit(title='恢复后的输入',group='生活')
+        d.click(ID+'editor_back');t.editor_ready();t.fields('恢复后的输入','尚未保存的新输入','生活')
+        assert t.value(d.nodes(),ID+'save_status')=='保存失败，请重试'
+        d.capture('UC02-A08-return-guarded')
+        dismiss_ime();d.key(4);t.editor_ready();t.fields('恢复后的输入','尚未保存的新输入','生活')
+        d.capture('UC02-A08-system-back-guarded')
+        recreate();t.fields('恢复后的输入','尚未保存的新输入','生活');d.capture('UC02-A08-recreated');portrait()
+        t.fields('恢复后的输入','尚未保存的新输入','生活')
+        d.click(ID+'editor_more');d.click('另存为新笔记',by='text');t.list_ready();t.all_notes();t.count(6)
+        t.open_note('恢复后的输入');t.fields('恢复后的输入','尚未保存的新输入','生活');d.capture('UC02-A08-recovered-reopened')
+        t.delete_editor('UC02-A08-cleanup');t.all_notes();t.count(5)
+        assert t.db_snapshot('UC02-A08-after-cleanup')==before
+        return '受控移除来源后，页面返回及系统返回均保留三字段并提示失败；真实Activity重建仍保留输入，明确另存为新笔记后重开一致；只清理恢复样本，原5条字段与时间不变。'
     case('UC02-A08',automatic)
 
 
@@ -345,6 +357,35 @@ def clipboard_cases():
         assert t.db_snapshot('UC06-A03-after-paste')==before
         return '真实复制后从UI删除来源，再粘贴未读到其他记录；返回清理空草稿，5条基线逐字段不变。'
     case('UC06-A03',missing_source)
+
+
+def recovery_process():
+    def recover():
+        before=t.db_snapshot('process-recovery-baseline')
+        new();t.edit(title='进程恢复来源',body='旧正文',group='工作');t.save();t.open_note('进程恢复来源')
+        row=next(r for r in t.db_snapshot('process-recovery-source') if r['title']=='进程恢复来源')
+        t.edit(title='进程恢复输入',body='后台保留\n第二行📘',group='生活')
+        d.shell('content','delete','--uri','content://com.google.provider.NotePad/notes/'+str(row['_id']))
+        assert not any(r['_id']==row['_id'] for r in t.db_snapshot('process-recovery-removed'))
+        old_pid=d.shell('pidof',t.PACKAGE).strip()
+        assert old_pid.isdigit(),old_pid
+        d.key(3);time.sleep(1);d.capture('process-recovery-home')
+        # Controlled process death after onStop, without force-stop/clearing the task.
+        d.shell('run-as',t.PACKAGE,'kill','-9',old_pid)
+        gone=subprocess.run([d.adb,'-s',d.serial,'shell','pidof',t.PACKAGE],text=True,capture_output=True)
+        assert not gone.stdout.strip(),'Old process is still running'
+        d.key(187);d.capture('process-recovery-recents');d.click('NotePad 笔记',by='desc')
+        t.editor_ready();t.fields('进程恢复输入','后台保留\n第二行📘','生活')
+        new_pid=d.shell('pidof',t.PACKAGE).strip();assert new_pid and new_pid!=old_pid
+        assert t.value(d.nodes(),ID+'save_status')=='保存失败，请重试'
+        d.capture('process-recovery-restored')
+        (t.OUT/'process-recovery-pids.txt').write_text('before='+old_pid+'\nafter='+new_pid+'\n')
+        d.click(ID+'editor_more');d.click('另存为新笔记',by='text');t.list_ready()
+        t.open_note('进程恢复输入');t.fields('进程恢复输入','后台保留\n第二行📘','生活');d.capture('process-recovery-saved')
+        t.delete_editor('process-recovery-cleanup');t.all_notes();t.count(5)
+        assert t.db_snapshot('process-recovery-after')==before
+        return '来源消失后进入后台，受控终止该应用进程（未force-stop或清数据）；从最近任务恢复，PID变化且三字段完整，明确另存后重开一致，原基线不变。'
+    case('UC02-A08-process',recover)
 
 
 def readability():
@@ -379,7 +420,7 @@ def readability():
     case('UC00-A05',long_text)
 
 
-GROUPS={'create':create_cases,'editor':editor_cases,'search':search_cases,'export':export_cases,'delete':deletion_cases,'failures':failures,'clipboard':clipboard_cases,'readability':readability}
+GROUPS={'create':create_cases,'editor':editor_cases,'search':search_cases,'export':export_cases,'delete':deletion_cases,'failures':failures,'clipboard':clipboard_cases,'readability':readability,'recovery-process':recovery_process}
 if __name__=='__main__':
     parser=argparse.ArgumentParser();parser.add_argument('group',choices=GROUPS)
     GROUPS[parser.parse_args().group]()

@@ -1,0 +1,19 @@
+package: name='com.example.android.notepad' versionCode='' versionName='' platformBuildVersionName='15' platformBuildVersionCode='35' compileSdkVersion='35' compileSdkVersionCodename='15'
+sdkVersion:'11'
+targetSdkVersion:'34'
+application-label:'NotePad'
+application-icon-120:'res/drawable-ldpi-v4/app_notes.png'
+application-icon-160:'res/drawable/app_notes.png'
+application-icon-240:'res/drawable-hdpi-v4/app_notes.png'
+application: label='NotePad' icon='res/drawable/app_notes.png'
+application-debuggable
+launchable-activity: name='com.example.android.notepad.NotesList'  label='笔记' icon=''
+feature-group: label=''
+  uses-feature: name='android.hardware.faketouch'
+  uses-implied-feature: name='android.hardware.faketouch' reason='default feature for all apps'
+main
+other-activities
+supports-screens: 'small' 'normal' 'large' 'xlarge'
+supports-any-density: 'true'
+locales: '--_--'
+densities: '120' '160' '240'

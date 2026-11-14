@@ -1,0 +1,211 @@
+[
+  {
+    "class": "android.widget.FrameLayout",
+    "package": "com.android.launcher3",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[0,0][1080,2340]"
+  },
+  {
+    "class": "android.widget.LinearLayout",
+    "package": "com.android.launcher3",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[0,0][1080,2340]"
+  },
+  {
+    "id": "android:id/content",
+    "class": "android.widget.FrameLayout",
+    "package": "com.android.launcher3",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[0,0][1080,2340]"
+  },
+  {
+    "id": "com.android.launcher3:id/launcher",
+    "class": "android.widget.FrameLayout",
+    "package": "com.android.launcher3",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[0,0][1080,2340]"
+  },
+  {
+    "id": "com.android.launcher3:id/drag_layer",
+    "class": "android.widget.FrameLayout",
+    "package": "com.android.launcher3",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[0,0][1080,2340]"
+  },
+  {
+    "id": "com.android.launcher3:id/scrim_view",
+    "class": "android.view.View",
+    "package": "com.android.launcher3",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[0,0][1080,2340]"
+  },
+  {
+    "package": "com.android.launcher3",
+    "visible": false,
+    "enabled": false,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[0,0][0,0]"
+  },
+  {
+    "id": "com.android.launcher3:id/overview_panel",
+    "desc": "",
+    "class": "android.widget.ListView",
+    "package": "com.android.launcher3",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[0,0][1080,2340]"
+  },
+  {
+    "id": "com.android.launcher3:id/clear_all",
+    "text": "CLEAR ALL",
+    "class": "android.widget.Button",
+    "package": "com.android.launcher3",
+    "visible": false,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[0,1002][-479,1128]"
+  },
+  {
+    "desc": "Files",
+    "class": "android.widget.FrameLayout",
+    "package": "com.android.launcher3",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": true,
+    "bounds": "[0,102][131,1860]"
+  },
+  {
+    "id": "com.android.launcher3:id/icon",
+    "class": "android.view.View",
+    "package": "com.android.launcher3",
+    "visible": false,
+    "enabled": true,
+    "selected": false,
+    "clickable": true,
+    "bounds": "[0,102][-173,228]"
+  },
+  {
+    "id": "com.android.launcher3:id/show_windows",
+    "class": "android.widget.ImageView",
+    "package": "com.android.launcher3",
+    "visible": false,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[52,102][131,181]"
+  },
+  {
+    "id": "com.android.launcher3:id/snapshot",
+    "class": "android.view.View",
+    "package": "com.android.launcher3",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[0,270][131,1860]"
+  },
+  {
+    "desc": "NotePad 笔记",
+    "class": "android.widget.FrameLayout",
+    "package": "com.android.launcher3",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": true,
+    "bounds": "[173,102][907,1860]"
+  },
+  {
+    "id": "com.android.launcher3:id/icon",
+    "class": "android.view.View",
+    "package": "com.android.launcher3",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": true,
+    "bounds": "[477,102][603,228]"
+  },
+  {
+    "id": "com.android.launcher3:id/show_windows",
+    "class": "android.widget.ImageView",
+    "package": "com.android.launcher3",
+    "visible": false,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[828,102][907,181]"
+  },
+  {
+    "id": "com.android.launcher3:id/snapshot",
+    "class": "android.view.View",
+    "package": "com.android.launcher3",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[173,270][907,1860]"
+  },
+  {
+    "desc": "Home",
+    "class": "android.view.View",
+    "package": "com.android.launcher3",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[0,63][1080,2214]"
+  },
+  {
+    "id": "com.android.launcher3:id/overview_actions_view",
+    "class": "android.widget.FrameLayout",
+    "package": "com.android.launcher3",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[0,1860][1080,2340]"
+  },
+  {
+    "id": "com.android.launcher3:id/action_buttons",
+    "class": "android.widget.LinearLayout",
+    "package": "com.android.launcher3",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[0,1923][1080,2049]"
+  },
+  {
+    "id": "com.android.launcher3:id/action_screenshot",
+    "text": "Screenshot",
+    "class": "android.widget.Button",
+    "package": "com.android.launcher3",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": true,
+    "bounds": "[378,1923][702,2049]"
+  }
+]

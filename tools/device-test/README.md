@@ -2,7 +2,7 @@
 
 本工具用于 `docs/测试与验收流程.md` v1.0。它没有依赖被测应用的 Java 类或内部函数。
 
-最新执行：[2026-11-14结果](../../docs/acceptance/2026-11-14-final-candidate/执行结果.md)。主线和基本流通过，UC02-A08受控故障场景失败；原始驱动问题及未覆盖项均在记录中保留。
+最新执行：[2026-11-14修复复测](../../docs/acceptance/2026-11-14-save-recovery-fix/执行结果.md)。UC02-A08受控来源消失场景已修复并复测；[首次验收失败](../../docs/acceptance/2026-11-14-final-candidate/执行结果.md)及未覆盖项仍保留。
 
 - `UiBridge.java`：独立包 `dev.notepad.check` 中的 Instrumentation，通过 Android UiAutomation 读取实际 UI、设置文本。候选 APK 不嵌入测试代码。
 - `device_client.py`：以当前可见控件的边界执行系统 `input tap/swipe/keyevent`，记录 UI 快照和命令；支持 UTF-8 文本输入与设备截图。
@@ -66,5 +66,7 @@ NOTEPAD_TEST_OUTPUT="$PWD/docs/acceptance/2026-11-14-final-candidate" \
 ```
 
 可选组：`create`、`editor`、`search`、`export`、`delete`、`clipboard`、`readability`、`failures`。其中 `failures` 是明确改变合成来源的故障注入，须仅用于专用实例；不能指向个人数据。恢复方案不满足 UC02-A08 预期时，应输出 FAIL 和非零退出，不能把现状改写成通过条件。
+
+修复后的 `failures` 组检查页面/系统返回留页、真实配置重建和明确另存；`recovery-process` 补充检查在Home触发生命周期保存后，仅终止该应用进程并从最近任务恢复。后者使用专用实例的 `run-as` 和已核验的应用PID，不执行force-stop、清数据或终止其他进程。
 
 `NOTEPAD_CASES=UC01-A07,UC01-A08` 可筛选一组中的编号，适用于恢复基线后的聚焦续测；它不会自动修复前次失败留下的数据或界面。时间异常组也会通过公开Provider仅修改合成样本的时间字段，并用只读副本核验注入值。

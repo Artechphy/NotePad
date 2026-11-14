@@ -31,7 +31,7 @@
             <grant-uri-permission android:pathPattern=".*" />
         </provider>
 
-        <activity android:name="NotesList" android:label="@string/title_notes_list">
+        <activity android:name="NotesList" android:label="@string/title_notes_list" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -51,6 +51,8 @@
         </activity>
 
         <activity android:name="NoteEditor"
+            android:exported="true"
+            android:enableOnBackInvokedCallback="true"
             android:windowSoftInputMode="adjustResize"
         >
             <!-- This filter says that we can view or edit the data of
@@ -77,6 +79,7 @@
         </activity>
 
         <activity android:name="TitleEditor"
+            android:exported="true"
             android:label="@string/title_edit_title"
             android:icon="@drawable/ic_menu_edit"
             android:theme="@android:style/Theme.Holo.Dialog"
@@ -103,7 +106,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="NotesLiveFolder" android:label="@string/live_folder_name"
+        <activity android:name="NotesLiveFolder" android:label="@string/live_folder_name" android:exported="true"
             android:icon="@drawable/live_folder_notes">
             <intent-filter>
                 <action android:name="android.intent.action.CREATE_LIVE_FOLDER" />

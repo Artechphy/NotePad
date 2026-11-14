@@ -54,6 +54,8 @@ public class NoteEditor extends Activity {
     private boolean mNewNote;
     private boolean mDeleted;
     private boolean mPastePending;
+    private boolean mSaveFailed;
+    private Runnable mUnregisterBack;
     private String mOriginalTitle;
     private String mOriginalBody;
     private String mOriginalCategory;
@@ -100,14 +102,25 @@ public class NoteEditor extends Activity {
                 mSavedTitle = string(row, NotePad.Notes.COLUMN_NAME_TITLE);
                 mSavedBody = string(row, NotePad.Notes.COLUMN_NAME_NOTE);
                 mSavedCategory = string(row, NotePad.Notes.COLUMN_NAME_CATEGORY);
+                mSaveFailed = state != null && state.getBoolean("save_failed");
+            } catch (RuntimeException error) {
+                // A failed save must not make configuration/process recreation discard input.
+                // Keep the original URI for retry; never recreate a removed note implicitly.
+                if (state == null || !state.containsKey("draft_title")) throw error;
+                Log.w("NoteEditor", "Restoring input while note is unavailable", error);
+                mSavedTitle = stateString(state, "saved_title", "");
+                mSavedBody = stateString(state, "saved_body", "");
+                mSavedCategory = stateString(state, "saved_category", NoteCategory.DEFAULT);
+                mSaveFailed = true;
             }
             mOriginalTitle = state == null ? mSavedTitle : stateString(state, "original_title", mSavedTitle);
             mOriginalBody = state == null ? mSavedBody : stateString(state, "original_body", mSavedBody);
             mOriginalCategory = state == null ? mSavedCategory : stateString(state, "original_category", mSavedCategory);
             mBinding = true;
-            mTitle.setText(mSavedTitle);
-            mText.setText(mSavedBody);
-            mCategory.setSelection(Math.max(0, NoteCategory.indexOf(mSavedCategory)));
+            mTitle.setText(state == null ? mSavedTitle : stateString(state, "draft_title", mSavedTitle));
+            mText.setText(state == null ? mSavedBody : stateString(state, "draft_body", mSavedBody));
+            String category = state == null ? mSavedCategory : stateString(state, "draft_category", mSavedCategory);
+            mCategory.setSelection(Math.max(0, NoteCategory.indexOf(category)));
             mBinding = false;
             mInitialized = true;
             setResult(RESULT_OK, new Intent().setData(mUri));
@@ -129,7 +142,7 @@ public class NoteEditor extends Activity {
             @Override public void onItemSelected(AdapterView<?> parent, View view, int position, long id) { updateStatus(); }
             @Override public void onNothingSelected(AdapterView<?> parent) {}
         });
-        findViewById(R.id.editor_back).setOnClickListener(view -> finish());
+        findViewById(R.id.editor_back).setOnClickListener(view -> leaveEditor());
         findViewById(R.id.editor_save).setOnClickListener(view -> saveAndFinish());
         findViewById(R.id.editor_more).setOnClickListener(this::showActions);
         updateStatus();
@@ -140,6 +153,7 @@ public class NoteEditor extends Activity {
         }
         mPastePending = state == null ? Intent.ACTION_PASTE.equals(getIntent().getAction())
                 : state.getBoolean("paste_pending");
+        if (Build.VERSION.SDK_INT >= 33) mUnregisterBack = BackNavigation.register(this);
     }
 
     @Override public void onWindowFocusChanged(boolean hasFocus) {
@@ -174,7 +188,8 @@ public class NoteEditor extends Activity {
         if (!mInitialized || mBinding) return;
         boolean changed = !mTitle.getText().toString().equals(mSavedTitle)
                 || !mText.getText().toString().equals(mSavedBody) || !category().equals(mSavedCategory);
-        mStatus.setText(changed ? R.string.editing : mNewNote && isEmpty() ? R.string.new_draft : R.string.saved);
+        mStatus.setText(mSaveFailed ? R.string.save_failed
+                : changed ? R.string.editing : mNewNote && isEmpty() ? R.string.new_draft : R.string.saved);
     }
 
     private boolean saveNote(boolean notify) {
@@ -197,6 +212,7 @@ public class NoteEditor extends Activity {
                 if (row == null || !row.moveToFirst()) throw new IllegalStateException("Note was removed");
             }
             getContentResolver().update(mUri, values, null, null);
+            mSaveFailed = false;
             mSavedTitle = title;
             mSavedBody = body;
             mSavedCategory = category();
@@ -207,6 +223,7 @@ public class NoteEditor extends Activity {
             return true;
         } catch (RuntimeException error) {
             Log.e("NoteEditor", "Unable to save note", error);
+            mSaveFailed = true;
             mStatus.setText(R.string.save_failed);
             if (notify) Toast.makeText(this, R.string.save_failed, Toast.LENGTH_LONG).show();
             return false;
@@ -217,11 +234,24 @@ public class NoteEditor extends Activity {
         if (saveNote(true)) finish();
     }
 
+    private void leaveEditor() {
+        if (!mInitialized || mDeleted) return;
+        if (mNewNote && isEmpty()) {
+            if (removeNote()) finish();
+        } else saveAndFinish();
+    }
+
+    @Override public void onBackPressed() {
+        leaveEditor();
+    }
+
     @Override protected void onPause() {
         super.onPause();
         if (!mInitialized || mDeleted) return;
         if (isFinishing() && mNewNote && isEmpty()) removeNote();
-        else saveNote(false);
+        else if (!mNewNote || !isEmpty()) {
+            if (!saveNote(false)) Toast.makeText(this, R.string.autosave_failed, Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override protected void onSaveInstanceState(Bundle state) {
@@ -233,6 +263,13 @@ public class NoteEditor extends Activity {
             state.putString("original_title", mOriginalTitle);
             state.putString("original_body", mOriginalBody);
             state.putString("original_category", mOriginalCategory);
+            state.putString("draft_title", mTitle.getText().toString());
+            state.putString("draft_body", mText.getText().toString());
+            state.putString("draft_category", category());
+            state.putString("saved_title", mSavedTitle);
+            state.putString("saved_body", mSavedBody);
+            state.putString("saved_category", mSavedCategory);
+            state.putBoolean("save_failed", mSaveFailed);
         }
         super.onSaveInstanceState(state);
     }
@@ -256,12 +293,14 @@ public class NoteEditor extends Activity {
                 || !mText.getText().toString().equals(mOriginalBody) || !category().equals(mOriginalCategory);
         menu.findItem(R.id.menu_revert).setVisible(changed);
         menu.findItem(R.id.menu_export).setEnabled(Build.VERSION.SDK_INT >= 19);
+        menu.findItem(R.id.menu_save_as_new).setVisible(mSaveFailed && !isEmpty());
         return true;
     }
 
     @Override public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.menu_save) saveAndFinish();
+        else if (id == R.id.menu_save_as_new) saveAsNewNote();
         else if (id == R.id.menu_export) exportNote();
         else if (id == R.id.menu_delete) {
             new AlertDialog.Builder(this).setMessage(R.string.delete_confirm)
@@ -284,6 +323,29 @@ public class NoteEditor extends Activity {
             Log.e("NoteEditor", "Unable to delete note", error);
             Toast.makeText(this, R.string.save_failed, Toast.LENGTH_LONG).show();
             return false;
+        }
+    }
+
+    private void saveAsNewNote() {
+        if (!mSaveFailed || isEmpty()) return;
+        String body = mText.getText().toString();
+        String title = NoteText.title(mTitle.getText().toString(), body);
+        ContentValues values = new ContentValues();
+        values.put(NotePad.Notes.COLUMN_NAME_TITLE, title.isEmpty() ? getString(R.string.untitled_note) : title);
+        values.put(NotePad.Notes.COLUMN_NAME_NOTE, body);
+        values.put(NotePad.Notes.COLUMN_NAME_CATEGORY, category());
+        try {
+            Uri newUri = getContentResolver().insert(NotePad.Notes.CONTENT_URI, values);
+            if (newUri == null) throw new IllegalStateException("Unable to create recovery note");
+            mUri = newUri;
+            mNewNote = false;
+            mSaveFailed = false;
+            setResult(RESULT_OK, new Intent().setData(mUri));
+            finish();
+        } catch (RuntimeException error) {
+            Log.e("NoteEditor", "Unable to save recovery note", error);
+            mStatus.setText(R.string.save_failed);
+            Toast.makeText(this, R.string.save_failed, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -394,7 +456,19 @@ public class NoteEditor extends Activity {
     }
 
     @Override protected void onDestroy() {
+        if (mUnregisterBack != null) mUnregisterBack.run();
         if (mExportTask != null) mExportTask.detach();
         super.onDestroy();
+    }
+
+    /** Keep API 33 platform types out of the editor's legacy API paths. */
+    @android.annotation.TargetApi(33)
+    private static final class BackNavigation {
+        static Runnable register(NoteEditor editor) {
+            android.window.OnBackInvokedDispatcher dispatcher = editor.getOnBackInvokedDispatcher();
+            android.window.OnBackInvokedCallback callback = editor::leaveEditor;
+            dispatcher.registerOnBackInvokedCallback(android.window.OnBackInvokedDispatcher.PRIORITY_DEFAULT, callback);
+            return () -> dispatcher.unregisterOnBackInvokedCallback(callback);
+        }
     }
 }

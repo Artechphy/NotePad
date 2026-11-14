@@ -1,0 +1,205 @@
+[
+  {
+    "class": "android.widget.FrameLayout",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[540,630][1055,1260]"
+  },
+  {
+    "class": "android.widget.FrameLayout",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[540,630][1055,1260]"
+  },
+  {
+    "class": "android.widget.ListView",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[540,630][1055,1260]"
+  },
+  {
+    "class": "android.widget.FrameLayout",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": false,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[540,630][1055,756]"
+  },
+  {
+    "id": "android:id/title",
+    "text": "周会纪要",
+    "class": "android.widget.TextView",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[582,666][1013,720]"
+  },
+  {
+    "class": "android.widget.LinearLayout",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": true,
+    "bounds": "[540,756][1055,882]"
+  },
+  {
+    "id": "android:id/content",
+    "class": "android.widget.LinearLayout",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[540,756][1055,882]"
+  },
+  {
+    "class": "android.widget.RelativeLayout",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[582,788][1013,850]"
+  },
+  {
+    "id": "android:id/title",
+    "text": "打开",
+    "class": "android.widget.TextView",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[582,788][1013,850]"
+  },
+  {
+    "class": "android.widget.LinearLayout",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": true,
+    "bounds": "[540,882][1055,1008]"
+  },
+  {
+    "id": "android:id/content",
+    "class": "android.widget.LinearLayout",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[540,882][1055,1008]"
+  },
+  {
+    "class": "android.widget.RelativeLayout",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[582,914][1013,976]"
+  },
+  {
+    "id": "android:id/title",
+    "text": "复制",
+    "class": "android.widget.TextView",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[582,914][1013,976]"
+  },
+  {
+    "class": "android.widget.LinearLayout",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": true,
+    "bounds": "[540,1008][1055,1134]"
+  },
+  {
+    "id": "android:id/content",
+    "class": "android.widget.LinearLayout",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[540,1008][1055,1134]"
+  },
+  {
+    "class": "android.widget.RelativeLayout",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[582,1040][1013,1102]"
+  },
+  {
+    "id": "android:id/title",
+    "text": "删除笔记",
+    "class": "android.widget.TextView",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[582,1040][1013,1102]"
+  },
+  {
+    "class": "android.widget.LinearLayout",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": true,
+    "bounds": "[540,1134][1055,1260]"
+  },
+  {
+    "id": "android:id/content",
+    "class": "android.widget.LinearLayout",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[540,1134][1055,1260]"
+  },
+  {
+    "class": "android.widget.RelativeLayout",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[582,1168][1013,1225]"
+  },
+  {
+    "id": "android:id/title",
+    "text": "Edit title",
+    "class": "android.widget.TextView",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[582,1168][1013,1225]"
+  }
+]

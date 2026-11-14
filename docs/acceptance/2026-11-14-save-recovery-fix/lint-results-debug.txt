@@ -1,0 +1,312 @@
+/Users/artechphy/Documents/作业/大三上/安卓开发设计/期中实验/NotePad/app/build.gradle:10: Warning: Not targeting the latest versions of Android; compatibility modes apply. Consider testing and updating this version. Consult the android.os.Build.VERSION_CODES javadoc for details. [OldTargetApi]
+        targetSdkVersion 34
+        ~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "OldTargetApi":
+   When your application or sdk runs on a version of Android that is more
+   recent than your targetSdkVersion specifies that it has been tested with,
+   various compatibility modes kick in. This ensures that your application
+   continues to work, but it may look out of place. For example, if the
+   targetSdkVersion is less than 14, your app may get an option button in the
+   UI.
+
+   To fix this issue, set the targetSdkVersion to the highest available value.
+   Then test your app to make sure everything works correctly. You may want to
+   consult the compatibility notes to see what changes apply to each version
+   you are adding support for:
+   https://developer.android.com/reference/android/os/Build.VERSION_CODES.html
+   as well as follow this guide:
+   https://developer.android.com/distribute/best-practices/develop/target-sdk.
+   html
+
+   https://developer.android.com/distribute/best-practices/develop/target-sdk.html
+
+/Users/artechphy/Documents/作业/大三上/安卓开发设计/期中实验/NotePad/app/src/main/AndroidManifest.xml:55: Warning: Attribute enableOnBackInvokedCallback is only used in API level 33 and higher (current min is 11) [UnusedAttribute]
+            android:enableOnBackInvokedCallback="true"
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "UnusedAttribute":
+   This check finds attributes set in XML files that were introduced in a
+   version newer than the oldest version targeted by your application (with
+   the minSdkVersion attribute).
+
+   This is not an error; the application will simply ignore the attribute.
+   However, if the attribute is important to the appearance or functionality
+   of your application, you should consider finding an alternative way to
+   achieve the same result with only available attributes, and then you can
+   optionally create a copy of the layout in a layout-vNN folder which will be
+   used on API NN or higher where you can take advantage of the newer
+   attribute.
+
+   Note: This check does not only apply to attributes. For example, some tags
+   can be unused too, such as the new <tag> element in layouts introduced in
+   API 21.
+
+/Users/artechphy/Documents/作业/大三上/安卓开发设计/期中实验/NotePad/app/build.gradle:5: Warning: A newer version of compileSdkVersion than 35 is available: 36 [GradleDependency]
+    compileSdkVersion 35
+    ~~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "GradleDependency":
+   This detector looks for usages of libraries where the version you are using
+   is not the current stable release. Using older versions is fine, and there
+   are cases where you deliberately want to stick with an older version.
+   However, you may simply not be aware that a more recent version is
+   available, and that is what this lint check helps find.
+
+/Users/artechphy/Documents/作业/大三上/安卓开发设计/期中实验/NotePad/app/src/main/res/layout/title_editor.xml:34: Warning: android:autoText is deprecated: Use inputType instead [Deprecated]
+        android:autoText="true"
+        ~~~~~~~~~~~~~~~~~~~~~~~
+/Users/artechphy/Documents/作业/大三上/安卓开发设计/期中实验/NotePad/app/src/main/res/layout/title_editor.xml:35: Warning: android:capitalize is deprecated: Use inputType instead [Deprecated]
+        android:capitalize="sentences"
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "Deprecated":
+   Deprecated views, attributes and so on are deprecated because there is a
+   better way to do something. Do it that new way. You've been warned.
+
+/Users/artechphy/Documents/作业/大三上/安卓开发设计/期中实验/NotePad/app/src/main/java/com/example/android/notepad/NoteEditor.java:465: Warning: Use @RequiresApi(33) instead of @TargetApi` to propagate the requirement to users of BackNavigation [UseRequiresApi]
+    @android.annotation.TargetApi(33)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "UseRequiresApi":
+   The @TargetApi annotation only suppresses API warnings locally.
+   @RequiresApi on the other hand will propagate the requirement out to any
+   callers of this API, making sure that they either perform API level checks
+   (using for example SDK_INT), or defining @RequiresApi annotations
+   themselves.
+
+   (The @TargetApi annotation predates @RequiresApi, and was introduced as an
+   early way to suppress lint API warnings for a particular API level.
+   Accidentally using @TargetApi can lead to crashes since there is no check
+   that other calls to this method actually check that the call is safe.)
+
+/Users/artechphy/Documents/作业/大三上/安卓开发设计/期中实验/NotePad/app/src/main/AndroidManifest.xml:28: Warning: Exported content providers can provide access to potentially sensitive data [ExportedContentProvider]
+        <provider android:name="NotePadProvider"
+         ~~~~~~~~
+
+   Explanation for issues of type "ExportedContentProvider":
+   Content providers are exported by default and any application on the system
+   can potentially use them to read and write data. If the content provider
+   provides access to sensitive data, it should be protected by specifying
+   export=false in the manifest or by protecting it with a permission that can
+   be granted to other applications.
+
+   https://goo.gle/ExportedContentProvider
+
+/Users/artechphy/Documents/作业/大三上/安卓开发设计/期中实验/NotePad/app/src/main/res/layout/note_editor.xml:2: Warning: Possible overdraw: Root element paints background @color/page with a theme that also paints a background (inferred theme is @style/AppTheme) [Overdraw]
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:background="@color/page">
+                                                                                                                                                                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/artechphy/Documents/作业/大三上/安卓开发设计/期中实验/NotePad/app/src/main/res/layout/notes_list.xml:4: Warning: Possible overdraw: Root element paints background @color/page with a theme that also paints a background (inferred theme is @style/AppTheme) [Overdraw]
+    android:orientation="vertical" android:background="@color/page">
+                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "Overdraw":
+   If you set a background drawable on a root view, then you should use a
+   custom theme where the theme background is null. Otherwise, the theme
+   background will be painted first, only to have your custom background
+   completely cover it; this is called "overdraw".
+
+   NOTE: This detector relies on figuring out which layouts are associated
+   with which activities based on scanning the Java code, and it's currently
+   doing that using an inexact pattern matching algorithm. Therefore, it can
+   incorrectly conclude which activity the layout is associated with and then
+   wrongly complain that a background-theme is hidden.
+
+   If you want your custom background on multiple pages, then you should
+   consider making a custom theme with your custom background and just using
+   that theme instead of a root element background.
+
+   Of course it's possible that your custom drawable is translucent and you
+   want it to be mixed with the background. However, you will get better
+   performance if you pre-mix the background with your drawable and use that
+   resulting image or color as a custom theme background instead.
+
+/Users/artechphy/Documents/作业/大三上/安卓开发设计/期中实验/NotePad/app/src/main/res/values/strings.xml:22: Warning: The resource R.string.title_create appears to be unused [UnusedResources]
+    <string name="title_create">新建笔记</string>
+            ~~~~~~~~~~~~~~~~~~~
+/Users/artechphy/Documents/作业/大三上/安卓开发设计/期中实验/NotePad/app/src/main/res/values/strings.xml:23: Warning: The resource R.string.title_edit appears to be unused [UnusedResources]
+    <string name="title_edit">Edit: %1$s</string>
+            ~~~~~~~~~~~~~~~~~
+/Users/artechphy/Documents/作业/大三上/安卓开发设计/期中实验/NotePad/app/src/main/res/values/strings.xml:35: Warning: The resource R.string.text_title appears to be unused [UnusedResources]
+    <string name="text_title">标题：</string>
+            ~~~~~~~~~~~~~~~~~
+/Users/artechphy/Documents/作业/大三上/安卓开发设计/期中实验/NotePad/app/src/main/res/values/strings.xml:40: Warning: The resource R.string.error_title appears to be unused [UnusedResources]
+    <string name="error_title">出错了</string>
+            ~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "UnusedResources":
+   Unused resources make applications larger and slow down builds.
+
+
+   The unused resource check can ignore tests. If you want to include
+   resources that are only referenced from tests, consider packaging them in a
+   test source set instead.
+
+   You can include test sources in the unused resource check by setting the
+   system property lint.unused-resources.include-tests =true, and to exclude
+   them (usually for performance reasons), use
+   lint.unused-resources.exclude-tests =true.
+   ,
+
+   Available options:
+
+   **skip-libraries** (default is true):
+   Whether the unused resource check should skip reporting unused resources in libraries.
+
+   Many libraries will declare resources that are part of the library surface; other modules depending on the library will also reference the resources. To avoid reporting all these resources as unused (in the context of a library), the unused resource check normally skips reporting unused resources in libraries. Instead, run the unused resource check on the consuming app module (along with `checkDependencies=true`).
+
+   However, there are cases where you want to check that all the resources declared in a library are used; in that case, you can disable the skip option.
+
+   To configure this option, use a `lint.xml` file with an <option> like this:
+
+   ```xml
+   <lint>
+       <issue id="UnusedResources">
+           <option name="skip-libraries" value="true" />
+       </issue>
+   </lint>
+   ```
+
+/Users/artechphy/Documents/作业/大三上/安卓开发设计/期中实验/NotePad/app/src/main/res/drawable/app_notes.png: Warning: Found bitmap drawable res/drawable/app_notes.png in densityless folder [IconLocation]
+/Users/artechphy/Documents/作业/大三上/安卓开发设计/期中实验/NotePad/app/src/main/res/drawable/ic_menu_compose.png: Warning: Found bitmap drawable res/drawable/ic_menu_compose.png in densityless folder [IconLocation]
+/Users/artechphy/Documents/作业/大三上/安卓开发设计/期中实验/NotePad/app/src/main/res/drawable/ic_menu_delete.png: Warning: Found bitmap drawable res/drawable/ic_menu_delete.png in densityless folder [IconLocation]
+/Users/artechphy/Documents/作业/大三上/安卓开发设计/期中实验/NotePad/app/src/main/res/drawable/ic_menu_edit.png: Warning: Found bitmap drawable res/drawable/ic_menu_edit.png in densityless folder [IconLocation]
+/Users/artechphy/Documents/作业/大三上/安卓开发设计/期中实验/NotePad/app/src/main/res/drawable/ic_menu_revert.png: Warning: Found bitmap drawable res/drawable/ic_menu_revert.png in densityless folder [IconLocation]
+/Users/artechphy/Documents/作业/大三上/安卓开发设计/期中实验/NotePad/app/src/main/res/drawable/ic_menu_save.png: Warning: Found bitmap drawable res/drawable/ic_menu_save.png in densityless folder [IconLocation]
+/Users/artechphy/Documents/作业/大三上/安卓开发设计/期中实验/NotePad/app/src/main/res/drawable/live_folder_notes.png: Warning: Found bitmap drawable res/drawable/live_folder_notes.png in densityless folder [IconLocation]
+
+   Explanation for issues of type "IconLocation":
+   The res/drawable folder is intended for density-independent graphics such
+   as shapes defined in XML. For bitmaps, move it to drawable-mdpi and
+   consider providing higher and lower resolution versions in drawable-ldpi,
+   drawable-hdpi and drawable-xhdpi. If the icon really is density independent
+   (for example a solid color) you can place it in drawable-nodpi.
+
+   https://developer.android.com/guide/practices/screens_support.html
+
+/Users/artechphy/Documents/作业/大三上/安卓开发设计/期中实验/NotePad/app/src/main/res: Warning: Missing density variation folders in src/main/res: drawable-mdpi, drawable-xhdpi, drawable-xxhdpi [IconMissingDensityFolder]
+
+   Explanation for issues of type "IconMissingDensityFolder":
+   Icons will look best if a custom version is provided for each of the major
+   screen density classes (low, medium, high, extra-high, extra-extra-high).
+   This lint check identifies folders which are missing, such as
+   drawable-hdpi.
+
+   Low density is not really used much anymore, so this check ignores the ldpi
+   density. To force lint to include it, set the environment variable
+   ANDROID_LINT_INCLUDE_LDPI=true. For more information on current density
+   usage, see https://developer.android.com/about/dashboards
+
+   https://developer.android.com/guide/practices/screens_support.html
+
+/Users/artechphy/Documents/作业/大三上/安卓开发设计/期中实验/NotePad/app/src/main/res/layout/note_editor.xml:12: Warning: Missing autofillHints attribute [Autofill]
+            <EditText android:id="@+id/title" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="56dp" android:background="@android:color/transparent" android:padding="0dp" android:hint="@string/note_title_hint" android:textColorHint="@color/muted" android:textColor="@color/ink" android:textSize="26sp" android:textStyle="bold" android:inputType="textCapSentences" android:singleLine="true" android:imeOptions="actionNext"/>
+             ~~~~~~~~
+/Users/artechphy/Documents/作业/大三上/安卓开发设计/期中实验/NotePad/app/src/main/res/layout/note_editor.xml:18: Warning: Missing autofillHints attribute [Autofill]
+            <EditText android:id="@+id/note" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="300dp" android:background="@android:color/transparent" android:padding="0dp" android:gravity="top" android:hint="@string/note_body_hint" android:textColorHint="@color/muted" android:textColor="@color/ink" android:textSize="17sp" android:lineSpacingExtra="7dp" android:inputType="textMultiLine|textCapSentences" android:scrollHorizontally="false"/>
+             ~~~~~~~~
+/Users/artechphy/Documents/作业/大三上/安卓开发设计/期中实验/NotePad/app/src/main/res/layout/title_editor.xml:25: Warning: Missing autofillHints attribute [Autofill]
+    <EditText android:id="@+id/title"
+     ~~~~~~~~
+
+   Explanation for issues of type "Autofill":
+   Specify an autofillHints attribute when targeting SDK version 26 or higher
+   or explicitly specify that the view is not important for autofill. Your app
+   can help an autofill service classify the data correctly by providing the
+   meaning of each view that could be autofillable, such as views representing
+   usernames, passwords, credit card fields, email addresses, etc.
+
+   The hints can have any value, but it is recommended to use predefined
+   values like 'username' for a username or 'creditCardNumber' for a credit
+   card number. For a list of all predefined autofill hint constants, see the
+   AUTOFILL_HINT_ constants in the View reference at
+   https://developer.android.com/reference/android/view/View.html.
+
+   You can mark a view unimportant for autofill by specifying an
+   importantForAutofill attribute on that view or a parent view. See
+   https://developer.android.com/reference/android/view/View.html#setImportant
+   ForAutofill(int).
+
+   https://developer.android.com/guide/topics/text/autofill.html
+
+/Users/artechphy/Documents/作业/大三上/安卓开发设计/期中实验/NotePad/app/src/main/res/layout/note_editor.xml:4: Warning: Hardcoded string "‹", should use @string resource [HardcodedText]
+        <Button android:id="@+id/editor_back" style="@style/PlainButton" android:layout_width="48dp" android:layout_height="48dp" android:text="‹" android:textSize="32sp" android:contentDescription="@string/back_to_notes"/>
+                                                                                                                                  ~~~~~~~~~~~~~~~~
+/Users/artechphy/Documents/作业/大三上/安卓开发设计/期中实验/NotePad/app/src/main/res/layout/note_editor.xml:7: Warning: Hardcoded string "⋮", should use @string resource [HardcodedText]
+        <Button android:id="@+id/editor_more" style="@style/PlainButton" android:layout_width="48dp" android:layout_height="48dp" android:text="⋮" android:textSize="26sp" android:contentDescription="@string/more_actions"/>
+                                                                                                                                  ~~~~~~~~~~~~~~~~
+/Users/artechphy/Documents/作业/大三上/安卓开发设计/期中实验/NotePad/app/src/main/res/layout/notes_list.xml:11: Warning: Hardcoded string "⋮", should use @string resource [HardcodedText]
+        <Button android:id="@+id/list_more" style="@style/PlainButton" android:layout_width="48dp" android:layout_height="48dp" android:text="⋮" android:textSize="26sp" android:contentDescription="@string/more_actions"/>
+                                                                                                                                ~~~~~~~~~~~~~~~~
+/Users/artechphy/Documents/作业/大三上/安卓开发设计/期中实验/NotePad/app/src/main/res/layout/notes_list.xml:26: Warning: Hardcoded string "+", should use @string resource [HardcodedText]
+            android:layout_margin="24dp" android:background="@drawable/new_note_background" android:text="+" android:textColor="#FFFFFF" android:textSize="32sp" android:gravity="center" android:padding="0dp" android:contentDescription="@string/menu_add"/>
+                                                                                            ~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "HardcodedText":
+   Hardcoding text attributes directly in layout files is bad for several
+   reasons:
+
+   * When creating configuration variations (for example for landscape or
+   portrait) you have to repeat the actual text (and keep it up to date when
+   making changes)
+
+   * The application cannot be translated to other languages by just adding
+   new translations for existing string resources.
+
+   There are quickfixes to automatically extract this hardcoded string into a
+   resource lookup.
+
+/Users/artechphy/Documents/作业/大三上/安卓开发设计/期中实验/NotePad/app/src/main/res/layout/note_editor.xml:5: Warning: When you define paddingLeft you should probably also define paddingRight for right-to-left symmetry [RtlSymmetry]
+        <TextView android:id="@+id/save_status" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:textColor="@color/muted" android:textSize="12sp" android:paddingLeft="4dp"/>
+                                                                                                                                                                                                   ~~~~~~~~~~~~~~~~~~~
+/Users/artechphy/Documents/作业/大三上/安卓开发设计/期中实验/NotePad/app/src/main/res/layout/noteslist_item.xml:9: Warning: When you define paddingLeft you should probably also define paddingRight for right-to-left symmetry [RtlSymmetry]
+        <TextView android:id="@+id/note_category" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@color/accent" android:textSize="11sp" android:paddingLeft="8dp"/>
+                                                                                                                                                                                     ~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "RtlSymmetry":
+   If you specify padding or margin on the left side of a layout, you should
+   probably also specify padding on the right side (and vice versa) for
+   right-to-left layout symmetry.
+
+/Users/artechphy/Documents/作业/大三上/安卓开发设计/期中实验/NotePad/app/src/main/res/layout/category_filter.xml:6: Warning: Consider adding android:layout_marginEnd="4dp" to better support right-to-left layouts [RtlHardcoded]
+    android:layout_marginRight="4dp" />
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/artechphy/Documents/作业/大三上/安卓开发设计/期中实验/NotePad/app/src/main/res/layout/note_editor.xml:5: Warning: Consider adding android:paddingStart="4dp" to better support right-to-left layouts [RtlHardcoded]
+        <TextView android:id="@+id/save_status" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:textColor="@color/muted" android:textSize="12sp" android:paddingLeft="4dp"/>
+                                                                                                                                                                                                   ~~~~~~~~~~~~~~~~~~~
+/Users/artechphy/Documents/作业/大三上/安卓开发设计/期中实验/NotePad/app/src/main/res/layout/notes_list.xml:6: Warning: Consider adding android:paddingEnd="12dp" to better support right-to-left layouts [RtlHardcoded]
+        android:paddingLeft="24dp" android:paddingRight="12dp" android:gravity="center_vertical">
+                                   ~~~~~~~~~~~~~~~~~~~~
+/Users/artechphy/Documents/作业/大三上/安卓开发设计/期中实验/NotePad/app/src/main/res/layout/notes_list.xml:6: Warning: Consider adding android:paddingStart="24dp" to better support right-to-left layouts [RtlHardcoded]
+        android:paddingLeft="24dp" android:paddingRight="12dp" android:gravity="center_vertical">
+        ~~~~~~~~~~~~~~~~~~~
+/Users/artechphy/Documents/作业/大三上/安卓开发设计/期中实验/NotePad/app/src/main/res/layout/notes_list.xml:25: Warning: Use "end" instead of "right" to ensure correct behavior in right-to-left locales [RtlHardcoded]
+        <Button android:id="@+id/new_note" android:layout_width="56dp" android:layout_height="56dp" android:layout_gravity="bottom|right"
+                                                                                                                            ~~~~~~~~~~~~
+/Users/artechphy/Documents/作业/大三上/安卓开发设计/期中实验/NotePad/app/src/main/res/layout/noteslist_item.xml:9: Warning: Consider adding android:paddingStart="8dp" to better support right-to-left layouts [RtlHardcoded]
+        <TextView android:id="@+id/note_category" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@color/accent" android:textSize="11sp" android:paddingLeft="8dp"/>
+                                                                                                                                                                                     ~~~~~~~~~~~~~~~~~~~
+/Users/artechphy/Documents/作业/大三上/安卓开发设计/期中实验/NotePad/app/src/main/res/layout/title_editor.xml:41: Warning: Use "end" instead of "right" to ensure correct behavior in right-to-left locales [RtlHardcoded]
+        android:layout_gravity="right"
+                                ~~~~~
+
+   Explanation for issues of type "RtlHardcoded":
+   Using Gravity#LEFT and Gravity#RIGHT can lead to problems when a layout is
+   rendered in locales where text flows from right to left. Use Gravity#START
+   and Gravity#END instead. Similarly, in XML gravity and layout_gravity
+   attributes, use start rather than left.
+
+   For XML attributes such as paddingLeft and layout_marginLeft, use
+   paddingStart and layout_marginStart. NOTE: If your minSdkVersion is less
+   than 17, you should add both the older left/right attributes as well as the
+   new start/end attributes. On older platforms, where RTL is not supported
+   and the start/end attributes are unknown and therefore ignored, you need
+   the older left/right attributes. There is a separate lint check which
+   catches that type of error.
+
+   (Note: For Gravity#LEFT and Gravity#START, you can use these constants even
+   when targeting older platforms, because the start bitmask is a superset of
+   the left bitmask. Therefore, you can use gravity="start" rather than
+   gravity="left|start".)
+
+0 errors, 37 warnings

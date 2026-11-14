@@ -1,0 +1,51 @@
+{
+  "scope": "UC02-A08 and Lint failures, plus affected regression checks",
+  "baseline_commit": "08e4857",
+  "candidate_sha256": "9a08c629f01fbb4aa08c8cae749f905b059984f61f81a7684b901b81c128ffbb",
+  "before_fix": {
+    "tests": 4,
+    "failures": 4
+  },
+  "local_tests": {
+    "tests": 56,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "build": "PASS",
+  "lint": {
+    "status": "PASS",
+    "errors": 0,
+    "fatal": 0,
+    "warnings": 37
+  },
+  "device_check_count": 20,
+  "device_checks": {
+    "UC02-A07": "PASS",
+    "UC02-A08": "PASS",
+    "UC02-A08-background": "PASS",
+    "UC01-A01": "PASS",
+    "UC01-A02": "PASS",
+    "UC01-A06": "PASS",
+    "UC01-A07": "PASS",
+    "UC02-A01": "PASS",
+    "UC02-A02": "PASS",
+    "UC02-A03": "PASS",
+    "UC02-A04": "PASS",
+    "UC02-A05": "PASS",
+    "UC02-A06": "PASS",
+    "UC06-B": "PASS",
+    "UC06-A02": "PASS",
+    "UC06-focus": "PASS",
+    "UC01-B": "PASS",
+    "M01": "PASS",
+    "UC02-A08-process": "PASS",
+    "UC07-B": "PASS"
+  },
+  "excluded_substeps": [
+    "M01-1..M01-7",
+    "UC07-B1"
+  ],
+  "human_acceptance": "NOT_RUN",
+  "remaining_scope": "Previous ten exceptional/other-version branches were not expanded in this fix; no whole-project human acceptance claim."
+}

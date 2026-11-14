@@ -1,0 +1,141 @@
+[
+  {
+    "class": "android.widget.FrameLayout",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[0,0][1080,2009]"
+  },
+  {
+    "id": "android:id/decor_content_parent",
+    "class": "android.view.ViewGroup",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[0,0][1080,2009]"
+  },
+  {
+    "id": "android:id/action_bar_container",
+    "class": "android.widget.FrameLayout",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[0,63][1080,189]"
+  },
+  {
+    "id": "android:id/action_bar",
+    "class": "android.view.ViewGroup",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[0,63][1080,189]"
+  },
+  {
+    "class": "android.widget.LinearLayout",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": false,
+    "selected": false,
+    "clickable": true,
+    "bounds": "[21,63][346,189]"
+  },
+  {
+    "class": "android.widget.FrameLayout",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[21,63][126,189]"
+  },
+  {
+    "id": "android:id/home",
+    "class": "android.widget.ImageView",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[31,84][115,168]"
+  },
+  {
+    "class": "android.widget.LinearLayout",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[126,94][346,157]"
+  },
+  {
+    "id": "android:id/action_bar_title",
+    "text": "New note",
+    "class": "android.widget.TextView",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[126,94][325,157]"
+  },
+  {
+    "class": "android.widget.LinearLayout",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[786,63][1080,189]"
+  },
+  {
+    "id": "com.example.android.notepad:id/menu_save",
+    "desc": "Save",
+    "class": "android.widget.Button",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": true,
+    "bounds": "[786,63][933,189]"
+  },
+  {
+    "id": "com.example.android.notepad:id/menu_delete",
+    "desc": "Delete",
+    "class": "android.widget.Button",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": true,
+    "bounds": "[933,63][1080,189]"
+  },
+  {
+    "id": "android:id/content",
+    "class": "android.widget.FrameLayout",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[0,189][1080,1439]"
+  },
+  {
+    "id": "com.example.android.notepad:id/note",
+    "text": "升级样本一：中文内容",
+    "class": "android.widget.EditText",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": true,
+    "bounds": "[0,189][1080,1439]"
+  }
+]

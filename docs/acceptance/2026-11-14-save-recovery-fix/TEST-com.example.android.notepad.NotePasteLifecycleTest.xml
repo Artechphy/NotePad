@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.example.android.notepad.NotePasteLifecycleTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-11-14T13:11:42.288Z" hostname="ArtechphydeMacBook-Air.local" time="0.21">
+  <properties/>
+  <testcase name="notePasteWaitsForFocusAndCopiesAllThreeFields" classname="com.example.android.notepad.NotePasteLifecycleTest" time="0.019"/>
+  <testcase name="listMenuDoesNotReadClipboardWhileWindowIsUnfocused" classname="com.example.android.notepad.NotePasteLifecycleTest" time="0.089"/>
+  <testcase name="focusChangesAndRecreationNeverOverwriteUserEdits" classname="com.example.android.notepad.NotePasteLifecycleTest" time="0.034"/>
+  <testcase name="deletedSourceReportsItWithoutCreatingASavedCopy" classname="com.example.android.notepad.NotePasteLifecycleTest" time="0.019"/>
+  <testcase name="plainTextPastePreservesUnicodeAndNewlines" classname="com.example.android.notepad.NotePasteLifecycleTest" time="0.013"/>
+  <testcase name="emptyClipboardReportsItAndLeavingRemovesOnlyEmptyDraft" classname="com.example.android.notepad.NotePasteLifecycleTest" time="0.012"/>
+  <testcase name="pendingPasteSurvivesRecreationBeforeFirstFocus" classname="com.example.android.notepad.NotePasteLifecycleTest" time="0.023"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

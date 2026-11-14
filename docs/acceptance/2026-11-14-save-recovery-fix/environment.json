@@ -1,0 +1,19 @@
+{
+  "baseline_commit": "08e4857269c772ac5ab3b2164c29434f181654de",
+  "candidate_sha256": "9a08c629f01fbb4aa08c8cae749f905b059984f61f81a7684b901b81c128ffbb",
+  "candidate_bytes": 119322,
+  "compileSdk": 35,
+  "targetSdk": 34,
+  "minSdk": 11,
+  "human_acceptance": "NOT_RUN",
+  "execution_authorization": "请修复失败项；沿用此前验收执行授权，仅操作专用合成数据实例",
+  "device": {
+    "serial": "emulator-5580",
+    "release": "14",
+    "api": "34",
+    "fingerprint": "Android/sdk_phone64_arm64/emu64a:14/UE1A.230829.036.A1/11228894:userdebug/test-keys",
+    "screen": "Physical size: 1080x2340",
+    "density": "Physical density: 420",
+    "timezone": "America/Los_Angeles"
+  }
+}

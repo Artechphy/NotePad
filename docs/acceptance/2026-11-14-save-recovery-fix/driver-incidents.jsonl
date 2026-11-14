@@ -1,0 +1,1 @@
+{"at": "2026-11-14T13:24:33.526729+00:00", "step": "M01 file reader navigation", "actual": "FilesActivity opened Downloads rather than the export subfolder; real 97-byte file exists in NotePad-验收.", "classification": "driver navigation", "correction": "Enter the visible export folder before selecting the file; retain timeout and observed snapshots."}

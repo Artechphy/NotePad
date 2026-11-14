@@ -2,12 +2,12 @@ apply plugin: 'com.android.application'
 
 android {
     namespace 'com.example.android.notepad'
-    compileSdkVersion 23
+    compileSdkVersion 35
 
     defaultConfig {
         applicationId "com.example.android.notepad"
         minSdkVersion 11
-        targetSdkVersion 23
+        targetSdkVersion 34
 
         testApplicationId "com.example.android.notepad.tests"
         testInstrumentationRunner "android.test.InstrumentationTestRunner"

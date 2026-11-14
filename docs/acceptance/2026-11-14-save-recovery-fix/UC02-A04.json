@@ -1,0 +1,590 @@
+[
+  {
+    "class": "android.widget.FrameLayout",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[0,0][1080,2340]"
+  },
+  {
+    "class": "android.widget.FrameLayout",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[0,0][1080,2214]"
+  },
+  {
+    "id": "android:id/content",
+    "class": "android.widget.FrameLayout",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[0,63][1080,2214]"
+  },
+  {
+    "class": "android.widget.LinearLayout",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[0,63][1080,2214]"
+  },
+  {
+    "class": "android.widget.LinearLayout",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[0,63][1080,273]"
+  },
+  {
+    "class": "android.widget.LinearLayout",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[63,86][922,250]"
+  },
+  {
+    "text": "笔记",
+    "class": "android.widget.TextView",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[63,86][211,194]"
+  },
+  {
+    "id": "com.example.android.notepad:id/note_count",
+    "text": "5 条笔记",
+    "class": "android.widget.TextView",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[63,202][185,250]"
+  },
+  {
+    "id": "com.example.android.notepad:id/list_more",
+    "text": "⋮",
+    "desc": "更多操作",
+    "class": "android.widget.Button",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": true,
+    "bounds": "[922,105][1048,231]"
+  },
+  {
+    "id": "com.example.android.notepad:id/search_notes",
+    "class": "android.widget.SearchView",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[53,273][1027,399]"
+  },
+  {
+    "id": "android:id/search_bar",
+    "class": "android.widget.LinearLayout",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[53,273][1027,399]"
+  },
+  {
+    "id": "android:id/search_edit_frame",
+    "class": "android.widget.LinearLayout",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[74,273][1006,399]"
+  },
+  {
+    "id": "android:id/search_mag_icon",
+    "class": "android.widget.ImageView",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[95,304][179,367]"
+  },
+  {
+    "id": "android:id/search_plate",
+    "class": "android.widget.LinearLayout",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[179,273][1006,399]"
+  },
+  {
+    "id": "android:id/search_src_text",
+    "text": "搜索标题或正文",
+    "class": "android.widget.AutoCompleteTextView",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": true,
+    "bounds": "[179,288][1006,383]"
+  },
+  {
+    "class": "android.widget.HorizontalScrollView",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[0,399][1080,546]"
+  },
+  {
+    "id": "com.example.android.notepad:id/category_filters",
+    "class": "android.widget.LinearLayout",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[0,399][833,546]"
+  },
+  {
+    "text": "全部",
+    "class": "android.widget.Button",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": true,
+    "clickable": true,
+    "bounds": "[42,409][174,535]"
+  },
+  {
+    "text": "未分类",
+    "class": "android.widget.Button",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": true,
+    "bounds": "[185,409][351,535]"
+  },
+  {
+    "text": "学习",
+    "class": "android.widget.Button",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": true,
+    "bounds": "[362,409][494,535]"
+  },
+  {
+    "text": "生活",
+    "class": "android.widget.Button",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": true,
+    "bounds": "[505,409][637,535]"
+  },
+  {
+    "text": "工作",
+    "class": "android.widget.Button",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": true,
+    "bounds": "[648,409][780,535]"
+  },
+  {
+    "class": "android.view.View",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[0,546][1080,549]"
+  },
+  {
+    "class": "android.widget.FrameLayout",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[0,549][1080,2214]"
+  },
+  {
+    "id": "android:id/list",
+    "class": "android.widget.ListView",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[0,549][1080,2214]"
+  },
+  {
+    "class": "android.widget.LinearLayout",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": true,
+    "bounds": "[0,549][1080,854]"
+  },
+  {
+    "id": "android:id/text1",
+    "text": "随手记",
+    "class": "android.widget.TextView",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[63,596][1017,665]"
+  },
+  {
+    "id": "com.example.android.notepad:id/note_preview",
+    "text": "周末阅读。",
+    "class": "android.widget.TextView",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[63,681][1017,735]"
+  },
+  {
+    "class": "android.widget.LinearLayout",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[63,761][1017,804]"
+  },
+  {
+    "id": "com.example.android.notepad:id/note_modified",
+    "text": "修改于 2026-11-14 05:19",
+    "class": "android.widget.TextView",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[63,761][909,804]"
+  },
+  {
+    "id": "com.example.android.notepad:id/note_category",
+    "text": "未分类",
+    "class": "android.widget.TextView",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[909,761][1017,804]"
+  },
+  {
+    "class": "android.widget.LinearLayout",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": true,
+    "bounds": "[0,857][1080,1162]"
+  },
+  {
+    "id": "android:id/text1",
+    "text": "周会纪要",
+    "class": "android.widget.TextView",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[63,904][1017,973]"
+  },
+  {
+    "id": "com.example.android.notepad:id/note_preview",
+    "text": "讨论版本发布。",
+    "class": "android.widget.TextView",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[63,989][1017,1043]"
+  },
+  {
+    "class": "android.widget.LinearLayout",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[63,1069][1017,1112]"
+  },
+  {
+    "id": "com.example.android.notepad:id/note_modified",
+    "text": "修改于 2026-11-14 02:26",
+    "class": "android.widget.TextView",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[63,1069][938,1112]"
+  },
+  {
+    "id": "com.example.android.notepad:id/note_category",
+    "text": "工作",
+    "class": "android.widget.TextView",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[938,1069][1017,1112]"
+  },
+  {
+    "class": "android.widget.LinearLayout",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": true,
+    "bounds": "[0,1165][1080,1470]"
+  },
+  {
+    "id": "android:id/text1",
+    "text": "采购清单",
+    "class": "android.widget.TextView",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[63,1212][1017,1281]"
+  },
+  {
+    "id": "com.example.android.notepad:id/note_preview",
+    "text": "购买安卓测试手机和数据线。",
+    "class": "android.widget.TextView",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[63,1297][1017,1351]"
+  },
+  {
+    "class": "android.widget.LinearLayout",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[63,1377][1017,1420]"
+  },
+  {
+    "id": "com.example.android.notepad:id/note_modified",
+    "text": "修改于 2026-11-14 02:18",
+    "class": "android.widget.TextView",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[63,1377][938,1420]"
+  },
+  {
+    "id": "com.example.android.notepad:id/note_category",
+    "text": "生活",
+    "class": "android.widget.TextView",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[938,1377][1017,1420]"
+  },
+  {
+    "class": "android.widget.LinearLayout",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": true,
+    "bounds": "[0,1473][1080,1837]"
+  },
+  {
+    "id": "android:id/text1",
+    "text": "特殊字符",
+    "class": "android.widget.TextView",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[63,1520][1017,1589]"
+  },
+  {
+    "id": "com.example.android.notepad:id/note_preview",
+    "text": "折扣50%；变量_a；感叹!；路径C:\\notes；作者O'Reilly；中文与📘。",
+    "class": "android.widget.TextView",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[63,1605][1017,1721]"
+  },
+  {
+    "class": "android.widget.LinearLayout",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[63,1747][1017,1790]"
+  },
+  {
+    "id": "com.example.android.notepad:id/note_modified",
+    "text": "修改于 2026-11-14 02:06",
+    "class": "android.widget.TextView",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[63,1747][938,1790]"
+  },
+  {
+    "id": "com.example.android.notepad:id/note_category",
+    "text": "学习",
+    "class": "android.widget.TextView",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[938,1747][1017,1790]"
+  },
+  {
+    "class": "android.widget.LinearLayout",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": true,
+    "bounds": "[0,1840][1080,2145]"
+  },
+  {
+    "id": "android:id/text1",
+    "text": "安卓复习计划",
+    "class": "android.widget.TextView",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[63,1887][1017,1956]"
+  },
+  {
+    "id": "com.example.android.notepad:id/note_preview",
+    "text": "今天复习 Activity 生命周期。",
+    "class": "android.widget.TextView",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[63,1972][1017,2026]"
+  },
+  {
+    "class": "android.widget.LinearLayout",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[63,2052][1017,2095]"
+  },
+  {
+    "id": "com.example.android.notepad:id/note_modified",
+    "text": "修改于 2026-11-14 02:06",
+    "class": "android.widget.TextView",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[63,2052][938,2095]"
+  },
+  {
+    "id": "com.example.android.notepad:id/note_category",
+    "text": "学习",
+    "class": "android.widget.TextView",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[938,2052][1017,2095]"
+  },
+  {
+    "id": "com.example.android.notepad:id/new_note",
+    "text": "+",
+    "desc": "新建笔记",
+    "class": "android.widget.Button",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": true,
+    "bounds": "[870,2004][1017,2151]"
+  },
+  {
+    "id": "android:id/statusBarBackground",
+    "class": "android.view.View",
+    "package": "com.example.android.notepad",
+    "visible": false,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[0,0][1080,63]"
+  },
+  {
+    "id": "android:id/navigationBarBackground",
+    "class": "android.view.View",
+    "package": "com.example.android.notepad",
+    "visible": false,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[0,2214][1080,2340]"
+  }
+]
