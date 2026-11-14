@@ -1,0 +1,90 @@
+{
+  "git_commit": "77a25583ebd8029bf497f7fbb32fc10009676037",
+  "apk_sha256": "5311c1cad4aa8ec3221812a27a6abf4ad7923c8605a57f1f8f9eb5334d43319f",
+  "apk_bytes": 91283,
+  "local_test_results": [
+    {
+      "class": "com.example.android.notepad.NoteDatabaseMigrationTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "com.example.android.notepad.NoteEditorBehaviorTest",
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "com.example.android.notepad.NoteExportTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "com.example.android.notepad.NotePadProviderBehaviorTest",
+      "tests": 12,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "com.example.android.notepad.NotePasteLifecycleTest",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "com.example.android.notepad.NoteSearchTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "com.example.android.notepad.NoteTextTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "com.example.android.notepad.NoteTimestampTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "com.example.android.notepad.NoteUiPreviewTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "com.example.android.notepad.NotesListTest",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "human_acceptance": "NOT_RUN",
+  "device": {
+    "release": "14",
+    "api": "34",
+    "fingerprint": "Android/sdk_phone64_arm64/emu64a:14/UE1A.230829.036.A1/11228894:userdebug/test-keys",
+    "timezone": "America/Los_Angeles",
+    "serial": "emulator-5580",
+    "avd": "NotePad_Final_API34",
+    "screen": "Physical size: 1080x2340",
+    "density": "Physical density: 420",
+    "system_image_url": "https://dl.google.com/android/repository/sys-img/android/arm64-v8a-34_r04.zip",
+    "system_image_sha1": "d9f2011131919abe952814e041f16f317242c3fa"
+  }
+}

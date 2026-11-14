@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.example.android.notepad.NotesListTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-11-14T09:57:13.832Z" hostname="ArtechphydeMacBook-Air.local" time="0.409">
+  <properties/>
+  <testcase name="categoryFilterSurvivesClearingSearchAndRecreation" classname="com.example.android.notepad.NotesListTest" time="0.125"/>
+  <testcase name="opensWithStableSortAndReadableTimestamp" classname="com.example.android.notepad.NotesListTest" time="0.042"/>
+  <testcase name="providerChangesRefreshTheCurrentSearch" classname="com.example.android.notepad.NotesListTest" time="0.047"/>
+  <testcase name="emptyCategoryHasSpecificFeedbackAndPreviewBindsTheBody" classname="com.example.android.notepad.NotesListTest" time="0.049"/>
+  <testcase name="searchesBothFieldsAndClearsBackToAllNotes" classname="com.example.android.notepad.NotesListTest" time="0.052"/>
+  <testcase name="rapidInputDoesNotRestoreOlderResults" classname="com.example.android.notepad.NotesListTest" time="0.036"/>
+  <testcase name="recreationPreservesKeywordAndFilter" classname="com.example.android.notepad.NotesListTest" time="0.058"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

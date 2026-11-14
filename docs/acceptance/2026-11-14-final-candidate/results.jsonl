@@ -1,0 +1,58 @@
+{"case": "UC00-A01", "status": "PASS", "detail": "首次启动0条且为空列表，新建入口可见，未出现示例笔记。", "evidence": ["01-empty-list.png"], "at": "2026-11-14T10:05:46.761771+00:00"}
+{"case": "UC06-A01", "status": "PASS", "detail": "空剪贴板的粘贴菜单行禁用，触摸未打开编辑页或创建笔记；首轮标签节点断言失误已保留。", "evidence": ["UC06-A01-empty-clipboard.png", "UC06-A01-empty-clipboard.json", "driver-incidents.jsonl"], "at": "2026-11-14T10:06:38.787341+00:00"}
+{"case": "UC00-B", "status": "PASS", "detail": "常规安装并从公开 launcher 入口进入；5条列表、摘要、分类、时间、滚动及更多/新建入口可用；首次系统旧版本提示已记录并关闭。", "evidence": ["00-legacy-target-warning.png", "04-baseline-five-notes.png", "05-baseline-scrolled.png"], "at": "2026-11-14T10:07:17.452504+00:00"}
+{"case": "M01-1", "status": "PASS", "detail": "从5条新增至6条，标题/正文/学习分类重开一致。", "evidence": ["m01-1-created.png"], "at": "2026-11-14T10:07:24.369204+00:00"}
+{"case": "UC01-B", "status": "PASS", "detail": "新建、选择分类、完成保存及重开均通过。", "evidence": ["03-first-note-edit.png", "m01-1-created.png"], "at": "2026-11-14T10:07:24.369405+00:00"}
+{"case": "M01-2", "status": "PASS", "detail": "学习+安卓仅D01与新笔记，共2条。", "evidence": ["m01-2-study-search.png"], "at": "2026-11-14T10:07:25.677465+00:00"}
+{"case": "M01-3", "status": "PASS", "detail": "修改三字段后，原学习+安卓筛选仅剩D01。", "evidence": ["m01-3-moved-from-study.png"], "at": "2026-11-14T10:07:29.407712+00:00"}
+{"case": "M01-4", "status": "PASS", "detail": "工作+安卓为0条，清空关键词恢复工作2条。", "evidence": ["m01-4-work-search-empty.png", "m01-4-work-cleared.png"], "at": "2026-11-14T10:07:31.174397+00:00"}
+{"case": "M01-5", "status": "PASS", "detail": "真实系统选择器保存；文件管理器打开至自带HTML文本阅读器；UTF-8完整97字节，标题、分类、正文一致；成功提示已截图。", "evidence": ["m01-5-export-returned.png", "m01-5-file-in-manager.png", "m01-5-text-reader.png", "artifacts/m01-export.txt"], "at": "2026-11-14T10:08:22.301931+00:00"}
+{"case": "M01-6", "status": "PASS", "detail": "结束进程后重启仍6条；三项修订内容重开一致。", "evidence": ["m01-6-restarted.png"], "at": "2026-11-14T10:08:26.526860+00:00"}
+{"case": "M01-7", "status": "PASS", "detail": "确认删除后重启仍只有5条基线；已删除笔记查无结果，原导出文件仍完整保留。", "evidence": ["m01-7-delete-confirmation.png", "m01-7-deleted-after-restart.png", "artifacts/m01-export.txt"], "at": "2026-11-14T10:08:33.915369+00:00"}
+{"case": "M01", "status": "PASS", "detail": "M01-1～M01-7全部实际执行通过，使用真实设备UI和系统文档提供器。", "evidence": ["m01-5-text-reader.png", "m01-7-deleted-after-restart.png"], "at": "2026-11-14T10:08:33.915496+00:00"}
+{"case": "UC03-B", "status": "PASS", "detail": "全部中文标题/正文OR命中2条；生活/学习分别1条；清空保留学习2条，再全部恢复5条。", "evidence": ["uc03-title-or-body.png", "uc03-life-and-search.png", "uc03-study-clear.png"], "at": "2026-11-14T10:08:39.510269+00:00"}
+{"case": "UC02-B", "status": "PASS", "detail": "D04三字段修改保存重开一致，总数5；另外四条逐条通过UI重开核对未变；已恢复D04基线。", "evidence": ["uc02-edit-three-fields.png", "uc02-reopened.png"], "at": "2026-11-14T10:09:07.647375+00:00"}
+{"case": "UC06-B", "status": "PASS", "detail": "真实长按复制和更多菜单粘贴；三项字段一致，新副本独立修改不影响原记录；已仅清理副本恢复5条。", "evidence": ["uc06-context-menu.png", "uc06-pasted-fields.png", "uc06-original-unchanged.png"], "at": "2026-11-14T10:09:30.010878+00:00"}
+{"case": "UC04-B", "status": "PASS", "detail": "真实保存选择器写出文本；设备阅读器打开且UTF-8内容一致；导出前后全部源字段与毫秒时间一致，重开源笔记仍正确。", "evidence": ["uc04-picker.png", "uc04-export-success.png", "uc04-reader.png", "artifacts/uc04-export.txt", "uc04-before.json", "uc04-after.json"], "at": "2026-11-14T10:09:58.578510+00:00"}
+{"case": "UC01-A01", "status": "PASS", "detail": "空白标题/正文点完成仍在编辑页；返回清理，未保存空记录。", "evidence": ["UC01-A01.png", "UC01-A01.json"], "at": "2026-11-14T10:10:04.365842+00:00"}
+{"case": "UC01-A02", "status": "PASS", "detail": "全空和仅改变分类两种草稿返回均清理；重启仍5条。", "evidence": ["UC01-A02.png", "UC01-A02.json"], "at": "2026-11-14T10:10:15.543565+00:00"}
+{"case": "UC01-A03", "status": "PASS", "detail": "仅标题保存重开，正文为空且生活分类保留；清理后5条。", "evidence": ["UC01-A03.png", "UC01-A03.json"], "at": "2026-11-14T10:10:26.426003+00:00"}
+{"case": "UC01-A04", "status": "PASS", "detail": "只填正文保留两行，自动标题正确，保存重开一致。", "evidence": ["UC01-A04.png", "UC01-A04.json"], "at": "2026-11-14T10:10:36.503086+00:00"}
+{"case": "UC01-A05", "status": "FAIL", "detail": "UI wait expired: count-0", "evidence": ["failure-UC01-A05.png", "failure-UC01-A05.json"], "at": "2026-11-14T10:10:56.815226+00:00"}
+{"case": "UC01-A05", "status": "PASS", "detail": "工作+发布筛选中新建继承工作；保存后被关键词过滤，清空后可找到。", "evidence": ["UC01-A05.png", "UC01-A05.json"], "at": "2026-11-14T10:12:15.755919+00:00"}
+{"case": "UC01-A06", "status": "PASS", "detail": "页面返回及系统返回各自保存非空新笔记，重开一致且无重复。", "evidence": ["UC01-A06.png", "UC01-A06.json"], "at": "2026-11-14T10:12:36.155723+00:00"}
+{"case": "UC01-A07", "status": "FAIL", "detail": "Rotation did not recreate the Activity", "evidence": ["failure-UC01-A07.png", "failure-UC01-A07.json"], "at": "2026-11-14T10:12:51.864978+00:00"}
+{"case": "UC01-A07", "status": "FAIL", "detail": "('title', None, '重建草稿')", "evidence": ["failure-UC01-A07.png", "failure-UC01-A07.json"], "at": "2026-11-14T10:14:16.863178+00:00"}
+{"case": "UC01-A07", "status": "PASS", "detail": "核对Activity实例变化后，横竖屏重建保留标题/正文/分类，最终仅新增1条。", "evidence": ["UC01-A07.png", "UC01-A07.json"], "at": "2026-11-14T10:15:38.823510+00:00"}
+{"case": "UC01-A08", "status": "PASS", "detail": "相同标题保存为独立记录，原笔记未覆盖，仅清理新增记录。", "evidence": ["UC01-A08.png", "UC01-A08.json"], "at": "2026-11-14T10:15:50.713389+00:00"}
+{"case": "UC02-A01", "status": "PASS", "detail": "无改动返回及完成均未改任何字段，包括毫秒修改时间。", "evidence": ["UC02-A01.png", "UC02-A01.json"], "at": "2026-11-14T10:15:57.079399+00:00"}
+{"case": "UC02-A02", "status": "PASS", "detail": "标题、正文、分类分别单独改变；重开正确，创建时间不变，修改时间更新，其他记录不变。", "evidence": ["UC02-A02.png", "UC02-A02.json"], "at": "2026-11-14T10:16:31.364879+00:00"}
+{"case": "UC02-A03", "status": "PASS", "detail": "三字段修改后撤销，恢复本次进入时内容和分类，总数不变。", "evidence": ["UC02-A03.png", "UC02-A03.json"], "at": "2026-11-14T10:16:41.130472+00:00"}
+{"case": "UC02-A04", "status": "PASS", "detail": "非空新草稿撤销后删除，仅保留5条基线。", "evidence": ["UC02-A04.png", "UC02-A04.json"], "at": "2026-11-14T10:16:46.525255+00:00"}
+{"case": "UC02-A05", "status": "PASS", "detail": "已有笔记正文清空后仍可重开，标题及分类保留；已恢复正文。", "evidence": ["UC02-A05.png", "UC02-A05.json"], "at": "2026-11-14T10:16:54.485447+00:00"}
+{"case": "UC02-A06", "status": "PASS", "detail": "返回、切后台回前台、先保存后结束进程重启分别核验，内容持久化且无重复。", "evidence": ["UC02-A06.png", "UC02-A06.json"], "at": "2026-11-14T10:17:19.107646+00:00"}
+{"case": "UC03-A01", "status": "PASS", "detail": "关键词两侧空白被忽略；纯空白恢复当前分类内全部记录。", "evidence": ["UC03-A01.png", "UC03-A01.json"], "at": "2026-11-14T10:17:22.850922+00:00"}
+{"case": "UC03-A02", "status": "PASS", "detail": "无匹配显示0条和明确提示，清空恢复5条。", "evidence": ["UC03-A02.png", "UC03-A02.json"], "at": "2026-11-14T10:17:24.856785+00:00"}
+{"case": "UC03-A03", "status": "PASS", "detail": "先移出唯一工作笔记，工作分类确为空时显示独立空提示；随后恢复。", "evidence": ["UC03-A03.png", "UC03-A03.json"], "at": "2026-11-14T10:17:37.145888+00:00"}
+{"case": "UC03-A04", "status": "PASS", "detail": "6种特殊字符均只命中D05；SQL样式字符串为0条，未扩大结果。", "evidence": ["UC03-A04.png", "UC03-A04.json"], "at": "2026-11-14T10:17:41.981929+00:00"}
+{"case": "UC03-A05", "status": "PASS", "detail": "连续更新关键词后最终仅D04，等待后未被旧查询覆盖。", "evidence": ["UC03-A05.png", "UC03-A05.json"], "at": "2026-11-14T10:17:46.199139+00:00"}
+{"case": "UC03-A06", "status": "PASS", "detail": "从生活+安卓结果分别改正文去词和改分类，保存后移出；清除条件仍可找到，恢复基线。", "evidence": ["UC03-A06.png", "UC03-A06.json"], "at": "2026-11-14T10:18:07.086294+00:00"}
+{"case": "UC03-A07", "status": "PASS", "detail": "实际Activity重建后关键词、生活分类和结果保留；清空仍只见生活记录。", "evidence": ["UC03-A07.png", "UC03-A07.json"], "at": "2026-11-14T10:18:24.652687+00:00"}
+{"case": "UC04-A01", "status": "FAIL", "detail": "UI wait expired: editor", "evidence": ["failure-UC04-A01-1794651542233834000.png", "failure-UC04-A01-1794651542233834000.json"], "at": "2026-11-14T10:19:02.517583+00:00"}
+{"case": "UC04-A01", "status": "PASS", "detail": "取消真实选择器返回编辑页，导出前保存的新正文保留，且可再次导出。", "evidence": ["UC04-A01.png", "UC04-A01.json"], "at": "2026-11-14T10:20:38.744098+00:00"}
+{"case": "UC04-A02", "status": "PASS", "detail": "全空新草稿导出留在编辑页，未打开选择器，返回清理。", "evidence": ["UC04-A02.png", "UC04-A02.json"], "at": "2026-11-14T10:20:44.866498+00:00"}
+{"case": "UC04-A03", "status": "PASS", "detail": "未点完成直接导出：先保存三字段，真实写出UTF-8文件；文件写入未再次改变源修改时间。", "evidence": ["UC04-A03.png", "UC04-A03.json"], "at": "2026-11-14T10:20:58.469908+00:00"}
+{"case": "UC04-A04", "status": "PASS", "detail": "真实选择器建议名清理路径分隔符；长中文/emoji建议名保持完整Unicode。", "evidence": ["UC04-A04.png", "UC04-A04.json"], "at": "2026-11-14T10:21:12.818692+00:00"}
+{"case": "UC05-A01", "status": "PASS", "detail": "取消删除留在编辑页，输入可见且笔记未删除；已恢复基线正文。", "evidence": ["UC05-A01.png", "UC05-A01.json"], "at": "2026-11-14T10:21:19.910223+00:00"}
+{"case": "UC05-A02", "status": "PASS", "detail": "现状回归：列表长按删除直接生效且无确认；恢复的仅为合成D03。", "evidence": ["UC05-A02.png", "UC05-A02.json"], "at": "2026-11-14T10:21:31.873144+00:00"}
+{"case": "UC05-A03", "status": "PASS", "detail": "同名两条只删除所选工作笔记；另一条生活笔记正文完整，随后清理。", "evidence": ["UC05-A03.png", "UC05-A03.json"], "at": "2026-11-14T10:21:52.575900+00:00"}
+{"case": "UC06-A03", "status": "PASS", "detail": "真实复制后从UI删除来源，再粘贴未读到其他记录；返回清理空草稿，5条基线逐字段不变。", "evidence": ["UC06-A03.png", "UC06-A03.json"], "at": "2026-11-14T10:22:12.996120+00:00"}
+{"case": "UC00-A04", "status": "FAIL", "detail": "", "evidence": ["failure-UC00-A04-1794651738191531000.png", "failure-UC00-A04-1794651738191531000.json"], "at": "2026-11-14T10:22:18.489284+00:00"}
+{"case": "UC00-A04", "status": "PASS", "detail": "仅对合成样本受控注入modified=0、-1、NULL，列表均显示时间未知；其他笔记仍可重开；已清理样本。", "evidence": ["UC00-A04.png", "UC00-A04.json"], "at": "2026-11-14T10:23:33.212780+00:00"}
+{"case": "UC00-A05", "status": "FAIL", "detail": "('title', None, '长标题中文📘长标题中文📘长标题中文📘长标题中文📘长标题中文📘长标题中文📘长标题中文📘长标题中文📘长标题中文📘长标题中文📘长标题中文📘长标题中文📘长标题中文📘长标题中文📘长标题中文📘长标题中文📘长标题中文📘长标题中文📘长标题中文📘长标题中文📘长标题中文📘长标题中文📘长标题中文📘长标题中文📘长标题中文📘')", "evidence": ["failure-UC00-A05-1794651823358770000.png", "failure-UC00-A05-1794651823358770000.json"], "at": "2026-11-14T10:23:43.662530+00:00"}
+{"case": "UC00-A05", "status": "PASS", "detail": "1080×2340/420dpi下长标题及100行正文保存重开完整；键盘、滚动及130%字号时完成入口可见。仅代表已测尺寸与字号。", "evidence": ["UC00-A05.png", "UC00-A05.json"], "at": "2026-11-14T10:25:44.075080+00:00"}
+{"case": "UC06-A02", "status": "PASS", "detail": "通过EditText真实复制纯文本；中文、换行和表情粘贴完整，未输入标题时保存生成可读标题，重开一致；来源未变，两个临时笔记已清理。", "evidence": ["uc06-text-copied.png", "uc06-text-pasted.png", "uc06-text-reopened.png"], "at": "2026-11-14T10:26:08.812904+00:00"}
+{"case": "UC06-focus", "status": "PASS", "detail": "粘贴后补充正文，打开并关闭编辑菜单造成焦点切换，补充内容仍保留，未重复粘贴覆盖。", "evidence": ["uc06-focus-preserved-edit.png"], "at": "2026-11-14T10:26:08.814915+00:00"}
+{"case": "UC05-B", "status": "PASS", "detail": "删除确认实际出现；确认后5变4，进程重启不复活；另外4条逐条UI重开且精确字段与时间未变。", "evidence": ["uc05-delete-confirmation.png", "uc05-deleted-after-restart.png", "uc05-before.json", "uc05-after.json"], "at": "2026-11-14T10:26:30.777401+00:00"}
+{"case": "UC02-A07", "status": "PASS", "detail": "受控删除合成来源导致保存前读取失败：手动完成留在编辑页且保留输入；恢复同ID来源后UI重试成功。此为来源消失条件，不代表全部I/O故障。", "evidence": ["UC02-A07.png", "UC02-A07.json"], "at": "2026-11-14T10:26:51.383006+00:00"}
+{"case": "UC02-A08", "status": "FAIL", "detail": "受控移除来源后点返回，自动保存失败但页面仍退出；无保留或恢复尚未保存输入的入口，GAP01复现。", "evidence": ["failure-UC02-A08-1794652020953820000.png", "failure-UC02-A08-1794652020953820000.json"], "at": "2026-11-14T10:27:01.256717+00:00"}

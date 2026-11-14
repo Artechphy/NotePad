@@ -1,0 +1,8 @@
+{
+  "serial": "emulator-5582",
+  "old_sha256": "cb63b341366096ea6340003dfe482b500a003a44d0285982ffcb30cf96d27e8b",
+  "candidate_sha256": "5311c1cad4aa8ec3221812a27a6abf4ad7923c8605a57f1f8f9eb5334d43319f",
+  "same_signer_sha256": "8ffbed0ee2222e46eab96c69ce28afa3028fd902c4c3d08b865891db25327f28",
+  "upgrade_command": "adb -s emulator-5582 install -r candidate.apk",
+  "uninstall_or_clear_between_versions": false
+}

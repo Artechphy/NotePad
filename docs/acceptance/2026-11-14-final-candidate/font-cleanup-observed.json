@@ -1,0 +1,203 @@
+[
+  {
+    "class": "android.widget.FrameLayout",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[0,0][1080,2009]"
+  },
+  {
+    "class": "android.widget.FrameLayout",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[0,0][1080,2009]"
+  },
+  {
+    "id": "android:id/content",
+    "class": "android.widget.FrameLayout",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[0,63][1080,1439]"
+  },
+  {
+    "class": "android.widget.LinearLayout",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[0,63][1080,1439]"
+  },
+  {
+    "class": "android.widget.LinearLayout",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[0,63][1080,221]"
+  },
+  {
+    "id": "com.example.android.notepad:id/editor_back",
+    "text": "‹",
+    "desc": "返回笔记列表",
+    "class": "android.widget.Button",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": true,
+    "bounds": "[21,79][147,205]"
+  },
+  {
+    "id": "com.example.android.notepad:id/save_status",
+    "text": "已保存",
+    "class": "android.widget.TextView",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[147,120][791,163]"
+  },
+  {
+    "id": "com.example.android.notepad:id/editor_save",
+    "text": "完成",
+    "class": "android.widget.Button",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": true,
+    "bounds": "[791,79][933,205]"
+  },
+  {
+    "id": "com.example.android.notepad:id/editor_more",
+    "text": "⋮",
+    "desc": "更多操作",
+    "class": "android.widget.Button",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": true,
+    "bounds": "[933,79][1059,205]"
+  },
+  {
+    "class": "android.view.View",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[0,221][1080,224]"
+  },
+  {
+    "class": "android.widget.ScrollView",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[0,224][1080,1439]"
+  },
+  {
+    "class": "android.widget.LinearLayout",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[0,224][1080,1439]"
+  },
+  {
+    "id": "com.example.android.notepad:id/title",
+    "text": "长标题中文📘长标题中文📘长标题中文📘长标题中文📘长标题中文📘长标题中文📘长标题中文📘长标题中文📘长标题中文📘长标题中文📘长标题中文📘长标题中文📘长标题中文📘长标题中文📘长标题中文📘长标题中文📘长标题中文📘长标题中文📘长标题中文📘长标题中文📘长标题中文📘长标题中文📘长标题中文📘长标题中文📘长标题中文📘",
+    "class": "android.widget.EditText",
+    "package": "com.example.android.notepad",
+    "visible": false,
+    "enabled": true,
+    "selected": false,
+    "clickable": true,
+    "bounds": "[63,224][1017,16]"
+  },
+  {
+    "class": "android.widget.LinearLayout",
+    "package": "com.example.android.notepad",
+    "visible": false,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[63,224][1017,153]"
+  },
+  {
+    "text": "分类",
+    "class": "android.widget.TextView",
+    "package": "com.example.android.notepad",
+    "visible": false,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[63,224][127,111]"
+  },
+  {
+    "id": "com.example.android.notepad:id/editor_category",
+    "desc": "分类",
+    "class": "android.widget.Spinner",
+    "package": "com.example.android.notepad",
+    "visible": false,
+    "enabled": true,
+    "selected": false,
+    "clickable": true,
+    "bounds": "[127,224][442,153]"
+  },
+  {
+    "id": "android:id/text1",
+    "text": "学习",
+    "class": "android.widget.TextView",
+    "package": "com.example.android.notepad",
+    "visible": false,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[127,224][253,118]"
+  },
+  {
+    "class": "android.view.View",
+    "package": "com.example.android.notepad",
+    "visible": false,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[63,224][1017,177]"
+  },
+  {
+    "id": "com.example.android.notepad:id/note",
+    "text": "第1行：长正文中文与表情📘，完整保留。\n第2行：长正文中文与表情📘，完整保留。\n第3行：长正文中文与表情📘，完整保留。\n第4行：长正文中文与表情📘，完整保留。\n第5行：长正文中文与表情📘，完整保留。\n第6行：长正文中文与表情📘，完整保留。\n第7行：长正文中文与表情📘，完整保留。\n第8行：长正文中文与表情📘，完整保留。\n第9行：长正文中文与表情📘，完整保留。\n第10行：长正文中文与表情📘，完整保留。\n第11行：长正文中文与表情📘，完整保留。\n第12行：长正文中文与表情📘，完整保留。\n第13行：长正文中文与表情📘，完整保留。\n第14行：长正文中文与表情📘，完整保留。\n第15行：长正文中文与表情📘，完整保留。\n第16行：长正文中文与表情📘，完整保留。\n第17行：长正文中文与表情📘，完整保留。\n第18行：长正文中文与表情📘，完整保留。\n第19行：长正文中文与表情📘，完整保留。\n第20行：长正文中文与表情📘，完整保留。\n第21行：长正文中文与表情📘，完整保留。\n第22行：长正文中文与表情📘，完整保留。\n第23行：长正文中文与表情📘，完整保留。\n第24行：长正文中文与表情📘，完整保留。\n第25行：长正文中文与表情📘，完整保留。\n第26行：长正文中文与表情📘，完整保留。\n第27行：长正文中文与表情📘，完整保留。\n第28行：长正文中文与表情📘，完整保留。\n第29行：长正文中文与表情📘，完整保留。\n第30行：长正文中文与表情📘，完整保留。\n第31行：长正文中文与表情📘，完整保留。\n第32行：长正文中文与表情📘，完整保留。\n第33行：长正文中文与表情📘，完整保留。\n第34行：长正文中文与表情📘，完整保留。\n第35行：长正文中文与表情📘，完整保留。\n第36行：长正文中文与表情📘，完整保留。\n第37行：长正文中文与表情📘，完整保留。\n第38行：长正文中文与表情📘，完整保留。\n第39行：长正文中文与表情📘，完整保留。\n第40行：长正文中文与表情📘，完整保留。\n第41行：长正文中文与表情📘，完整保留。\n第42行：长正文中文与表情📘，完整保留。\n第43行：长正文中文与表情📘，完整保留。\n第44行：长正文中文与表情📘，完整保留。\n第45行：长正文中文与表情📘，完整保留。\n第46行：长正文中文与表情📘，完整保留。\n第47行：长正文中文与表情📘，完整保留。\n第48行：长正文中文与表情📘，完整保留。\n第49行：长正文中文与表情📘，完整保留。\n第50行：长正文中文与表情📘，完整保留。\n第51行：长正文中文与表情📘，完整保留。\n第52行：长正文中文与表情📘，完整保留。\n第53行：长正文中文与表情📘，完整保留。\n第54行：长正文中文与表情📘，完整保留。\n第55行：长正文中文与表情📘，完整保留。\n第56行：长正文中文与表情📘，完整保留。\n第57行：长正文中文与表情📘，完整保留。\n第58行：长正文中文与表情📘，完整保留。\n第59行：长正文中文与表情📘，完整保留。\n第60行：长正文中文与表情📘，完整保留。\n第61行：长正文中文与表情📘，完整保留。\n第62行：长正文中文与表情📘，完整保留。\n第63行：长正文中文与表情📘，完整保留。\n第64行：长正文中文与表情📘，完整保留。\n第65行：长正文中文与表情📘，完整保留。\n第66行：长正文中文与表情📘，完整保留。\n第67行：长正文中文与表情📘，完整保留。\n第68行：长正文中文与表情📘，完整保留。\n第69行：长正文中文与表情📘，完整保留。\n第70行：长正文中文与表情📘，完整保留。\n第71行：长正文中文与表情📘，完整保留。\n第72行：长正文中文与表情📘，完整保留。\n第73行：长正文中文与表情📘，完整保留。\n第74行：长正文中文与表情📘，完整保留。\n第75行：长正文中文与表情📘，完整保留。\n第76行：长正文中文与表情📘，完整保留。\n第77行：长正文中文与表情📘，完整保留。\n第78行：长正文中文与表情📘，完整保留。\n第79行：长正文中文与表情📘，完整保留。\n第80行：长正文中文与表情📘，完整保留。\n第81行：长正文中文与表情📘，完整保留。\n第82行：长正文中文与表情📘，完整保留。\n第83行：长正文中文与表情📘，完整保留。\n第84行：长正文中文与表情📘，完整保留。\n第85行：长正文中文与表情📘，完整保留。\n第86行：长正文中文与表情📘，完整保留。\n第87行：长正文中文与表情📘，完整保留。\n第88行：长正文中文与表情📘，完整保留。\n第89行：长正文中文与表情📘，完整保留。\n第90行：长正文中文与表情📘，完整保留。\n第91行：长正文中文与表情📘，完整保留。\n第92行：长正文中文与表情📘，完整保留。\n第93行：长正文中文与表情📘，完整保留。\n第94行：长正文中文与表情📘，完整保留。\n第95行：长正文中文与表情📘，完整保留。\n第96行：长正文中文与表情📘，完整保留。\n第97行：长正文中文与表情📘，完整保留。\n第98行：长正文中文与表情📘，完整保留。\n第99行：长正文中文与表情📘，完整保留。\n第100行：长正文中文与表情📘，完整保留。",
+    "class": "android.widget.EditText",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": true,
+    "bounds": "[63,224][1017,1439]"
+  },
+  {
+    "id": "android:id/statusBarBackground",
+    "class": "android.view.View",
+    "package": "com.example.android.notepad",
+    "visible": false,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[0,0][1080,63]"
+  }
+]

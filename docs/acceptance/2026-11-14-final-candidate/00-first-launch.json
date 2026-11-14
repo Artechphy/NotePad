@@ -1,0 +1,151 @@
+[
+  {
+    "class": "android.widget.FrameLayout",
+    "package": "android",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[28,818][1052,1458]"
+  },
+  {
+    "class": "android.widget.FrameLayout",
+    "package": "android",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[70,860][1010,1416]"
+  },
+  {
+    "id": "android:id/content",
+    "class": "android.widget.FrameLayout",
+    "package": "android",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[70,860][1010,1416]"
+  },
+  {
+    "id": "android:id/parentPanel",
+    "class": "android.widget.LinearLayout",
+    "package": "android",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[70,860][1010,1416]"
+  },
+  {
+    "id": "android:id/topPanel",
+    "class": "android.widget.LinearLayout",
+    "package": "android",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[70,860][1010,999]"
+  },
+  {
+    "id": "android:id/title_template",
+    "class": "android.widget.LinearLayout",
+    "package": "android",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[70,860][1010,978]"
+  },
+  {
+    "id": "android:id/alertTitle",
+    "text": "NotePad",
+    "class": "android.widget.TextView",
+    "package": "android",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[133,907][947,978]"
+  },
+  {
+    "id": "android:id/titleDividerNoCustom",
+    "class": "android.view.View",
+    "package": "android",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[70,978][1010,999]"
+  },
+  {
+    "id": "android:id/contentPanel",
+    "class": "android.widget.FrameLayout",
+    "package": "android",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[70,999][1010,1252]"
+  },
+  {
+    "id": "android:id/scrollView",
+    "class": "android.widget.ScrollView",
+    "package": "android",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[70,999][1010,1252]"
+  },
+  {
+    "class": "android.widget.LinearLayout",
+    "package": "android",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[70,999][1010,1252]"
+  },
+  {
+    "id": "android:id/message",
+    "text": "This app was built for an older version of Android. It might not work properly and doesn't include the latest security and privacy protections. Check for an update, or contact the app's developer.",
+    "class": "android.widget.TextView",
+    "package": "android",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[70,999][1010,1252]"
+  },
+  {
+    "id": "android:id/buttonPanel",
+    "class": "android.widget.ScrollView",
+    "package": "android",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[70,1252][1010,1416]"
+  },
+  {
+    "class": "android.widget.LinearLayout",
+    "package": "android",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[70,1252][1010,1416]"
+  },
+  {
+    "id": "android:id/button1",
+    "text": "OK",
+    "class": "android.widget.Button",
+    "package": "android",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": true,
+    "bounds": "[810,1263][978,1405]"
+  }
+]

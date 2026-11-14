@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.example.android.notepad.NotePadProviderBehaviorTest" tests="12" skipped="0" failures="0" errors="0" timestamp="2026-11-14T09:57:11.514Z" hostname="ArtechphydeMacBook-Air.local" time="0.061">
+  <properties/>
+  <testcase name="bodyChangesAreSearchableAndDoNotAffectOtherNotes" classname="com.example.android.notepad.NotePadProviderBehaviorTest" time="0.006"/>
+  <testcase name="insertInitializesBothTimestamps" classname="com.example.android.notepad.NotePadProviderBehaviorTest" time="0.004"/>
+  <testcase name="bulkUpdateOnlyTouchesChangedRowsMatchingSelection" classname="com.example.android.notepad.NotePadProviderBehaviorTest" time="0.005"/>
+  <testcase name="specialCharactersMatchLiterallyInRealSqlite" classname="com.example.android.notepad.NotePadProviderBehaviorTest" time="0.007"/>
+  <testcase name="idSelectionCannotLeakThroughOrCondition" classname="com.example.android.notepad.NotePadProviderBehaviorTest" time="0.006"/>
+  <testcase name="changingOnlyTitleUpdatesModifiedAndPreservesCreated" classname="com.example.android.notepad.NotePadProviderBehaviorTest" time="0.004"/>
+  <testcase name="categoryChangesPersistAndInvalidCategoriesCannotModifyData" classname="com.example.android.notepad.NotePadProviderBehaviorTest" time="0.005"/>
+  <testcase name="explicitHistoricalTimestampsRemainSupported" classname="com.example.android.notepad.NotePadProviderBehaviorTest" time="0.005"/>
+  <testcase name="versionThreeDataSurvivesReopening" classname="com.example.android.notepad.NotePadProviderBehaviorTest" time="0.004"/>
+  <testcase name="titleOrBodyMatchesChineseAndClearingRestoresAll" classname="com.example.android.notepad.NotePadProviderBehaviorTest" time="0.005"/>
+  <testcase name="viewingSearchingAndUnchangedSavingPreserveTimestamp" classname="com.example.android.notepad.NotePadProviderBehaviorTest" time="0.004"/>
+  <testcase name="categoryCombinesWithBothSidesOfTheSearchOr" classname="com.example.android.notepad.NotePadProviderBehaviorTest" time="0.005"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

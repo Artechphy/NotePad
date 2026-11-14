@@ -1,0 +1,34 @@
+{
+  "implementation_commit": "77a2558",
+  "candidate_sha256": "5311c1cad4aa8ec3221812a27a6abf4ad7923c8605a57f1f8f9eb5334d43319f",
+  "local_tests": {
+    "executed": 49,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "build": "PASS",
+  "lint": {
+    "status": "FAIL",
+    "fatal": 1,
+    "warnings": 37,
+    "blocker": "ExpiredTargetSdkVersion"
+  },
+  "main_flows": {
+    "PASS": 9
+  },
+  "alternate_flows": {
+    "PASS": 35,
+    "NOT_RUN": 3,
+    "BLOCKED": 7,
+    "FAIL": 1
+  },
+  "product_failures": [
+    "UC02-A08"
+  ],
+  "human_acceptance": "NOT_RUN",
+  "overall_acceptance": "FAIL",
+  "application_source_changed_during_acceptance": false,
+  "raw_attempts": 60,
+  "driver_incidents_file": "driver-incidents.jsonl"
+}

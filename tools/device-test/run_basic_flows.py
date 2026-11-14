@@ -55,6 +55,9 @@ def open_note(title):
     d.wait(lambda ns:any(n.get('id')=='android:id/text1' and n.get('text')==title for n in ns),'row-'+title)
     d.click(title,by='row_text');editor_ready()
 def add(title,body,group):
+    # Search may retain IME focus after clearing; expose the visible New button.
+    if not any(n.get('id')==ID+'new_note' and n.get('visible') for n in d.nodes()):
+        d.key(4)
     d.click(ID+'new_note');editor_ready();edit(title,body,group);fields(title,body,group);save()
 def selected_titles(nodes):
     return {n['text'] for n in nodes if n.get('visible') and n.get('id')=='android:id/text1' and n.get('text')}

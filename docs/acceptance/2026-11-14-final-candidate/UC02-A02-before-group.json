@@ -1,0 +1,45 @@
+{
+  "version": 3,
+  "rows": [
+    {
+      "_id": 1,
+      "title": "安卓复习计划",
+      "note": "今天复习 Activity 生命周期。",
+      "created": 1794650799265,
+      "modified": 1794650801832,
+      "category": "study"
+    },
+    {
+      "_id": 2,
+      "title": "采购清单",
+      "note": "购买安卓测试手机和数据线。",
+      "created": 1794650804533,
+      "modified": 1794650807134,
+      "category": "life"
+    },
+    {
+      "_id": 3,
+      "title": "周会纪要",
+      "note": "讨论版本发布。",
+      "created": 1794650808366,
+      "modified": 1794650810999,
+      "category": "work"
+    },
+    {
+      "_id": 4,
+      "title": "随手记",
+      "note": "周末阅读。",
+      "created": 1794650812232,
+      "modified": 1794651378399,
+      "category": "uncategorized"
+    },
+    {
+      "_id": 5,
+      "title": "特殊字符",
+      "note": "折扣50%；变量_a；感叹!；路径C:\\notes；作者O'Reilly；中文与📘。",
+      "created": 1794650816081,
+      "modified": 1794650818682,
+      "category": "study"
+    }
+  ]
+}
