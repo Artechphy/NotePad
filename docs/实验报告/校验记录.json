@@ -1,0 +1,16 @@
+{
+  "date": "2026-11-14",
+  "pages": 7,
+  "screenshots": 6,
+  "fonts_verified": [
+    "STSongti-SC-Regular",
+    "STHeitiSC-Medium"
+  ],
+  "report_sha256": "69e3cdc1419cc90ccbfe288a476be416d6508685cee9c75c22c652cf2cb8641a",
+  "embedded_images_match_sources": true,
+  "personal_metadata_blank": true,
+  "current_links_checked": 15,
+  "application_source_changed": false,
+  "application_tests_rerun": false,
+  "render_review": "All seven page images inspected; final image replacement changed page 5 only, inspected again; other six images byte-identical."
+}
