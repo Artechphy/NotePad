@@ -1,0 +1,51 @@
+{
+  "case_document": "测试与验收流程.md v1.0",
+  "requested_scope": [
+    "M01",
+    "UC00-B",
+    "UC01-B",
+    "UC02-B",
+    "UC03-B",
+    "UC04-B",
+    "UC05-B",
+    "UC06-B",
+    "UC07-B"
+  ],
+  "executor": "Codex Agent",
+  "human_acceptance": "NOT_RUN",
+  "serial": "emulator-5580",
+  "avd": "NotePad_API34 (fresh isolated AOSP)",
+  "android_release": "14",
+  "api": "34",
+  "model": "Android SDK built for arm64",
+  "timezone": "Asia/Shanghai",
+  "device_time": "2026-11-07T21:27:23+08:00",
+  "artifacts": {
+    "candidate": {
+      "file": "artifacts/candidate.apk",
+      "sha256": "03bd7c7b7c63303857de1a4d753b4f486e27ca931d870c38b899dbba1672fb23",
+      "bytes": 120491
+    },
+    "v2_baseline": {
+      "file": "artifacts/v2_baseline.apk",
+      "sha256": "cb63b341366096ea6340003dfe482b500a003a44d0285982ffcb30cf96d27e8b",
+      "bytes": 68618
+    },
+    "ui_controller": {
+      "file": "artifacts/ui_controller.apk",
+      "sha256": "67a0f13654d15ee5e17f95e05586eb54ef40986c05241cebe15d20f6dd40ca7a",
+      "bytes": 12647
+    }
+  },
+  "method": "Separate UiAutomation controller; public launcher intent, accessibility text entry and screen touches. No app internal calls for business operations.",
+  "system_animations": "disabled on both isolated test instances after discovering transient-coordinate driver failures",
+  "migration_instance": {
+    "serial": "emulator-5582",
+    "avd": "NotePad_Migration_API34",
+    "android_release": "14",
+    "api": "34",
+    "data_preparation": "old APK public UI; no uninstall or clear between U01/U02 preparation and candidate install -r"
+  },
+  "signature_sha256": "8ffbed0ee2222e46eab96c69ce28afa3028fd902c4c3d08b865891db25327f28",
+  "application_code_changed_during_run": false
+}

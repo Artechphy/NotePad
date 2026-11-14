@@ -1,0 +1,30 @@
+{
+  "scope": "UC06 fix and focused regression",
+  "candidate_sha256": "d0efdff29e854ed6296fea998c2621b8ef606cc845e7e8198c67c52b555f78cd",
+  "build": "PASS",
+  "local_tests": {
+    "executed": 23,
+    "passed": 23,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "classes": [
+      "NotePasteLifecycleTest (7)",
+      "NoteEditorBehaviorTest (9)",
+      "NotesListTest (7)"
+    ]
+  },
+  "device_results": {
+    "UC06-B": "PASS",
+    "UC06-A02": "PASS",
+    "UC06-focus": "PASS"
+  },
+  "historical_product_failure": "../2026-11-07-basic-flows/执行结果.md",
+  "retained_driver_setup_failures": 2,
+  "other_alternate_flows": "NOT_RUN in this regression",
+  "human_acceptance": "NOT_RUN",
+  "device_evidence_directory": "final-device",
+  "final_baseline_notes": 5,
+  "final_device_clipboard_access_denials_observed": 1,
+  "clipboard_diagnostic": "Follow-up method trace shows ClipboardManager.hasPrimaryClip callers in Android TextView accessibility canPaste, not NoteEditor.pasteNote; trace overflow limits completeness."
+}

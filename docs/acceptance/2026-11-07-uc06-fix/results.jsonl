@@ -1,0 +1,7 @@
+{"case": "copy-basic", "status": "FAIL", "detail": "Visible UI node not found: 全部", "evidence": ["failure-copy-basic.json", "failure-copy-basic.png"], "at": "2026-11-07T13:54:41.175975+00:00"}
+{"case": "UC06-B", "status": "PASS", "detail": "真实长按复制和更多菜单粘贴；三项字段一致，新副本独立修改不影响原记录；已仅清理副本恢复5条。", "evidence": ["uc06-context-menu.png", "uc06-pasted-fields.png", "uc06-original-unchanged.png"], "at": "2026-11-07T14:55:38.676769+00:00"}
+{"case": "UC06-text-runner", "status": "FAIL", "detail": "Visible UI node not found: com.example.android.notepad:id/new_note", "evidence": ["failure-uc06-text.png"], "at": "2026-11-07T14:56:07.538318+00:00"}
+{"case": "UC06-A02", "status": "PASS", "detail": "通过EditText真实复制纯文本；中文、换行和表情粘贴完整，副本保存重开一致；来源未变，两个临时笔记已清理。", "evidence": ["uc06-text-copied.png", "uc06-text-pasted.png", "uc06-text-reopened.png"], "at": "2026-11-07T14:57:08.192125+00:00"}
+{"case": "UC06-focus", "status": "PASS", "detail": "粘贴后补充正文，打开并关闭编辑菜单造成焦点切换，补充内容仍保留，未重复粘贴覆盖。", "evidence": ["uc06-focus-preserved-edit.png"], "at": "2026-11-07T14:57:08.194243+00:00"}
+{"case": "UC06-A02", "status": "PASS", "detail": "通过EditText真实复制纯文本；中文、换行和表情粘贴完整，未输入标题时保存生成可读标题，重开一致；来源未变，两个临时笔记已清理。", "evidence": ["uc06-text-copied.png", "uc06-text-pasted.png", "uc06-text-reopened.png"], "at": "2026-11-07T15:00:01.345418+00:00"}
+{"case": "UC06-focus", "status": "PASS", "detail": "粘贴后补充正文，打开并关闭编辑菜单造成焦点切换，补充内容仍保留，未重复粘贴覆盖。", "evidence": ["uc06-focus-preserved-edit.png"], "at": "2026-11-07T15:00:01.347571+00:00"}

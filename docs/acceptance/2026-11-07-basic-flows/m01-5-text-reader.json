@@ -1,0 +1,138 @@
+[
+  {
+    "class": "android.widget.FrameLayout",
+    "package": "com.android.htmlviewer",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[0,0][1080,2340]"
+  },
+  {
+    "id": "android:id/decor_content_parent",
+    "class": "android.view.ViewGroup",
+    "package": "com.android.htmlviewer",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[0,0][1080,2214]"
+  },
+  {
+    "id": "android:id/action_bar_container",
+    "class": "android.widget.FrameLayout",
+    "package": "com.android.htmlviewer",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[0,63][1080,210]"
+  },
+  {
+    "id": "android:id/action_bar",
+    "class": "android.view.ViewGroup",
+    "package": "com.android.htmlviewer",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[0,63][1080,210]"
+  },
+  {
+    "desc": "Navigate up",
+    "class": "android.widget.ImageButton",
+    "package": "com.android.htmlviewer",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": true,
+    "bounds": "[0,63][147,210]"
+  },
+  {
+    "text": "验收临时笔记·修订.txt",
+    "class": "android.widget.TextView",
+    "package": "com.android.htmlviewer",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[189,97][706,175]"
+  },
+  {
+    "class": "android.widget.LinearLayout",
+    "package": "com.android.htmlviewer",
+    "visible": false,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[1080,63][1080,210]"
+  },
+  {
+    "id": "android:id/content",
+    "class": "android.widget.FrameLayout",
+    "package": "com.android.htmlviewer",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[0,210][1080,2214]"
+  },
+  {
+    "class": "android.widget.FrameLayout",
+    "package": "com.android.htmlviewer",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[0,210][1080,2214]"
+  },
+  {
+    "class": "android.webkit.WebView",
+    "package": "com.android.htmlviewer",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[0,210][1080,2214]"
+  },
+  {
+    "text": "",
+    "class": "android.webkit.WebView",
+    "package": "com.android.htmlviewer",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[0,210][2572,2216]"
+  },
+  {
+    "text": "验收临时笔记·修订\n\n分类：工作\n修改时间：2026-11-07 21:27\n\n阶段C验收正文\n",
+    "class": "android.widget.TextView",
+    "package": "com.android.htmlviewer",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[21,241][2551,525]"
+  },
+  {
+    "id": "android:id/statusBarBackground",
+    "class": "android.view.View",
+    "package": "com.android.htmlviewer",
+    "visible": false,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[0,0][1080,63]"
+  },
+  {
+    "id": "android:id/navigationBarBackground",
+    "class": "android.view.View",
+    "package": "com.android.htmlviewer",
+    "visible": false,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[0,2214][1080,2340]"
+  }
+]

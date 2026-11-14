@@ -1,0 +1,126 @@
+{
+  "case_document": "测试与验收流程.md v1.0",
+  "scope": [
+    "M01",
+    "UC00-B",
+    "UC01-B",
+    "UC02-B",
+    "UC03-B",
+    "UC04-B",
+    "UC05-B",
+    "UC06-B",
+    "UC07-B"
+  ],
+  "results": [
+    {
+      "case": "M01",
+      "status": "PASS",
+      "detail": "M01-1～M01-7全部实际执行通过，使用真实设备UI和系统文档提供器。",
+      "evidence": [
+        "m01-5-text-reader.png",
+        "m01-7-deleted-after-restart.png"
+      ],
+      "at": "2026-11-07T13:34:21.407429+00:00"
+    },
+    {
+      "case": "UC00-B",
+      "status": "PASS",
+      "detail": "常规安装并从公开 launcher 入口进入；5条列表、摘要、分类、时间、滚动及更多/新建入口可用；首次系统旧版本提示已记录并关闭。",
+      "evidence": [
+        "00-legacy-target-warning.png",
+        "04-baseline-five-notes.png",
+        "05-baseline-scrolled.png"
+      ],
+      "at": "2026-11-07T13:27:13.383585+00:00"
+    },
+    {
+      "case": "UC01-B",
+      "status": "PASS",
+      "detail": "新建、选择分类、完成保存及重开均通过。",
+      "evidence": [
+        "03-first-note-edit.png",
+        "m01-1-created.png"
+      ],
+      "at": "2026-11-07T13:27:36.540333+00:00"
+    },
+    {
+      "case": "UC02-B",
+      "status": "PASS",
+      "detail": "D04三字段修改保存重开一致，总数5；另外四条逐条通过UI重开核对未变；已恢复D04基线。",
+      "evidence": [
+        "uc02-edit-three-fields.png",
+        "uc02-reopened.png"
+      ],
+      "at": "2026-11-07T13:35:20.227116+00:00"
+    },
+    {
+      "case": "UC03-B",
+      "status": "PASS",
+      "detail": "全部中文标题/正文OR命中2条；生活/学习分别1条；清空保留学习2条，再全部恢复5条。",
+      "evidence": [
+        "uc03-title-or-body.png",
+        "uc03-life-and-search.png",
+        "uc03-study-clear.png"
+      ],
+      "at": "2026-11-07T13:34:51.479054+00:00"
+    },
+    {
+      "case": "UC04-B",
+      "status": "PASS",
+      "detail": "真实保存选择器写出文本；设备阅读器打开且UTF-8内容一致；导出前后全部源字段与毫秒时间一致，重开源笔记仍正确。",
+      "evidence": [
+        "uc04-picker.png",
+        "uc04-export-success.png",
+        "uc04-reader.png",
+        "artifacts/uc04-export.txt",
+        "uc04-before.json",
+        "uc04-after.json"
+      ],
+      "at": "2026-11-07T13:36:32.637301+00:00"
+    },
+    {
+      "case": "UC05-B",
+      "status": "PASS",
+      "detail": "删除确认实际出现；确认后5变4，进程重启不复活；另外4条逐条UI重开且精确字段与时间未变。",
+      "evidence": [
+        "uc05-delete-confirmation.png",
+        "uc05-deleted-after-restart.png",
+        "uc05-before.json",
+        "uc05-after.json"
+      ],
+      "at": "2026-11-07T13:37:35.569505+00:00"
+    },
+    {
+      "case": "UC06-B",
+      "status": "FAIL",
+      "detail": "复制后粘贴进入新编辑页，但标题/正文为空，分类为未分类，未得到原笔记内容。原记录未改；候选未修补，保留失败用于后续定位。",
+      "evidence": [
+        "uc06-context-menu.png",
+        "failure-copy-basic.png",
+        "uc06-paste-empty-confirmed.png",
+        "uc06-device-log.txt"
+      ],
+      "at": "2026-11-07T13:37:11.443275+00:00"
+    },
+    {
+      "case": "UC07-B",
+      "status": "PASS",
+      "detail": "独立实例真实v2 APK到候选APK同签名覆盖安装；旧2条ID/标题/正文/创建与修改毫秒值完全保留，新分类默认未分类；U01设置学习后重启保留，U02未变。",
+      "evidence": [
+        "uc07-install-update.txt",
+        "uc07-v2-two-notes.png",
+        "uc07-v3-two-old-notes.png",
+        "uc07-v2-before.json",
+        "uc07-v3-after.json",
+        "uc07-classified-after-restart.png"
+      ],
+      "at": "2026-11-07T13:40:41.595189+00:00"
+    }
+  ],
+  "pass_count": 8,
+  "fail_count": 1,
+  "human_acceptance": "NOT_RUN",
+  "alternative_flows": "NOT_REQUESTED in this execution",
+  "candidate_sha256": "03bd7c7b7c63303857de1a4d753b4f486e27ca931d870c38b899dbba1672fb23",
+  "closed_at": "2026-11-07T13:42:06.589285+00:00"
+}

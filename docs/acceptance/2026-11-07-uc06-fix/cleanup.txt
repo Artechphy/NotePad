@@ -1,0 +1,3 @@
+Final baseline: 5 synthetic notes. Diagnostic notes removed. Controller stopped; dedicated tcp:18765 forwarding removed; only emulator-5580 closed.
+OK: killing emulator, bye bye
+OK

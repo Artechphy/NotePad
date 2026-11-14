@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <!-- These libraries run only in the API 34 Robolectric sandbox, never in the app APK. -->
+    <uses-sdk tools:overrideLibrary="androidx.test.monitor,androidx.test.espresso.idling.resource" />
+</manifest>

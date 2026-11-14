@@ -46,6 +46,8 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Provides access to a database of notes. Each note has a title, the note
@@ -63,7 +65,7 @@ public class NotePadProvider extends ContentProvider implements PipeDataWriter<C
     /**
      * The database version
      */
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
 
     /**
      * A projection map used to select columns from the database
@@ -146,6 +148,7 @@ public class NotePadProvider extends ContentProvider implements PipeDataWriter<C
 
         // Maps "note" to "note"
         sNotesProjectionMap.put(NotePad.Notes.COLUMN_NAME_NOTE, NotePad.Notes.COLUMN_NAME_NOTE);
+        sNotesProjectionMap.put(NotePad.Notes.COLUMN_NAME_CATEGORY, NotePad.Notes.COLUMN_NAME_CATEGORY);
 
         // Maps "created" to "created"
         sNotesProjectionMap.put(NotePad.Notes.COLUMN_NAME_CREATE_DATE,
@@ -196,29 +199,22 @@ public class NotePadProvider extends ContentProvider implements PipeDataWriter<C
                    + NotePad.Notes.COLUMN_NAME_TITLE + " TEXT,"
                    + NotePad.Notes.COLUMN_NAME_NOTE + " TEXT,"
                    + NotePad.Notes.COLUMN_NAME_CREATE_DATE + " INTEGER,"
-                   + NotePad.Notes.COLUMN_NAME_MODIFICATION_DATE + " INTEGER"
+                   + NotePad.Notes.COLUMN_NAME_MODIFICATION_DATE + " INTEGER,"
+                   + NotePad.Notes.COLUMN_NAME_CATEGORY
+                   + " TEXT NOT NULL DEFAULT 'uncategorized'"
                    + ");");
        }
 
-       /**
-        *
-        * Demonstrates that the provider must consider what happens when the
-        * underlying datastore is changed. In this sample, the database is upgraded the database
-        * by destroying the existing data.
-        * A real application should upgrade the database in place.
-        */
+       /** Upgrade the known v2 schema in place; unknown versions must never be erased. */
        @Override
        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
-           // Logs that the database is being upgraded
-           Log.w(TAG, "Upgrading database from version " + oldVersion + " to "
-                   + newVersion + ", which will destroy all old data");
-
-           // Kills the table and existing data
-           db.execSQL("DROP TABLE IF EXISTS notes");
-
-           // Recreates the database with a new version
-           onCreate(db);
+           if (oldVersion == 2 && newVersion == 3) {
+               db.execSQL("ALTER TABLE notes ADD COLUMN category"
+                       + " TEXT NOT NULL DEFAULT 'uncategorized'");
+           } else {
+               throw new SQLException("Unsupported database upgrade: " + oldVersion + " -> " + newVersion);
+           }
        }
    }
 
@@ -516,6 +512,9 @@ public class NotePadProvider extends ContentProvider implements PipeDataWriter<C
         }
 
         // Gets the current system time in milliseconds
+        if (values.containsKey(NotePad.Notes.COLUMN_NAME_CATEGORY)) {
+            NoteCategory.requireValid(values.getAsString(NotePad.Notes.COLUMN_NAME_CATEGORY));
+        }
         Long now = Long.valueOf(System.currentTimeMillis());
 
         // If the values map doesn't contain the creation date, sets the value to the current time.
@@ -668,6 +667,36 @@ public class NotePadProvider extends ContentProvider implements PipeDataWriter<C
     @Override
     public int update(Uri uri, ContentValues values, String where, String[] whereArgs) {
 
+        if (values.containsKey(NotePad.Notes.COLUMN_NAME_CATEGORY)) {
+            NoteCategory.requireValid(values.getAsString(NotePad.Notes.COLUMN_NAME_CATEGORY));
+        }
+
+        // Preserve callers that explicitly supply historical timestamps. Normal editor writes
+        // omit modified: only rows whose title/body actually changes receive a new timestamp.
+        ContentValues updatedValues = new ContentValues(values);
+        if (!values.containsKey(NotePad.Notes.COLUMN_NAME_MODIFICATION_DATE)) {
+            ArrayList<String> differences = new ArrayList<String>();
+            ArrayList<String> arguments = new ArrayList<String>();
+            if (whereArgs != null) {
+                Collections.addAll(arguments, whereArgs);
+            }
+            String[] editableColumns = { NotePad.Notes.COLUMN_NAME_TITLE,
+                    NotePad.Notes.COLUMN_NAME_NOTE, NotePad.Notes.COLUMN_NAME_CATEGORY };
+            for (String column : editableColumns) {
+                if (values.containsKey(column)) {
+                    differences.add(column + " IS NOT ?");
+                    arguments.add(values.getAsString(column));
+                }
+            }
+            if (!differences.isEmpty()) {
+                String changed = "(" + TextUtils.join(" OR ", differences) + ")";
+                where = TextUtils.isEmpty(where) ? changed : "(" + where + ") AND " + changed;
+                whereArgs = arguments.toArray(new String[arguments.size()]);
+                updatedValues.put(NotePad.Notes.COLUMN_NAME_MODIFICATION_DATE,
+                        System.currentTimeMillis());
+            }
+        }
+
         // Opens the database object in "write" mode.
         SQLiteDatabase db = mOpenHelper.getWritableDatabase();
         int count;
@@ -683,7 +712,7 @@ public class NotePadProvider extends ContentProvider implements PipeDataWriter<C
                 // Does the update and returns the number of rows updated.
                 count = db.update(
                     NotePad.Notes.TABLE_NAME, // The database table name.
-                    values,                   // A map of column names and new values to use.
+                    updatedValues,            // Content changes receive a modification timestamp.
                     where,                    // The where clause column names.
                     whereArgs                 // The where clause column values to select on.
                 );
@@ -709,14 +738,14 @@ public class NotePadProvider extends ContentProvider implements PipeDataWriter<C
                 // If there were additional selection criteria, append them to the final WHERE
                 // clause
                 if (where !=null) {
-                    finalWhere = finalWhere + " AND " + where;
+                    finalWhere = finalWhere + " AND (" + where + ")";
                 }
 
 
                 // Does the update and returns the number of rows updated.
                 count = db.update(
                     NotePad.Notes.TABLE_NAME, // The database table name.
-                    values,                   // A map of column names and new values to use.
+                    updatedValues,            // Content changes receive a modification timestamp.
                     finalWhere,               // The final WHERE clause to use
                                               // placeholders for whereArgs
                     whereArgs                 // The where clause column values to select on, or
@@ -732,7 +761,9 @@ public class NotePadProvider extends ContentProvider implements PipeDataWriter<C
          * that the incoming URI changed. The object passes this along to the resolver framework,
          * and observers that have registered themselves for the provider are notified.
          */
-        getContext().getContentResolver().notifyChange(uri, null);
+        if (count > 0) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
 
         // Returns the number of rows updated.
         return count;

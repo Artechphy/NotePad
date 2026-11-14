@@ -1,0 +1,17 @@
+<resources>
+    <style name="AppTheme" parent="android:style/Theme.Material.Light.NoActionBar">
+        <item name="android:windowBackground">@color/page</item>
+        <item name="android:colorBackground">@color/page</item>
+        <item name="android:textColorPrimary">@color/ink</item>
+        <item name="android:textColorSecondary">@color/muted</item>
+        <item name="android:colorAccent">@color/accent</item>
+        <item name="android:searchViewStyle">@style/NoteSearchStyle</item>
+        <item name="android:statusBarColor">@color/accent</item>
+        <item name="android:navigationBarColor">@color/page</item>
+        <item name="android:windowActionModeOverlay">true</item>
+        <item name="android:fontFamily">sans</item>
+    </style>
+    <style name="NoteSearchStyle" parent="android:style/Widget.Material.SearchView">
+        <item name="android:queryBackground">@android:color/transparent</item>
+    </style>
+</resources>

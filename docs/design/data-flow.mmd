@@ -1,0 +1,31 @@
+sequenceDiagram
+    actor U as 使用者
+    participant V as Activity / XML
+    participant VM as ViewModel
+    participant R as NoteRepository
+    participant P as ContentResolver / Provider
+    participant DB as SQLite
+    U->>V: 输入关键词 / 选择分类
+    V->>VM: 更新筛选状态
+    VM->>R: 防抖后加载最新查询
+    Note over R,P: 后台执行；读取后关闭 Cursor
+    R->>P: query（投影、条件、参数、排序）
+    P->>DB: 查询 notes
+    DB-->>P: Cursor
+    P-->>R: Cursor
+    R-->>VM: 不可变笔记列表 / 错误
+    VM-->>V: 最新状态；忽略过期结果
+    U->>V: 保存已修改笔记
+    V->>VM: 保存事件
+    VM->>R: 后台写入
+    R->>P: insert / update
+    P->>DB: 保存数据并维护时间
+    DB-->>P: 写入结果
+    P-->>R: 结果 / 错误
+    R-->>VM: 保存结果
+    VM-->>V: 成功反馈 / 保留输入并报错
+    opt 数据写入成功
+        P-->>R: notifyChange → ContentObserver
+        R-->>VM: 按当前筛选重新查询
+        VM-->>V: 刷新列表
+    end

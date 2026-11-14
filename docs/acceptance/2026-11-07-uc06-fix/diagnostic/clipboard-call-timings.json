@@ -1,0 +1,50 @@
+[
+  {
+    "thread": 3340,
+    "action": 0,
+    "wall_us": 179074,
+    "cpu_us": 15268
+  },
+  {
+    "thread": 3340,
+    "action": 1,
+    "wall_us": 179663,
+    "cpu_us": 15413
+  },
+  {
+    "thread": 3340,
+    "action": 0,
+    "wall_us": 230049,
+    "cpu_us": 49818
+  },
+  {
+    "thread": 3340,
+    "action": 1,
+    "wall_us": 230309,
+    "cpu_us": 49896
+  },
+  {
+    "thread": 3340,
+    "action": 0,
+    "wall_us": 237523,
+    "cpu_us": 55942
+  },
+  {
+    "thread": 3340,
+    "action": 1,
+    "wall_us": 237797,
+    "cpu_us": 56035
+  },
+  {
+    "thread": 3340,
+    "action": 0,
+    "wall_us": 643479,
+    "cpu_us": 174969
+  },
+  {
+    "thread": 3340,
+    "action": 1,
+    "wall_us": 643759,
+    "cpu_us": 175047
+  }
+]

@@ -1,0 +1,10 @@
+<resources>
+    <color name="page">#FFFFFF</color>
+    <color name="ink">#202832</color>
+    <color name="muted">#78838F</color>
+    <color name="accent">#1877D2</color>
+    <color name="accent_pressed">#105AA3</color>
+    <color name="soft">#F4F6F8</color>
+    <color name="selected">#EAF3FD</color>
+    <color name="divider">#EBEEF2</color>
+</resources>

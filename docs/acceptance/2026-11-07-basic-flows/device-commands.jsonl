@@ -1,0 +1,130 @@
+{"at": "2026-11-07T13:24:14.591914+00:00", "command": ["input", "keyevent", "4"], "output": ""}
+{"at": "2026-11-07T13:27:13.062626+00:00", "command": ["input", "swipe", "500", "1750", "500", "750", "400"], "output": ""}
+{"at": "2026-11-07T13:28:37.256576+00:00", "command": ["find", "/sdcard/Download/NotePad-验收", "-maxdepth", "1", "-type", "f"], "output": "/sdcard/Download/NotePad-验收/验收临时笔记·修订.txt\n"}
+{"at": "2026-11-07T13:28:50.985477+00:00", "command": ["cmd", "package", "resolve-activity", "--brief", "-a", "android.intent.action.VIEW", "-t", "text/plain", "-d", "content://com.android.externalstorage.documents/document/primary%3ADownload%2FNotePad-%E9%AA%8C%E6%94%B6%2F%E9%AA%8C%E6%94%B6%E4%B8%B4%E6%97%B6%E7%AC%94%E8%AE%B0%C2%B7%E4%BF%AE%E8%AE%A2.txt"], "output": "priority=0 preferredOrder=0 match=0x608000 specificIndex=-1 isDefault=true\ncom.android.htmlviewer/.HTMLViewerActivity\n"}
+{"at": "2026-11-07T13:28:51.004794+00:00", "command": ["pm", "list", "packages", "documentsui"], "output": "package:com.android.documentsui\n"}
+{"at": "2026-11-07T13:29:10.711662+00:00", "command": ["cmd", "package", "resolve-activity", "--brief", "-a", "android.intent.action.MAIN", "-c", "android.intent.category.LAUNCHER", "-p", "com.android.documentsui"], "output": "priority=0 preferredOrder=0 match=0x108000 specificIndex=-1 isDefault=false\ncom.android.documentsui/.LauncherActivity\n"}
+{"at": "2026-11-07T13:29:10.895418+00:00", "command": ["am", "start", "-W", "-a", "android.intent.action.MAIN", "-c", "android.intent.category.LAUNCHER", "-n", "com.android.documentsui/.files.FilesActivity"], "output": "Starting: Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] cmp=com.android.documentsui/.files.FilesActivity }\nStatus: ok\nLaunchState: WARM\nActivity: com.android.documentsui/.files.FilesActivity\nTotalTime: 157\nWaitTime: 164\nComplete\n"}
+{"at": "2026-11-07T13:30:13.446402+00:00", "command": ["input", "tap", "302", "673"], "output": ""}
+{"at": "2026-11-07T13:30:27.497288+00:00", "command": ["input", "keyevent", "66"], "output": ""}
+{"at": "2026-11-07T13:31:34.805752+00:00", "command": ["input", "tap", "346", "1123"], "output": ""}
+{"at": "2026-11-07T13:32:56.717219+00:00", "command": ["am", "start", "-W", "-a", "android.intent.action.MAIN", "-c", "android.intent.category.LAUNCHER", "-n", "com.example.android.notepad/.NotesList"], "output": "Starting: Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] cmp=com.example.android.notepad/.NotesList }\nWarning: Activity not started, its current task has been brought to the front\nStatus: ok\nLaunchState: HOT\nActivity: com.example.android.notepad/.NoteEditor\nTotalTime: 150\nWaitTime: 153\nComplete\n"}
+{"at": "2026-11-07T13:32:57.271552+00:00", "command": ["input", "tap", "267", "142"], "output": ""}
+{"at": "2026-11-07T13:33:50.022244+00:00", "command": ["input", "tap", "84", "142"], "output": ""}
+{"at": "2026-11-07T13:34:09.812819+00:00", "command": ["am", "force-stop", "com.example.android.notepad"], "output": ""}
+{"at": "2026-11-07T13:34:10.050340+00:00", "command": ["am", "start", "-W", "-a", "android.intent.action.MAIN", "-c", "android.intent.category.LAUNCHER", "-n", "com.example.android.notepad/.NotesList"], "output": "Starting: Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] cmp=com.example.android.notepad/.NotesList }\nStatus: ok\nLaunchState: COLD\nActivity: com.example.android.notepad/.NotesList\nTotalTime: 196\nWaitTime: 202\nComplete\n"}
+{"at": "2026-11-07T13:34:10.465586+00:00", "command": ["input", "tap", "108", "472"], "output": ""}
+{"at": "2026-11-07T13:34:11.649298+00:00", "command": ["input", "tap", "108", "472"], "output": ""}
+{"at": "2026-11-07T13:34:13.020206+00:00", "command": ["input", "tap", "540", "627"], "output": ""}
+{"at": "2026-11-07T13:34:14.303115+00:00", "command": ["input", "tap", "996", "142"], "output": ""}
+{"at": "2026-11-07T13:34:15.004584+00:00", "command": ["input", "tap", "822", "519"], "output": ""}
+{"at": "2026-11-07T13:34:16.094789+00:00", "command": ["input", "tap", "873", "1099"], "output": ""}
+{"at": "2026-11-07T13:34:16.917505+00:00", "command": ["input", "tap", "108", "472"], "output": ""}
+{"at": "2026-11-07T13:34:17.971673+00:00", "command": ["am", "force-stop", "com.example.android.notepad"], "output": ""}
+{"at": "2026-11-07T13:34:18.191988+00:00", "command": ["am", "start", "-W", "-a", "android.intent.action.MAIN", "-c", "android.intent.category.LAUNCHER", "-n", "com.example.android.notepad/.NotesList"], "output": "Starting: Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] cmp=com.example.android.notepad/.NotesList }\nStatus: ok\nLaunchState: COLD\nActivity: com.example.android.notepad/.NotesList\nTotalTime: 189\nWaitTime: 190\nComplete\n"}
+{"at": "2026-11-07T13:34:18.592901+00:00", "command": ["input", "tap", "108", "472"], "output": ""}
+{"at": "2026-11-07T13:34:20.423969+00:00", "command": ["input", "tap", "108", "472"], "output": ""}
+{"at": "2026-11-07T13:34:45.972020+00:00", "command": ["input", "tap", "108", "472"], "output": ""}
+{"at": "2026-11-07T13:34:47.856025+00:00", "command": ["input", "tap", "571", "472"], "output": ""}
+{"at": "2026-11-07T13:34:48.991466+00:00", "command": ["input", "tap", "428", "472"], "output": ""}
+{"at": "2026-11-07T13:34:50.492813+00:00", "command": ["input", "tap", "108", "472"], "output": ""}
+{"at": "2026-11-07T13:34:51.861011+00:00", "command": ["input", "tap", "108", "472"], "output": ""}
+{"at": "2026-11-07T13:34:53.248161+00:00", "command": ["input", "tap", "540", "627"], "output": ""}
+{"at": "2026-11-07T13:34:54.599976+00:00", "command": ["input", "tap", "284", "508"], "output": ""}
+{"at": "2026-11-07T13:34:55.263990+00:00", "command": ["input", "tap", "221", "634"], "output": ""}
+{"at": "2026-11-07T13:34:56.187671+00:00", "command": ["input", "tap", "862", "142"], "output": ""}
+{"at": "2026-11-07T13:34:57.022175+00:00", "command": ["input", "tap", "108", "472"], "output": ""}
+{"at": "2026-11-07T13:34:58.235162+00:00", "command": ["input", "tap", "108", "472"], "output": ""}
+{"at": "2026-11-07T13:34:59.611678+00:00", "command": ["input", "tap", "540", "627"], "output": ""}
+{"at": "2026-11-07T13:35:00.860011+00:00", "command": ["input", "tap", "84", "142"], "output": ""}
+{"at": "2026-11-07T13:35:01.720487+00:00", "command": ["input", "tap", "108", "472"], "output": ""}
+{"at": "2026-11-07T13:35:03.119780+00:00", "command": ["input", "tap", "540", "627"], "output": ""}
+{"at": "2026-11-07T13:35:04.100726+00:00", "command": ["input", "tap", "84", "142"], "output": ""}
+{"at": "2026-11-07T13:35:04.923861+00:00", "command": ["input", "tap", "108", "472"], "output": ""}
+{"at": "2026-11-07T13:35:06.310059+00:00", "command": ["input", "tap", "540", "627"], "output": ""}
+{"at": "2026-11-07T13:35:07.295973+00:00", "command": ["input", "tap", "84", "142"], "output": ""}
+{"at": "2026-11-07T13:35:08.118686+00:00", "command": ["input", "tap", "108", "472"], "output": ""}
+{"at": "2026-11-07T13:35:09.513757+00:00", "command": ["input", "tap", "540", "627"], "output": ""}
+{"at": "2026-11-07T13:35:10.498579+00:00", "command": ["input", "tap", "84", "142"], "output": ""}
+{"at": "2026-11-07T13:35:11.322081+00:00", "command": ["input", "tap", "108", "472"], "output": ""}
+{"at": "2026-11-07T13:35:12.723767+00:00", "command": ["input", "tap", "540", "627"], "output": ""}
+{"at": "2026-11-07T13:35:13.708421+00:00", "command": ["input", "tap", "84", "142"], "output": ""}
+{"at": "2026-11-07T13:35:14.539865+00:00", "command": ["input", "tap", "108", "472"], "output": ""}
+{"at": "2026-11-07T13:35:15.940871+00:00", "command": ["input", "tap", "540", "627"], "output": ""}
+{"at": "2026-11-07T13:35:17.114796+00:00", "command": ["input", "tap", "284", "508"], "output": ""}
+{"at": "2026-11-07T13:35:17.766909+00:00", "command": ["input", "tap", "221", "508"], "output": ""}
+{"at": "2026-11-07T13:35:18.414174+00:00", "command": ["input", "tap", "862", "142"], "output": ""}
+{"at": "2026-11-07T13:35:19.237351+00:00", "command": ["input", "tap", "108", "472"], "output": ""}
+{"at": "2026-11-07T13:35:42.257573+00:00", "command": ["input", "tap", "108", "472"], "output": ""}
+{"at": "2026-11-07T13:35:43.597764+00:00", "command": ["input", "tap", "540", "627"], "output": ""}
+{"at": "2026-11-07T13:35:44.627221+00:00", "command": ["input", "tap", "996", "142"], "output": ""}
+{"at": "2026-11-07T13:35:45.272496+00:00", "command": ["input", "tap", "822", "393"], "output": ""}
+{"at": "2026-11-07T13:36:25.312127+00:00", "command": ["input", "tap", "927", "2151"], "output": ""}
+{"at": "2026-11-07T13:36:26.397373+00:00", "command": ["am", "start", "-W", "-a", "android.intent.action.MAIN", "-c", "android.intent.category.LAUNCHER", "-n", "com.android.documentsui/.files.FilesActivity"], "output": "Starting: Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] cmp=com.android.documentsui/.files.FilesActivity }\nWarning: Activity not started, its current task has been brought to the front\nStatus: ok\nLaunchState: HOT\nActivity: com.android.documentsui/.files.FilesActivity\nTotalTime: 109\nWaitTime: 120\nComplete\n"}
+{"at": "2026-11-07T13:36:26.979435+00:00", "command": ["input", "tap", "333", "1123"], "output": ""}
+{"at": "2026-11-07T13:36:27.893197+00:00", "command": ["am", "force-stop", "com.example.android.notepad"], "output": ""}
+{"at": "2026-11-07T13:36:28.068594+00:00", "command": ["am", "start", "-W", "-a", "android.intent.action.MAIN", "-c", "android.intent.category.LAUNCHER", "-n", "com.example.android.notepad/.NotesList"], "output": "Starting: Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] cmp=com.example.android.notepad/.NotesList }\nStatus: ok\nLaunchState: COLD\nActivity: com.example.android.notepad/.NotesList\nTotalTime: 154\nWaitTime: 156\nComplete\n"}
+{"at": "2026-11-07T13:36:28.480606+00:00", "command": ["input", "tap", "108", "472"], "output": ""}
+{"at": "2026-11-07T13:36:29.840951+00:00", "command": ["input", "tap", "540", "627"], "output": ""}
+{"at": "2026-11-07T13:36:30.823734+00:00", "command": ["input", "tap", "84", "142"], "output": ""}
+{"at": "2026-11-07T13:36:31.654308+00:00", "command": ["input", "tap", "108", "472"], "output": ""}
+{"at": "2026-11-07T13:36:32.998274+00:00", "command": ["input", "tap", "108", "472"], "output": ""}
+{"at": "2026-11-07T13:36:34.380451+00:00", "command": ["input", "tap", "540", "627"], "output": ""}
+{"at": "2026-11-07T13:36:35.367726+00:00", "command": ["input", "tap", "84", "142"], "output": ""}
+{"at": "2026-11-07T13:36:37.006706+00:00", "command": ["input", "swipe", "540", "627", "540", "627", "800"], "output": ""}
+{"at": "2026-11-07T13:36:37.970459+00:00", "command": ["input", "tap", "797", "941"], "output": ""}
+{"at": "2026-11-07T13:36:38.628870+00:00", "command": ["input", "tap", "985", "168"], "output": ""}
+{"at": "2026-11-07T13:36:39.439144+00:00", "command": ["input", "tap", "822", "419"], "output": ""}
+{"at": "2026-11-07T13:37:11.640683+00:00", "command": ["input", "tap", "84", "142"], "output": ""}
+{"at": "2026-11-07T13:37:12.620048+00:00", "command": ["input", "tap", "108", "472"], "output": ""}
+{"at": "2026-11-07T13:37:14.010017+00:00", "command": ["input", "tap", "540", "627"], "output": ""}
+{"at": "2026-11-07T13:37:14.990909+00:00", "command": ["input", "tap", "996", "142"], "output": ""}
+{"at": "2026-11-07T13:37:15.625593+00:00", "command": ["input", "tap", "822", "519"], "output": ""}
+{"at": "2026-11-07T13:37:16.710146+00:00", "command": ["input", "tap", "873", "1099"], "output": ""}
+{"at": "2026-11-07T13:37:17.525252+00:00", "command": ["input", "tap", "108", "472"], "output": ""}
+{"at": "2026-11-07T13:37:18.598391+00:00", "command": ["am", "force-stop", "com.example.android.notepad"], "output": ""}
+{"at": "2026-11-07T13:37:18.839935+00:00", "command": ["am", "start", "-W", "-a", "android.intent.action.MAIN", "-c", "android.intent.category.LAUNCHER", "-n", "com.example.android.notepad/.NotesList"], "output": "Starting: Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] cmp=com.example.android.notepad/.NotesList }\nStatus: ok\nLaunchState: COLD\nActivity: com.example.android.notepad/.NotesList\nTotalTime: 186\nWaitTime: 188\nComplete\n"}
+{"at": "2026-11-07T13:37:19.206912+00:00", "command": ["input", "tap", "108", "472"], "output": ""}
+{"at": "2026-11-07T13:37:20.929397+00:00", "command": ["input", "tap", "108", "472"], "output": ""}
+{"at": "2026-11-07T13:37:22.242473+00:00", "command": ["input", "tap", "540", "627"], "output": ""}
+{"at": "2026-11-07T13:37:23.179913+00:00", "command": ["input", "tap", "84", "142"], "output": ""}
+{"at": "2026-11-07T13:37:24.018617+00:00", "command": ["input", "tap", "108", "472"], "output": ""}
+{"at": "2026-11-07T13:37:25.558190+00:00", "command": ["input", "tap", "540", "627"], "output": ""}
+{"at": "2026-11-07T13:37:26.607744+00:00", "command": ["input", "tap", "84", "142"], "output": ""}
+{"at": "2026-11-07T13:37:28.388383+00:00", "command": ["input", "tap", "108", "472"], "output": ""}
+{"at": "2026-11-07T13:37:29.766826+00:00", "command": ["input", "tap", "540", "627"], "output": ""}
+{"at": "2026-11-07T13:37:30.710750+00:00", "command": ["input", "tap", "84", "142"], "output": ""}
+{"at": "2026-11-07T13:37:31.499199+00:00", "command": ["input", "tap", "108", "472"], "output": ""}
+{"at": "2026-11-07T13:37:32.810934+00:00", "command": ["input", "tap", "540", "627"], "output": ""}
+{"at": "2026-11-07T13:37:33.750593+00:00", "command": ["input", "tap", "84", "142"], "output": ""}
+{"at": "2026-11-07T13:37:34.532642+00:00", "command": ["input", "tap", "108", "472"], "output": ""}
+{"at": "2026-11-07T13:38:37.732135+00:00", "command": ["am", "start", "-W", "-a", "android.intent.action.MAIN", "-c", "android.intent.category.LAUNCHER", "-n", "com.example.android.notepad/.NotesList"], "output": "Starting: Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] cmp=com.example.android.notepad/.NotesList }\nStatus: ok\nLaunchState: COLD\nActivity: com.example.android.notepad/.NotesList\nTotalTime: 284\nWaitTime: 289\nComplete\n"}
+{"at": "2026-11-07T13:38:38.937578+00:00", "command": ["input", "tap", "894", "1334"], "output": ""}
+{"at": "2026-11-07T13:39:09.475936+00:00", "command": ["input", "tap", "912", "136"], "output": ""}
+{"at": "2026-11-07T13:39:48.285924+00:00", "command": ["input", "tap", "859", "126"], "output": ""}
+{"at": "2026-11-07T13:39:49.102100+00:00", "command": ["input", "tap", "912", "136"], "output": ""}
+{"at": "2026-11-07T13:39:50.401464+00:00", "command": ["input", "tap", "859", "126"], "output": ""}
+{"at": "2026-11-07T13:39:51.344733+00:00", "command": ["am", "force-stop", "com.example.android.notepad"], "output": ""}
+{"at": "2026-11-07T13:40:18.615018+00:00", "command": ["am", "start", "-W", "-a", "android.intent.action.MAIN", "-c", "android.intent.category.LAUNCHER", "-n", "com.example.android.notepad/.NotesList"], "output": "Starting: Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] cmp=com.example.android.notepad/.NotesList }\nStatus: ok\nLaunchState: COLD\nActivity: com.example.android.notepad/.NotesList\nTotalTime: 205\nWaitTime: 207\nComplete\n"}
+{"at": "2026-11-07T13:40:19.212783+00:00", "command": ["input", "tap", "108", "472"], "output": ""}
+{"at": "2026-11-07T13:40:20.738515+00:00", "command": ["input", "tap", "108", "472"], "output": ""}
+{"at": "2026-11-07T13:40:22.147307+00:00", "command": ["input", "tap", "540", "627"], "output": ""}
+{"at": "2026-11-07T13:40:23.150241+00:00", "command": ["input", "tap", "84", "142"], "output": ""}
+{"at": "2026-11-07T13:40:23.998102+00:00", "command": ["input", "tap", "108", "472"], "output": ""}
+{"at": "2026-11-07T13:40:25.391906+00:00", "command": ["input", "tap", "540", "627"], "output": ""}
+{"at": "2026-11-07T13:40:26.391345+00:00", "command": ["input", "tap", "84", "142"], "output": ""}
+{"at": "2026-11-07T13:40:27.247046+00:00", "command": ["input", "tap", "108", "472"], "output": ""}
+{"at": "2026-11-07T13:40:28.662358+00:00", "command": ["input", "tap", "540", "627"], "output": ""}
+{"at": "2026-11-07T13:40:29.487632+00:00", "command": ["input", "tap", "284", "508"], "output": ""}
+{"at": "2026-11-07T13:40:30.119847+00:00", "command": ["input", "tap", "221", "634"], "output": ""}
+{"at": "2026-11-07T13:40:30.876872+00:00", "command": ["input", "tap", "862", "142"], "output": ""}
+{"at": "2026-11-07T13:40:31.544449+00:00", "command": ["am", "force-stop", "com.example.android.notepad"], "output": ""}
+{"at": "2026-11-07T13:40:31.764528+00:00", "command": ["am", "start", "-W", "-a", "android.intent.action.MAIN", "-c", "android.intent.category.LAUNCHER", "-n", "com.example.android.notepad/.NotesList"], "output": "Starting: Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] cmp=com.example.android.notepad/.NotesList }\nStatus: ok\nLaunchState: COLD\nActivity: com.example.android.notepad/.NotesList\nTotalTime: 188\nWaitTime: 195\nComplete\n"}
+{"at": "2026-11-07T13:40:32.177754+00:00", "command": ["input", "tap", "108", "472"], "output": ""}
+{"at": "2026-11-07T13:40:33.371303+00:00", "command": ["input", "tap", "108", "472"], "output": ""}
+{"at": "2026-11-07T13:40:34.721620+00:00", "command": ["input", "tap", "540", "627"], "output": ""}
+{"at": "2026-11-07T13:40:36.415596+00:00", "command": ["input", "tap", "84", "142"], "output": ""}
+{"at": "2026-11-07T13:40:37.274363+00:00", "command": ["input", "tap", "108", "472"], "output": ""}
+{"at": "2026-11-07T13:40:38.688214+00:00", "command": ["input", "tap", "540", "627"], "output": ""}
+{"at": "2026-11-07T13:40:39.648967+00:00", "command": ["input", "tap", "84", "142"], "output": ""}
+{"at": "2026-11-07T13:40:40.511223+00:00", "command": ["input", "tap", "108", "472"], "output": ""}

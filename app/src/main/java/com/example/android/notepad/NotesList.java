@@ -19,6 +19,9 @@ package com.example.android.notepad;
 import com.example.android.notepad.NotePad;
 
 import android.app.ListActivity;
+import android.app.LoaderManager;
+import android.content.CursorLoader;
+import android.content.Loader;
 import android.content.ClipboardManager;
 import android.content.ClipData;
 import android.content.ComponentName;
@@ -38,6 +41,14 @@ import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.SearchView;
+import android.widget.TextView;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.PopupMenu;
+
+import java.util.Locale;
+import java.util.TimeZone;
 
 
 /**
@@ -45,12 +56,18 @@ import android.widget.SimpleCursorAdapter;
  * provided in the incoming Intent if there is one, otherwise it defaults to displaying the
  * contents of the {@link NotePadProvider}.
  *
- * NOTE: Notice that the provider operations in this Activity are taking place on the UI thread.
- * This is not a good practice. It is only done here to make the code more readable. A real
- * application should use the {@link android.content.AsyncQueryHandler} or
- * {@link android.os.AsyncTask} object to perform operations asynchronously on a separate thread.
+ * List queries run in a CursorLoader; editor and context menu writes retain the sample's
+ * existing behavior.
  */
-public class NotesList extends ListActivity {
+public class NotesList extends ListActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+
+    private static final int NOTES_LOADER = 0;
+    private static final String SEARCH_QUERY = "search_query";
+    private SimpleCursorAdapter mAdapter;
+    private TextView mEmptyView;
+    private String mQuery = "";
+    private String mCategory;
+    private LinearLayout mCategoryFilters;
 
     // For logging and debugging
     private static final String TAG = "NotesList";
@@ -61,6 +78,9 @@ public class NotesList extends ListActivity {
     private static final String[] PROJECTION = new String[] {
             NotePad.Notes._ID, // 0
             NotePad.Notes.COLUMN_NAME_TITLE, // 1
+            NotePad.Notes.COLUMN_NAME_MODIFICATION_DATE, // 2
+            NotePad.Notes.COLUMN_NAME_NOTE, // 3
+            NotePad.Notes.COLUMN_NAME_CATEGORY, // 4
     };
 
     /** The index of the title column */
@@ -73,69 +93,174 @@ public class NotesList extends ListActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // The user does not need to hold down the key to use menu shortcuts.
+        setContentView(R.layout.notes_list);
         setDefaultKeyMode(DEFAULT_KEYS_SHORTCUT);
+        if (getIntent().getData() == null) {
+            getIntent().setData(NotePad.Notes.CONTENT_URI);
+        }
+        mEmptyView = (TextView) findViewById(android.R.id.empty);
+        getListView().setOnCreateContextMenuListener(this);
+        mAdapter = new SimpleCursorAdapter(this, R.layout.noteslist_item, null,
+                new String[] { NotePad.Notes.COLUMN_NAME_TITLE,
+                        NotePad.Notes.COLUMN_NAME_MODIFICATION_DATE, NotePad.Notes.COLUMN_NAME_NOTE,
+                        NotePad.Notes.COLUMN_NAME_CATEGORY },
+                new int[] { android.R.id.text1, R.id.note_modified, R.id.note_preview,
+                        R.id.note_category }, 0);
+        mAdapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
+            @Override
+            public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
+                if (view.getId() == R.id.note_preview) {
+                    String preview = NoteText.preview(cursor.getString(columnIndex));
+                    ((TextView) view).setText(preview.isEmpty() ? getString(R.string.empty_preview) : preview);
+                    return true;
+                }
+                if (view.getId() == R.id.note_category) {
+                    ((TextView) view).setText(NoteCategory.label(NotesList.this, cursor.getString(columnIndex)));
+                    return true;
+                }
+                if (view.getId() == android.R.id.text1) {
+                    String title = cursor.getString(columnIndex);
+                    ((TextView) view).setText(title == null || title.trim().isEmpty()
+                            ? getString(R.string.untitled_note) : title);
+                    return true;
+                }
+                Long millis = cursor.isNull(columnIndex) ? null : cursor.getLong(columnIndex);
+                String time = NoteTimestamp.format(millis, TimeZone.getDefault(), Locale.getDefault());
+                ((TextView) view).setText(time == null ? getString(R.string.time_unknown)
+                        : getString(R.string.modified_time, time));
+                return true;
+            }
+        });
+        setListAdapter(mAdapter);
 
-        /* If no data is given in the Intent that started this Activity, then this Activity
-         * was started when the intent filter matched a MAIN action. We should use the default
-         * provider URI.
-         */
-        // Gets the intent that started this Activity.
-        Intent intent = getIntent();
+        SearchView search = (SearchView) findViewById(R.id.search_notes);
+        search.setSaveFromParentEnabled(false);
+        if (savedInstanceState != null) {
+            mQuery = NoteSearch.normalize(savedInstanceState.getString(SEARCH_QUERY));
+            String category = savedInstanceState.getString("category");
+            if (NoteCategory.indexOf(category) >= 0) mCategory = category;
+        }
+        mCategoryFilters = (LinearLayout) findViewById(R.id.category_filters);
+        addCategoryFilter(null, getString(R.string.category_all));
+        String[] labels = NoteCategory.labels(this);
+        for (int i = 0; i < labels.length; i++) addCategoryFilter(NoteCategory.idAt(i), labels[i]);
+        updateCategorySelection();
+        findViewById(R.id.new_note).setOnClickListener(view -> createNote());
+        findViewById(R.id.list_more).setOnClickListener(view -> {
+            PopupMenu popup = new PopupMenu(this, view);
+            getMenuInflater().inflate(R.menu.list_options_menu, popup.getMenu());
+            ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+            popup.getMenu().findItem(R.id.menu_paste).setEnabled(clipboard.hasPrimaryClip());
+            popup.setOnMenuItemClickListener(this::onOptionsItemSelected);
+            popup.show();
+        });
+        search.setQuery(mQuery, false);
+        search.clearFocus();
+        search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                updateSearch(query);
+                search.clearFocus();
+                return true;
+            }
 
-        // If there is no data associated with the Intent, sets the data to the default URI, which
-        // accesses a list of notes.
-        if (intent.getData() == null) {
-            intent.setData(NotePad.Notes.CONTENT_URI);
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                updateSearch(newText);
+                return true;
+            }
+        });
+        // Use a fresh loader after recreation so a restored keyword cannot reuse an old filter.
+        getLoaderManager().restartLoader(NOTES_LOADER, null, this);
+    }
+
+    private void updateSearch(String text) {
+        String query = NoteSearch.normalize(text);
+        if (!query.equals(mQuery)) {
+            mQuery = query;
+            // Do not leave old, clickable results visible for a different keyword.
+            reloadNotes();
+        }
+    }
+
+    private void addCategoryFilter(String category, String label) {
+        Button button = (Button) getLayoutInflater().inflate(R.layout.category_filter, mCategoryFilters, false);
+        button.setText(label);
+        button.setTag(category);
+        button.setOnClickListener(view -> {
+            if (category == null ? mCategory == null : category.equals(mCategory)) return;
+            mCategory = category;
+            updateCategorySelection();
+            reloadNotes();
+        });
+        mCategoryFilters.addView(button);
+    }
+
+    private void updateCategorySelection() {
+        for (int i = 0; i < mCategoryFilters.getChildCount(); i++) {
+            View button = mCategoryFilters.getChildAt(i);
+            Object category = button.getTag();
+            button.setSelected(category == null ? mCategory == null : category.equals(mCategory));
+        }
+    }
+
+    private void reloadNotes() {
+        mAdapter.swapCursor(null);
+        mEmptyView.setText(R.string.notes_loading);
+        ((TextView) findViewById(R.id.note_count)).setText(R.string.notes_loading);
+        getLoaderManager().restartLoader(NOTES_LOADER, null, this);
+    }
+
+    private void createNote() {
+        Intent intent = new Intent(Intent.ACTION_INSERT, getIntent().getData()).setClass(this, NoteEditor.class);
+        if (mCategory != null) intent.putExtra(NotePad.Notes.COLUMN_NAME_CATEGORY, mCategory);
+        startActivity(intent);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putString(SEARCH_QUERY, mQuery);
+        outState.putString("category", mCategory);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return new NotesLoader(getApplicationContext(), getIntent().getData(), mQuery, mCategory);
+    }
+
+    /** Static so a retained loader never keeps the previous Activity alive. */
+    private static final class NotesLoader extends CursorLoader {
+        NotesLoader(Context context, Uri uri, String query, String category) {
+            super(context, uri, PROJECTION, NoteSearch.selection(query, category),
+                    NoteSearch.arguments(query, category),
+                    NotePad.Notes.DEFAULT_SORT_ORDER + ", " + NotePad.Notes._ID + " DESC");
         }
 
-        /*
-         * Sets the callback for context menu activation for the ListView. The listener is set
-         * to be this Activity. The effect is that context menus are enabled for items in the
-         * ListView, and the context menu is handled by a method in NotesList.
-         */
-        getListView().setOnCreateContextMenuListener(this);
+        @Override public Cursor loadInBackground() {
+            try {
+                return super.loadInBackground();
+            } catch (RuntimeException error) {
+                Log.e(TAG, "Unable to load notes", error);
+                return null;
+            }
+        }
+    }
 
-        /* Performs a managed query. The Activity handles closing and requerying the cursor
-         * when needed.
-         *
-         * Please see the introductory note about performing provider operations on the UI thread.
-         */
-        Cursor cursor = managedQuery(
-            getIntent().getData(),            // Use the default content URI for the provider.
-            PROJECTION,                       // Return the note ID and title for each note.
-            null,                             // No where clause, return all records.
-            null,                             // No where clause, therefore no where column values.
-            NotePad.Notes.DEFAULT_SORT_ORDER  // Use the default sort order.
-        );
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        mAdapter.swapCursor(data);
+        mEmptyView.setText(data == null ? R.string.notes_load_error
+                : !mQuery.isEmpty() ? R.string.search_empty
+                : mCategory != null ? R.string.category_empty : R.string.notes_empty);
+        ((TextView) findViewById(R.id.note_count)).setText(getString(R.string.note_count,
+                data == null ? 0 : data.getCount()));
+    }
 
-        /*
-         * The following two arrays create a "map" between columns in the cursor and view IDs
-         * for items in the ListView. Each element in the dataColumns array represents
-         * a column name; each element in the viewID array represents the ID of a View.
-         * The SimpleCursorAdapter maps them in ascending order to determine where each column
-         * value will appear in the ListView.
-         */
-
-        // The names of the cursor columns to display in the view, initialized to the title column
-        String[] dataColumns = { NotePad.Notes.COLUMN_NAME_TITLE } ;
-
-        // The view IDs that will display the cursor columns, initialized to the TextView in
-        // noteslist_item.xml
-        int[] viewIDs = { android.R.id.text1 };
-
-        // Creates the backing adapter for the ListView.
-        SimpleCursorAdapter adapter
-            = new SimpleCursorAdapter(
-                      this,                             // The Context for the ListView
-                      R.layout.noteslist_item,          // Points to the XML for a list item
-                      cursor,                           // The cursor to get items from
-                      dataColumns,
-                      viewIDs
-              );
-
-        // Sets the ListView's adapter to be the cursor adapter that was just created.
-        setListAdapter(adapter);
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        // LoaderManager owns and closes cursors; the adapter only borrows them.
+        mAdapter.swapCursor(null);
     }
 
     /**
@@ -173,20 +298,10 @@ public class NotesList extends ListActivity {
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
 
-        // The paste menu item is enabled if there is data on the clipboard.
-        ClipboardManager clipboard = (ClipboardManager)
-                getSystemService(Context.CLIPBOARD_SERVICE);
-
-
-        MenuItem mPasteItem = menu.findItem(R.id.menu_paste);
-
-        // If the clipboard contains an item, enables the Paste option on the menu.
-        if (clipboard.hasPrimaryClip()) {
-            mPasteItem.setEnabled(true);
-        } else {
-            // If the clipboard is empty, disables the menu's Paste option.
-            mPasteItem.setEnabled(false);
-        }
+        // Android may prepare this menu during a return transition, before focus.
+        // The visible popup checks again when clicked with an active window.
+        ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+        menu.findItem(R.id.menu_paste).setEnabled(hasWindowFocus() && clipboard.hasPrimaryClip());
 
         // Gets the number of notes currently being displayed.
         final boolean haveItems = getListAdapter().getCount() > 0;
@@ -206,7 +321,7 @@ public class NotesList extends ListActivity {
             Intent[] specifics = new Intent[1];
 
             // Sets the Intent in the array to be an EDIT action on the URI of the selected note.
-            specifics[0] = new Intent(Intent.ACTION_EDIT, uri);
+            specifics[0] = new Intent(Intent.ACTION_EDIT, uri).setClass(this, NoteEditor.class);
 
             // Creates an array of menu items with one element. This will contain the EDIT option.
             MenuItem[] items = new MenuItem[1];
@@ -269,7 +384,7 @@ public class NotesList extends ListActivity {
              * has to have action ACTION_INSERT. No category is set, so DEFAULT is assumed.
              * In effect, this starts the NoteEditor Activity in NotePad.
              */
-            startActivity(new Intent(Intent.ACTION_INSERT, getIntent().getData()));
+            createNote();
             return true;
         } else if (item.getItemId() == R.id.menu_paste) {
             /*
@@ -277,7 +392,7 @@ public class NotesList extends ListActivity {
              * has to have action ACTION_PASTE. No category is set, so DEFAULT is assumed.
              * In effect, this starts the NoteEditor Activity in NotePad.
              */
-            startActivity(new Intent(Intent.ACTION_PASTE, getIntent().getData()));
+            startActivity(new Intent(Intent.ACTION_PASTE, getIntent().getData()).setClass(this, NoteEditor.class));
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -394,7 +509,7 @@ public class NotesList extends ListActivity {
         int id = item.getItemId();
         if (id == R.id.context_open) {
             // Launch activity to view/edit the currently selected item
-            startActivity(new Intent(Intent.ACTION_EDIT, noteUri));
+            startActivity(new Intent(Intent.ACTION_EDIT, noteUri).setClass(this, NoteEditor.class));
             return true;
         } else if (id == R.id.context_copy) { //BEGIN_INCLUDE(copy)
             // Gets a handle to the clipboard service.
@@ -457,7 +572,7 @@ public class NotesList extends ListActivity {
 
             // Sends out an Intent to start an Activity that can handle ACTION_EDIT. The
             // Intent's data is the note ID URI. The effect is to call NoteEdit.
-            startActivity(new Intent(Intent.ACTION_EDIT, uri));
+            startActivity(new Intent(Intent.ACTION_EDIT, uri).setClass(this, NoteEditor.class));
         }
     }
 }

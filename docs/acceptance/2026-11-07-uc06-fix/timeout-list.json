@@ -1,0 +1,130 @@
+[
+  {
+    "class": "android.widget.FrameLayout",
+    "package": "com.android.permissioncontroller",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[28,731][1052,1546]"
+  },
+  {
+    "class": "android.widget.FrameLayout",
+    "package": "com.android.permissioncontroller",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[28,731][1052,1546]"
+  },
+  {
+    "id": "android:id/content",
+    "class": "android.widget.FrameLayout",
+    "package": "com.android.permissioncontroller",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[28,731][1052,1546]"
+  },
+  {
+    "class": "android.widget.ScrollView",
+    "package": "com.android.permissioncontroller",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[28,731][1052,1546]"
+  },
+  {
+    "id": "com.android.permissioncontroller:id/grant_singleton",
+    "class": "android.widget.LinearLayout",
+    "package": "com.android.permissioncontroller",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": true,
+    "bounds": "[28,731][1052,1546]"
+  },
+  {
+    "id": "com.android.permissioncontroller:id/grant_dialog",
+    "class": "android.widget.LinearLayout",
+    "package": "com.android.permissioncontroller",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": true,
+    "bounds": "[28,731][1052,1546]"
+  },
+  {
+    "id": "com.android.permissioncontroller:id/content_container",
+    "class": "android.widget.LinearLayout",
+    "package": "com.android.permissioncontroller",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[70,773][1010,1132]"
+  },
+  {
+    "class": "android.widget.LinearLayout",
+    "package": "com.android.permissioncontroller",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[133,820][947,1069]"
+  },
+  {
+    "id": "com.android.permissioncontroller:id/permission_icon",
+    "class": "android.widget.ImageView",
+    "package": "com.android.permissioncontroller",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[498,820][582,904]"
+  },
+  {
+    "id": "com.android.permissioncontroller:id/permission_message",
+    "text": "Allow NotePad to send you notifications?",
+    "class": "android.widget.TextView",
+    "package": "com.android.permissioncontroller",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[133,936][947,1069]"
+  },
+  {
+    "class": "android.widget.LinearLayout",
+    "package": "com.android.permissioncontroller",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[70,1132][1010,1504]"
+  },
+  {
+    "id": "com.android.permissioncontroller:id/permission_allow_button",
+    "text": "ALLOW",
+    "class": "android.widget.Button",
+    "package": "com.android.permissioncontroller",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": true,
+    "bounds": "[133,1137][947,1284]"
+  },
+  {
+    "id": "com.android.permissioncontroller:id/permission_deny_button",
+    "text": "DON’T ALLOW",
+    "class": "android.widget.Button",
+    "package": "com.android.permissioncontroller",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": true,
+    "bounds": "[133,1294][947,1441]"
+  }
+]

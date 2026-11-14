@@ -1,0 +1,6 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="dev.notepad.check">
+    <uses-sdk android:minSdkVersion="23" android:targetSdkVersion="28"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <application android:label="NotePad UI Check" android:debuggable="true"/>
+    <instrumentation android:name=".UiBridge" android:targetPackage="dev.notepad.check"/>
+</manifest>

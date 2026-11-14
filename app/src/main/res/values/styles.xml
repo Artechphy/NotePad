@@ -1,0 +1,24 @@
+<resources>
+    <style name="AppTheme" parent="android:style/Theme.Holo.Light.NoActionBar">
+        <item name="android:windowBackground">@color/page</item>
+        <item name="android:colorBackground">@color/page</item>
+        <item name="android:textColorPrimary">@color/ink</item>
+        <item name="android:textColorSecondary">@color/muted</item>
+        <item name="android:windowActionModeOverlay">true</item>
+    </style>
+    <style name="PlainButton">
+        <item name="android:background">@drawable/button_plain</item>
+        <item name="android:textColor">@color/accent</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:minWidth">48dp</item>
+        <item name="android:minHeight">48dp</item>
+        <item name="android:paddingLeft">12dp</item>
+        <item name="android:paddingRight">12dp</item>
+        <item name="android:gravity">center</item>
+    </style>
+    <style name="CategoryTab" parent="PlainButton">
+        <item name="android:background">@drawable/category_tab</item>
+        <item name="android:textColor">@color/category_tab_text</item>
+        <item name="android:textSize">13sp</item>
+    </style>
+</resources>

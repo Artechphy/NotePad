@@ -1,0 +1,203 @@
+[
+  {
+    "class": "android.widget.FrameLayout",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[0,0][1080,2009]"
+  },
+  {
+    "class": "android.widget.FrameLayout",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[0,0][1080,2009]"
+  },
+  {
+    "id": "android:id/content",
+    "class": "android.widget.FrameLayout",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[0,63][1080,1439]"
+  },
+  {
+    "class": "android.widget.LinearLayout",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[0,63][1080,1439]"
+  },
+  {
+    "class": "android.widget.LinearLayout",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[0,63][1080,221]"
+  },
+  {
+    "id": "com.example.android.notepad:id/editor_back",
+    "text": "‹",
+    "desc": "返回笔记列表",
+    "class": "android.widget.Button",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": true,
+    "bounds": "[21,79][147,205]"
+  },
+  {
+    "id": "com.example.android.notepad:id/save_status",
+    "text": "尚未保存 · 返回自动保存",
+    "class": "android.widget.TextView",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[147,120][791,163]"
+  },
+  {
+    "id": "com.example.android.notepad:id/editor_save",
+    "text": "完成",
+    "class": "android.widget.Button",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": true,
+    "bounds": "[791,79][933,205]"
+  },
+  {
+    "id": "com.example.android.notepad:id/editor_more",
+    "text": "⋮",
+    "desc": "更多操作",
+    "class": "android.widget.Button",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": true,
+    "bounds": "[933,79][1059,205]"
+  },
+  {
+    "class": "android.view.View",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[0,221][1080,224]"
+  },
+  {
+    "class": "android.widget.ScrollView",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[0,224][1080,1439]"
+  },
+  {
+    "class": "android.widget.LinearLayout",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[0,224][1080,1439]"
+  },
+  {
+    "id": "com.example.android.notepad:id/title",
+    "text": "安卓复习计划",
+    "class": "android.widget.EditText",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": true,
+    "bounds": "[63,287][1017,434]"
+  },
+  {
+    "class": "android.widget.LinearLayout",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[63,445][1017,571]"
+  },
+  {
+    "text": "分类",
+    "class": "android.widget.TextView",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[63,486][127,529]"
+  },
+  {
+    "id": "com.example.android.notepad:id/editor_category",
+    "desc": "分类",
+    "class": "android.widget.Spinner",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": true,
+    "bounds": "[127,445][442,571]"
+  },
+  {
+    "id": "android:id/text1",
+    "text": "学习",
+    "class": "android.widget.TextView",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[127,479][251,536]"
+  },
+  {
+    "class": "android.view.View",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[63,592][1017,595]"
+  },
+  {
+    "id": "com.example.android.notepad:id/note",
+    "text": "今天复习 Activity 生命周期。",
+    "class": "android.widget.EditText",
+    "package": "com.example.android.notepad",
+    "visible": true,
+    "enabled": true,
+    "selected": false,
+    "clickable": true,
+    "bounds": "[63,642][1017,1430]"
+  },
+  {
+    "id": "android:id/statusBarBackground",
+    "class": "android.view.View",
+    "package": "com.example.android.notepad",
+    "visible": false,
+    "enabled": true,
+    "selected": false,
+    "clickable": false,
+    "bounds": "[0,0][1080,63]"
+  }
+]

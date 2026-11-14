@@ -32,3 +32,12 @@ google-services.json
 
 # Android Profiling
 *.hprof
+
+# Python UI test runner caches
+__pycache__/
+*.py[cod]
+
+# Local analysis checkpoints; recover from this workspace and its authorized chat
+.agent-state/current-state.md
+.agent-state/changes.md
+.agent-state/evidence/2026-10-26-repository-analysis.md

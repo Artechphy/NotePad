@@ -1,0 +1,76 @@
+Trace overflow: true; available instrumented call stacks only.
+
+THREAD 3340
+android.os.Looper loopOnce (Landroid/os/Looper;JI)Z Looper.java
+android.os.Handler dispatchMessage (Landroid/os/Message;)V Handler.java
+android.view.AccessibilityInteractionController$PrivateHandler handleMessage (Landroid/os/Message;)V AccessibilityInteractionController.java
+android.view.AccessibilityInteractionController -$$Nest$mfindAccessibilityNodeInfoByAccessibilityIdUiThread (Landroid/view/AccessibilityInteractionController;Landroid/os/Message;)V AccessibilityInteractionController.java
+android.view.AccessibilityInteractionController findAccessibilityNodeInfoByAccessibilityIdUiThread (Landroid/os/Message;)V AccessibilityInteractionController.java
+android.view.AccessibilityInteractionController$AccessibilityNodePrefetcher prefetchAccessibilityNodeInfos (Landroid/view/View;Landroid/view/accessibility/AccessibilityNodeInfo;Ljava/util/List;)V AccessibilityInteractionController.java
+android.view.AccessibilityInteractionController$AccessibilityNodePrefetcher prefetchDescendantsOfRealNode (Landroid/view/View;Ljava/util/List;)V AccessibilityInteractionController.java
+android.view.AccessibilityInteractionController$AccessibilityNodePrefetcher prefetchDescendantsOfRealNode (Landroid/view/View;Ljava/util/List;)V AccessibilityInteractionController.java
+android.view.AccessibilityInteractionController$AccessibilityNodePrefetcher prefetchDescendantsOfRealNode (Landroid/view/View;Ljava/util/List;)V AccessibilityInteractionController.java
+android.view.AccessibilityInteractionController$AccessibilityNodePrefetcher prefetchDescendantsOfRealNode (Landroid/view/View;Ljava/util/List;)V AccessibilityInteractionController.java
+android.view.AccessibilityInteractionController$AccessibilityNodePrefetcher prefetchDescendantsOfRealNode (Landroid/view/View;Ljava/util/List;)V AccessibilityInteractionController.java
+android.view.AccessibilityInteractionController$AccessibilityNodePrefetcher prefetchDescendantsOfRealNode (Landroid/view/View;Ljava/util/List;)V AccessibilityInteractionController.java
+android.view.View createAccessibilityNodeInfo ()Landroid/view/accessibility/AccessibilityNodeInfo; View.java
+android.view.View createAccessibilityNodeInfoInternal ()Landroid/view/accessibility/AccessibilityNodeInfo; View.java
+android.view.View onInitializeAccessibilityNodeInfo (Landroid/view/accessibility/AccessibilityNodeInfo;)V View.java
+android.widget.TextView onInitializeAccessibilityNodeInfoInternal (Landroid/view/accessibility/AccessibilityNodeInfo;)V TextView.java
+android.widget.TextView canPaste ()Z TextView.java
+android.content.ClipboardManager hasPrimaryClip ()Z ClipboardManager.java
+
+THREAD 3340
+com.android.internal.os.RuntimeInit$MethodAndArgsCaller run ()V RuntimeInit.java
+java.lang.reflect.Method invoke (Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object; Method.java
+android.app.ActivityThread main ([Ljava/lang/String;)V ActivityThread.java
+android.os.Looper loop ()V Looper.java
+android.os.Looper loopOnce (Landroid/os/Looper;JI)Z Looper.java
+android.os.Handler dispatchMessage (Landroid/os/Message;)V Handler.java
+android.view.AccessibilityInteractionController$PrivateHandler handleMessage (Landroid/os/Message;)V AccessibilityInteractionController.java
+android.view.AccessibilityInteractionController -$$Nest$mfindAccessibilityNodeInfoByAccessibilityIdUiThread (Landroid/view/AccessibilityInteractionController;Landroid/os/Message;)V AccessibilityInteractionController.java
+android.view.AccessibilityInteractionController findAccessibilityNodeInfoByAccessibilityIdUiThread (Landroid/os/Message;)V AccessibilityInteractionController.java
+android.view.AccessibilityInteractionController populateAccessibilityNodeInfoForView (Landroid/view/View;Landroid/os/Bundle;I)Landroid/view/accessibility/AccessibilityNodeInfo; AccessibilityInteractionController.java
+android.view.View createAccessibilityNodeInfo ()Landroid/view/accessibility/AccessibilityNodeInfo; View.java
+android.view.View createAccessibilityNodeInfoInternal ()Landroid/view/accessibility/AccessibilityNodeInfo; View.java
+android.view.View onInitializeAccessibilityNodeInfo (Landroid/view/accessibility/AccessibilityNodeInfo;)V View.java
+android.widget.TextView onInitializeAccessibilityNodeInfoInternal (Landroid/view/accessibility/AccessibilityNodeInfo;)V TextView.java
+android.widget.TextView canPaste ()Z TextView.java
+android.content.ClipboardManager hasPrimaryClip ()Z ClipboardManager.java
+
+THREAD 3340
+com.android.internal.os.RuntimeInit$MethodAndArgsCaller run ()V RuntimeInit.java
+java.lang.reflect.Method invoke (Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object; Method.java
+android.app.ActivityThread main ([Ljava/lang/String;)V ActivityThread.java
+android.os.Looper loop ()V Looper.java
+android.os.Looper loopOnce (Landroid/os/Looper;JI)Z Looper.java
+android.os.Handler dispatchMessage (Landroid/os/Message;)V Handler.java
+android.view.AccessibilityInteractionController$PrivateHandler handleMessage (Landroid/os/Message;)V AccessibilityInteractionController.java
+android.view.AccessibilityInteractionController -$$Nest$mfindAccessibilityNodeInfoByAccessibilityIdUiThread (Landroid/view/AccessibilityInteractionController;Landroid/os/Message;)V AccessibilityInteractionController.java
+android.view.AccessibilityInteractionController findAccessibilityNodeInfoByAccessibilityIdUiThread (Landroid/os/Message;)V AccessibilityInteractionController.java
+android.view.AccessibilityInteractionController populateAccessibilityNodeInfoForView (Landroid/view/View;Landroid/os/Bundle;I)Landroid/view/accessibility/AccessibilityNodeInfo; AccessibilityInteractionController.java
+android.view.View createAccessibilityNodeInfo ()Landroid/view/accessibility/AccessibilityNodeInfo; View.java
+android.view.View createAccessibilityNodeInfoInternal ()Landroid/view/accessibility/AccessibilityNodeInfo; View.java
+android.view.View onInitializeAccessibilityNodeInfo (Landroid/view/accessibility/AccessibilityNodeInfo;)V View.java
+android.widget.TextView onInitializeAccessibilityNodeInfoInternal (Landroid/view/accessibility/AccessibilityNodeInfo;)V TextView.java
+android.widget.TextView canPaste ()Z TextView.java
+android.content.ClipboardManager hasPrimaryClip ()Z ClipboardManager.java
+
+THREAD 3340
+com.android.internal.os.RuntimeInit$MethodAndArgsCaller run ()V RuntimeInit.java
+java.lang.reflect.Method invoke (Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object; Method.java
+android.app.ActivityThread main ([Ljava/lang/String;)V ActivityThread.java
+android.os.Looper loop ()V Looper.java
+android.os.Looper loopOnce (Landroid/os/Looper;JI)Z Looper.java
+android.os.Handler dispatchMessage (Landroid/os/Message;)V Handler.java
+android.view.AccessibilityInteractionController$PrivateHandler handleMessage (Landroid/os/Message;)V AccessibilityInteractionController.java
+android.view.AccessibilityInteractionController -$$Nest$mfindAccessibilityNodeInfoByAccessibilityIdUiThread (Landroid/view/AccessibilityInteractionController;Landroid/os/Message;)V AccessibilityInteractionController.java
+android.view.AccessibilityInteractionController findAccessibilityNodeInfoByAccessibilityIdUiThread (Landroid/os/Message;)V AccessibilityInteractionController.java
+android.view.AccessibilityInteractionController$AccessibilityNodePrefetcher prefetchAccessibilityNodeInfos (Landroid/view/View;Landroid/view/accessibility/AccessibilityNodeInfo;Ljava/util/List;)V AccessibilityInteractionController.java
+android.view.AccessibilityInteractionController$AccessibilityNodePrefetcher prefetchDescendantsOfRealNode (Landroid/view/View;Ljava/util/List;)V AccessibilityInteractionController.java
+android.view.View createAccessibilityNodeInfo ()Landroid/view/accessibility/AccessibilityNodeInfo; View.java
+android.view.View createAccessibilityNodeInfoInternal ()Landroid/view/accessibility/AccessibilityNodeInfo; View.java
+android.view.View onInitializeAccessibilityNodeInfo (Landroid/view/accessibility/AccessibilityNodeInfo;)V View.java
+android.widget.TextView onInitializeAccessibilityNodeInfoInternal (Landroid/view/accessibility/AccessibilityNodeInfo;)V TextView.java
+android.widget.TextView canPaste ()Z TextView.java
+android.content.ClipboardManager hasPrimaryClip ()Z ClipboardManager.java

@@ -1,0 +1,16 @@
+{
+  "executed_at_utc": "2026-11-07T14:56:29.949348+00:00",
+  "serial": "emulator-5580",
+  "avd": "NotePad_API34 (isolated AOSP)",
+  "android_release": "14",
+  "api": "34",
+  "timezone": "Asia/Shanghai",
+  "candidate": {
+    "path": "artifacts/candidate.apk",
+    "sha256": "8d210f020179a5366a00c266414c19baba75489a435434071effe2167d4fed5e",
+    "bytes": 96208
+  },
+  "previous_candidate_sha256": "03bd7c7b7c63303857de1a4d753b4f486e27ca931d870c38b899dbba1672fb23",
+  "method": "Separate UiAutomation APK, public Android UI, real system clipboard; no app internal calls for device business actions.",
+  "human_acceptance": "NOT_RUN"
+}
