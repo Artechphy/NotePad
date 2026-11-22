@@ -68,9 +68,9 @@
 
 | 风险编号 | Batch 0 | Batch 1 | Batch 2 | Batch 3 | Batch 4a | Batch 4b | Batch 5 |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| `R-BUILD-01` | PENDING | N/A | N/A | N/A | N/A | N/A | PENDING |
-| `R-BUILD-02` | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING |
-| `R-BUILD-03` | PENDING | N/A | N/A | N/A | N/A | N/A | PENDING |
+| `R-BUILD-01` | PASS | N/A | N/A | N/A | N/A | N/A | PENDING |
+| `R-BUILD-02` | PASS | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING |
+| `R-BUILD-03` | PASS | N/A | N/A | N/A | N/A | N/A | PENDING |
 | `R-BYTECODE-01` | N/A | PENDING | PENDING | PENDING | N/A | PENDING | PENDING |
 | `R-BYTECODE-02` | N/A | PENDING | N/A | N/A | N/A | N/A | PENDING |
 | `R-BYTECODE-03` | N/A | N/A | PENDING | N/A | N/A | N/A | PENDING |
@@ -90,7 +90,7 @@
 | `R-BEHAVIOR-02` | N/A | PENDING | N/A | N/A | N/A | N/A | PENDING |
 | `R-BEHAVIOR-03` | N/A | N/A | N/A | N/A | N/A | PENDING | PENDING |
 | `R-BEHAVIOR-04` | N/A | N/A | PENDING | N/A | N/A | N/A | PENDING |
-| `R-BEHAVIOR-05` | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING |
+| `R-BEHAVIOR-05` | PASS | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING |
 
 ---
 
@@ -100,4 +100,4 @@
 
 | 编号 | 来源（`NR-xxx`） | 新增检查规则 | 适用场景 | 验收标准 |
 | :--- | :---: | :--- | :--- | :--- |
-| _（待实战沉淀）_ | — | — | — | — |
+| `R-EVOLVED-01` | `NR-001` | 引入 Kotlin Gradle Plugin 时须同时核对官方 `KGP × AGP × Gradle` 兼容性矩阵与本地 Gradle 缓存/代理环境，避免盲取最新稳定版导致下载受阻或跨大版本不兼容 | Batch 0 及任何构建插件版本变更 | 所选 KGP 版本落在官方兼容矩阵内，且在当前机器网络/缓存条件下可完成 `Gradle Sync`、`assembleDebug` 与 `testDebugUnitTest` |

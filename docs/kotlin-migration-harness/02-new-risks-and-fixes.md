@@ -10,7 +10,7 @@
 
 | 新增编号 | 发现批次 | 涉及文件 / 函数 | 真实报错 / 异常现象 | 根因分类 | 修复方式（核心要点） | Harness 演进动作（规则 / 单测 / 提示词） | 晋升至模块一 |
 | :--- | :---: | :--- | :--- | :---: | :--- | :--- | :---: |
-| _（尚未开始迁移，待 Batch 0 起实录）_ | — | — | — | — | — | — | — |
+| `NR-001` | Batch 0 | `build.gradle`（Kotlin Gradle Plugin 版本） | 引入最新稳定版 `2.4.21` 时 Gradle Sync 超时，随后构建报错 `Connect to 127.0.0.1:65533 failed: Connection refused` | `构建/插件` | 交叉核对官方兼容矩阵与本地 `~/.gradle/caches`，改用本地已缓存且官方完整支持 `AGP 8.12.2 + Gradle 8.13` 的 `2.3.21`（不修改用户全局 `~/.gradle/gradle.properties`） | 提炼版本选型前先查“官方兼容矩阵 + 本地缓存/代理”规则，避免盲取 latest 阻断构建 | `R-EVOLVED-01` |
 
 > **根因分类建议枚举**：`构建/插件`、`字节码/互操作`、`空安全/平台类型`、`生命周期/并发`、`行为/语义漂移`、`测试框架/Robolectric`、`Lint/静态检查`、`Agent 越界改写`。
 
@@ -32,10 +32,35 @@
 
 ## 三、新增风险详情卡片（按发生顺序追加）
 
+### NR-001：盲选最新 KGP 版本遭遇本机失效代理阻断与 AGP 兼容性校验
+- **发现批次**：Batch 0
+- **涉及位置**：`build.gradle` → `buildscript.dependencies`
+- **发现手段**：`Gradle Sync` 超时（3m）+ `assembleDebug` 依赖解析报错
+- **真实报错 / 现象**：
+  ```text
+  Could not resolve org.jetbrains.kotlin:kotlin-gradle-plugin:2.4.21.
+  > Got socket exception during request. It might be caused by SSL misconfiguration
+    > Connect to 127.0.0.1:65533 [/127.0.0.1] failed: Connection refused
+  ```
+- **根因分析**：
+  1. 兼容性层面：通过官方文档核查，`AGP 8.12.2 + Gradle 8.13` 需使用 `KGP 2.3.0+`（旧版 `2.2.x` 官方上限仅至 `AGP 8.11.1`，强行搭配 `AGP 8.12` 存在 `NoSuchMethodError` 风险）。
+  2. 环境层面：本机全局 `~/.gradle/gradle.properties` 中残留了 `127.0.0.1:65533` 代理配置，当前端口未开启，导致访问未缓存的新版本 `2.4.21` 必然失败；而本机 `~/.gradle/caches` 已缓存 `2.3.21`（同时满足 `KGP 2.3.x` 对 `AGP 8.12.2 + Gradle 8.13` 的官方支持范围）。
+- **修复方式**：
+  - 修复前：`classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:2.4.21'`
+  - 修复后：`classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:2.3.21'`（保持用户全局配置不被越权篡改）
+- **验证证据**：`Gradle Sync` 成功，`assembleDebug testDebugUnitTest lintDebug` 通过（56 passed, 0 skipped, 0 failed）。
+- **Harness 演进动作**：
+  - [x] 是否晋升到模块一：`是（R-EVOLVED-01）`
+  - [ ] 是否补充回归测试：`否`（构建配置由 L1 `assembleDebug` 与 `Gradle Sync` 覆盖）
+  - [ ] 是否更新边界/提示词约束：`否`
+- **博客素材价值**：`推荐收录`（生动说明“连写第一行 `.kt` 之前，Agent 盲选 latest 版本就可能翻车，而兼容性矩阵 + 缓存自检能立刻化险为夷”）
+
+---
+
 > 每次新增 `NR-xxx` 时，复制下方模板并据实填写：
 
 ```markdown
-### NR-001：<简短标题>
+### NR-002：<简短标题>
 - **发现批次**：Batch X
 - **涉及位置**：`path/to/File.kt` → `functionName(...)`
 - **发现手段**：`assembleDebug` / `testDebugUnitTest` / `lintDebug` / `connectedDebugAndroidTest` / 人工走查

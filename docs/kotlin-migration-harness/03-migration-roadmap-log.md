@@ -8,7 +8,7 @@
 
 | 批次 | 目标范围 | 目标文件数 | 状态 | Commit | 本地单测（56项） | Lint（基线 0E/37W） | 命中/新增风险 |
 | :--- | :--- | :---: | :---: | :---: | :---: | :---: | :--- |
-| **Batch 0** | 基线确认 + Kotlin 插件接入（Groovy） | 0（仅构建） | `PLANNED` | — | — | — | — |
+| **Batch 0** | 基线确认 + Kotlin 插件接入（Groovy） | 0（仅构建） | `DONE` | `d3dcf25` | 56/56 PASS | PASS（0 Error） | `NR-001` → `R-EVOLVED-01` |
 | **Batch 1** | 依赖末端纯逻辑工具类（5 个） | 5 | `PLANNED` | — | — | — | — |
 | **Batch 2** | 契约类 + ContentProvider（2 个） | 2 | `PLANNED` | — | — | — | — |
 | **Batch 3** | 导出异步任务 + 轻量兼容 Activity（3 个） | 3 | `PLANNED` | — | — | — | — |
@@ -21,18 +21,24 @@
 ## 二、分批次详细计划与提交日志
 
 ### Batch 0：基线验证与 Kotlin 构建接入
-- **状态**：`PLANNED`
-- **Commit**：`待填写`
+- **状态**：`DONE`
+- **Commit**：`d3dcf25`（前置 Harness 提交：`e75a006`）
 - **计划改动文件**：
   - `build.gradle`
   - `app/build.gradle`
 - **计划变更内容**：
-  - 切出独立实验分支（建议 `exp/kotlin-migration`），验证纯 Java 基线。
+  - 切出独立实验分支 `exp/kotlin-migration`，验证纯 Java 基线。
   - 引入与 `AGP 8.12.2` / `Gradle 8.13` 兼容的 Kotlin Gradle Plugin（显式 `org.jetbrains.kotlin.android`），统一 `jvmTarget`，保持 Groovy DSL 不变。
 - **重点核对风险**：`R-BUILD-01`、`R-BUILD-02`、`R-BUILD-03`、`R-BEHAVIOR-05`
-- **实际变更明细**：_（执行后填写）_
-- **遇到的问题与处理**：_（执行后填写，关联 `R-xxx` / `NR-xxx`）_
-- **验证证据与盲区**：_（记录 `assembleDebug`、`testDebugUnitTest`、`lintDebug` 真实结果）_
+- **实际变更明细**：
+  - `build.gradle`：在 `buildscript.dependencies` 中新增 `classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:2.3.21'`。
+  - `app/build.gradle`：应用 `apply plugin: 'org.jetbrains.kotlin.android'`；显式声明 `compileOptions`（`JavaVersion.VERSION_1_8`）与 Kotlin 2.x `kotlin { compilerOptions { jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_1_8) } }`；完整保留 Groovy DSL 与原 SDK/依赖配置。
+- **遇到的问题与处理**：
+  - 触发新增风险 `NR-001`（详见 [02-new-risks-and-fixes.md](02-new-risks-and-fixes.md)）：初选最新稳定版 `2.4.21` 时受本机 `~/.gradle/gradle.properties` 失效代理（`127.0.0.1:65533`）阻断；经核对官方兼容矩阵与本地缓存，改用官方支持 `AGP 8.12.2 + Gradle 8.13` 且本地已缓存的 `2.3.21`，已晋升为 `R-EVOLVED-01`。
+- **验证证据与盲区**：
+  - 纯 Java 基线（改动前）：`assembleDebug testDebugUnitTest lintDebug` 全部通过（`:app:testDebugUnitTest` 56 passed, 0 skipped, 0 failed）。
+  - Kotlin 接入后（`d3dcf25`）：`assembleDebug testDebugUnitTest lintDebug` 全部通过（`:app:testDebugUnitTest` 56 passed, 0 skipped, 0 failed）；Android Studio `Gradle Sync` 通过。
+  - 盲区：本批尚未包含 `.kt` 源文件编译与设备测试；`lintDebug` 确认 0 Error/Fatal，具体 Warning 条目增量因构建报告目录受工作区访问限制暂未逐行导出比对。
 
 ---
 
