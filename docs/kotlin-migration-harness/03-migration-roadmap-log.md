@@ -13,7 +13,7 @@
 | **Batch 2** | 契约类 + ContentProvider（2 个） | 2 | `DONE` | `a038b77` | 56/56 PASS | PASS（0 Error） | `NR-003` → `R-EVOLVED-03` |
 | **Batch 3** | 导出异步任务 + 轻量兼容 Activity（3 个） | 3 | `DONE` | `e7ce6da` | 56/56 PASS | 0 Error（增量未导出） | 复审暴露 `NR-004`/`008`/`009` |
 | **Batch 1–3 复审** | 字节码/语义/覆盖率深度审计与纠偏 | 5 修复 + 1 测试 | `DONE` | `3089648` | **61/61 PASS** | 0 Error（增量未导出） | 实锤 `NR-004`～`NR-009` → `R-EVOLVED-04`～`09` |
-| **Batch 4a** | 核心列表页 `NotesList`（1 个） | 1 | `PLANNED` | — | — | — | — |
+| **Batch 4a** | 核心列表页 `NotesList`（1 个） | 1 | `DONE` | `6eda74a` | **65/65 PASS** | 0 Error（增量未导出） | 0 新增故障；前置命中 `R-EVOLVED-04`/`05`/`06`/`09` |
 | **Batch 4b** | 核心编辑页 `NoteEditor`（1 个） | 1 | `PLANNED` | — | — | — | — |
 | **Batch 5** | 收口复核 / 可选测试迁移与四层验收 | 待定 | `PLANNED` | — | — | — | — |
 
@@ -140,16 +140,35 @@
 ---
 
 ### Batch 4a：核心列表页 `NotesList`
-- **状态**：`PLANNED`
-- **Commit**：`待填写`
+- **状态**：`DONE`
+- **Commit**：`6eda74a`
 - **计划迁移文件（1 个）**：
   1. `NotesList.java` → `NotesList.kt`
-     - 关键类/函数：`onCreate`、`updateSearch`、`addCategoryFilter`、`updateCategorySelection`、`reloadNotes`、`createNote`、`onSaveInstanceState`、`onCreateLoader`、`NotesLoader`、`onLoadFinished`、`onLoaderReset`、`onCreateOptionsMenu`、`onPrepareOptionsMenu`、`onOptionsItemSelected`、`onCreateContextMenu`、`onContextItemSelected`、`onListItemClick`
+     - 关键类/函数：`onCreate`、`updateSearch`、`addCategoryFilter`、`updateCategorySelection`、`reloadNotes`、`createNote`、`notesUri`、`onSaveInstanceState`、`onCreateLoader`、`NotesLoader`、`onLoadFinished`、`onLoaderReset`、`onCreateOptionsMenu`、`onPrepareOptionsMenu`、`onOptionsItemSelected`、`onCreateContextMenu`、`onContextItemSelected`、`onListItemClick`
 - **选择依据**：主入口列表页，涉及 `CursorLoader`、动态分类按钮、`SearchView`、`PopupMenu` 及上下文菜单，单独提交便于定位 UI 回归。
-- **重点核对风险**：`R-NULL-04`、`R-LIFECYCLE-02`、`R-BEHAVIOR-05`
-- **实际更改函数与签名调整**：_（执行后填写）_
-- **遇到的问题与处理**：_（执行后填写，关联 `R-xxx` / `NR-xxx`）_
-- **验证证据与盲区**：_（执行后填写）_
+- **重点核对风险**：`R-BUILD-02`、`R-NULL-04`、`R-LIFECYCLE-02`、`R-BEHAVIOR-05`、`R-EVOLVED-04`～`R-EVOLVED-09`
+- **实际更改函数与签名调整**：
+  - `NotesLoader`：保持为普通嵌套类 `private class NotesLoader`（非 `inner`），构造函数仅接收 `applicationContext` 等参数，`loadInBackground(): Cursor?` 保留异常兜底返回 `null`（满足 `R-LIFECYCLE-02`）。
+  - 平台类型空安全（`R-NULL-04`、`R-EVOLVED-05`）：抽离 `private fun notesUri(): Uri = intent?.data ?: NotePad.Notes.CONTENT_URI` 避免多处隐式 `!!`；`onCreateContextMenu(menu: ContextMenu?, view: View?, menuInfo: ContextMenuInfo?)` 显式声明全可空参数，防止原 Java 未使用的 `view` 参数因 Kotlin 插入 `checkNotNullParameter` 制造新 NPE；`onLoadFinished`/`onLoaderReset`/`onListItemClick` 保持可空参数；`onPrepareOptionsMenu` 保持 `hasWindowFocus() && clipboard?.hasPrimaryClip() == true` 短路顺序与 `arrayOfNulls<MenuItem>(1)`。
+  - 标准库等价性（`R-EVOLVED-06`）：`SimpleCursorAdapter.ViewBinder` 中标题空白判断直接采用 `title == null || title.trim { it <= ' ' }.isEmpty()`，前置避免 `\u0000`/`\u3000` 语义漂移。
+  - 覆写可见性与 `final` 核对（`R-EVOLVED-04`、`R-EVOLVED-07`）：全部 11 个覆写方法（3 个 `protected` + 8 个 `public`）字节码修饰符与原 Java 100% 一致；`NotesList` 默认变为 `public final class`（全仓无子类继承）；`onCreateContextMenu`/`onContextItemSelected` 保持 `ClassCastException` 捕获日志及 `null` 抛 NPE 契约。
+  - 补齐覆盖率缺口（`R-EVOLVED-09`）：在 `KotlinMigrationParityTest.java` 新增 4 项 `NotesList` 定向回归单测（`notesListLoaderIsStaticNonInnerAndShowsErrorOnNullCursor`、`notesListViewBinderMatchesJavaTrimAndEmptyPreviewSemantics`、`notesListItemClickSupportsEditPickAndGetContent`、`notesListOptionsAndContextMenuHandleCopyDeleteAndBadMenuInfo`）。
+- **遇到的问题与处理**：
+  - 本批 **0 新增意外故障**——Batch 1–3 深度复审沉淀下来的 `R-EVOLVED-04`/`05`/`06`/`09` 在编码前与 `javap` 验收中直接发挥了前置拦截作用：
+    1. 前置按 `R-EVOLVED-06` 写了 `trim { it <= ' ' }`，没有在 `ViewBinder` 标题判空处重蹈 `NR-006` 覆辙；
+    2. 前置按 `R-EVOLVED-05` 将 `onCreateContextMenu` 改为全可空参数，并用 `javap -c` 确认 0 个多余 `checkNotNullParameter`；
+    3. 按 `R-EVOLVED-09` 主动盘点出原有单测对 `NotesList` 存在 7 处未覆盖分支，并用 4 项新单测打穿其中核心路径。
+- **验证证据与盲区**：
+  - **L1 构建**：`NotesList.kt` 静态分析 0 Error；`assembleDebug` 通过。
+  - **L1.5 字节码核验**：
+    - `javap -p NotesList.class` 对照原 Java 基线：全部 11 个覆写方法可见性与签名 100% 一致；无新增 `NR-008` 可见性扩张项。
+    - `javap -p 'NotesList$NotesLoader.class'` 确认构造函数为 `(Context, Uri, String, String)`，无 `this$0` 外部引用。
+    - `javap -c -p NotesList.class` 核对 `Intrinsics.checkNotNullParameter`，确认 `onCreateContextMenu` / `onLoadFinished` / `onLoaderReset` / `onListItemClick` 均为 0 隐式非空断言。
+  - **L2 本地单测**：`assembleDebug testDebugUnitTest lintDebug` 全部通过（`:app:testDebugUnitTest` **65 passed, 0 skipped, 0 failed**，含原 `NotesListTest` 7 项、`NotePasteLifecycleTest#listMenuDoesNotReadClipboardWhileWindowIsUnfocused`、`NoteUiPreviewTest` 及新增 4 项 `NotesList` parity 测试）。
+  - **仍保留的诚实盲区**：
+    1. `list_more` 弹出 `PopupMenu` 交互、`onCreateContextMenu` 带真实 `ContextMenu` 充气菜单与 header 渲染，以及真机/模拟器上的实际触摸/长按交互尚未执行；
+    2. `NotesLoader.loadInBackground()` 在后台线程真实抛出 `RuntimeException` 走 `catch` 返回 `null` 的路径未直接注入模拟（已测下游 `onLoadFinished(null, null)` 展示错误文案与 0 计数）；
+    3. `lintDebug` 确认 0 Error/Fatal，具体 Warning 条数与基线（37）的精确增量仍保持 `UNVERIFIED`。
 
 ---
 

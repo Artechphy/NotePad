@@ -74,7 +74,7 @@
 | 风险编号 | Batch 0 | Batch 1 | Batch 2 | Batch 3 | Batch 4a | Batch 4b | Batch 5 |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 | `R-BUILD-01` | TRIGGERED (`NR-001`) | N/A | N/A | N/A | N/A | N/A | PENDING |
-| `R-BUILD-02` | PASS | PASS | PASS | PASS | PENDING | PENDING | PENDING |
+| `R-BUILD-02` | PASS | PASS | PASS | PASS | PASS | PENDING | PENDING |
 | `R-BUILD-03` | PASS | TRIGGERED (`NR-002`) | N/A | N/A | N/A | N/A | PENDING |
 | `R-BYTECODE-01` | N/A | TRIGGERED (`NR-008`) | TRIGGERED (`NR-008`) | TRIGGERED (`NR-004`/`008`) | N/A | PENDING | PENDING |
 | `R-BYTECODE-02` | N/A | PASS | N/A | N/A | N/A | N/A | PENDING |
@@ -85,17 +85,17 @@
 | `R-NULL-01` | N/A | TRIGGERED (`NR-005`) | N/A | N/A | N/A | N/A | PENDING |
 | `R-NULL-02` | N/A | PASS | N/A | N/A | N/A | N/A | PENDING |
 | `R-NULL-03` | N/A | N/A | TRIGGERED (`NR-007`) | N/A | N/A | N/A | PENDING |
-| `R-NULL-04` | N/A | N/A | N/A | PASS (补测 `NotesLiveFolder`) | PENDING | PENDING | PENDING |
+| `R-NULL-04` | N/A | N/A | N/A | PASS (补测 `NotesLiveFolder`) | PASS (`javap -c`+补测) | PENDING | PENDING |
 | `R-LIFECYCLE-01` | N/A | N/A | N/A | N/A | N/A | PENDING | PENDING |
-| `R-LIFECYCLE-02` | N/A | N/A | N/A | N/A | PENDING | N/A | PENDING |
+| `R-LIFECYCLE-02` | N/A | N/A | N/A | N/A | PASS (`javap`+反射单测) | N/A | PENDING |
 | `R-LIFECYCLE-03` | N/A | N/A | N/A | UNVERIFIED (旋转重绑未测) | N/A | PENDING | PENDING |
 | `R-LIFECYCLE-04` | N/A | N/A | N/A | N/A | N/A | PENDING | PENDING |
 | `R-LIFECYCLE-05` | N/A | N/A | N/A | PASS | N/A | N/A | PENDING |
 | `R-BEHAVIOR-01` | N/A | N/A | PASS | N/A | N/A | N/A | PENDING |
-| `R-BEHAVIOR-02` | N/A | TRIGGERED (`NR-006`) | N/A | N/A | N/A | N/A | PENDING |
+| `R-BEHAVIOR-02` | N/A | TRIGGERED (`NR-006`) | N/A | N/A | PASS (`trim` 补测通过) | N/A | PENDING |
 | `R-BEHAVIOR-03` | N/A | N/A | N/A | N/A | N/A | PENDING | PENDING |
 | `R-BEHAVIOR-04` | N/A | N/A | PASS | N/A | N/A | N/A | PENDING |
-| `R-BEHAVIOR-05` | UNVERIFIED (仅证0E) | UNVERIFIED (仅证0E) | UNVERIFIED (仅证0E) | UNVERIFIED (仅证0E) | PENDING | PENDING | PENDING |
+| `R-BEHAVIOR-05` | UNVERIFIED (仅证0E) | UNVERIFIED (仅证0E) | UNVERIFIED (仅证0E) | UNVERIFIED (仅证0E) | UNVERIFIED (仅证0E) | PENDING | PENDING |
 
 ---
 
