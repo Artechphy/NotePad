@@ -1,13 +1,16 @@
 package com.example.android.notepad;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ClipboardManager;
 import android.content.ContentProviderClient;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ProviderInfo;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,6 +19,8 @@ import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import org.junit.After;
 import org.junit.Test;
@@ -29,6 +34,11 @@ import org.robolectric.annotation.LooperMode;
 import org.robolectric.fakes.RoboMenuItem;
 import org.robolectric.shadow.api.Shadow;
 import org.robolectric.shadows.ShadowActivity;
+import org.robolectric.shadows.ShadowAlertDialog;
+import org.robolectric.shadows.ShadowContentResolver;
+import org.robolectric.shadows.ShadowLooper;
+import org.robolectric.shadows.ShadowToast;
+import java.io.ByteArrayOutputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -294,6 +304,152 @@ public class KotlinMigrationParityTest {
         } finally {
             controller.pause().stop().destroy();
             drainLoader();
+        }
+    }
+
+    @Test
+    public void noteEditorEarlyExitOnInvalidUriSurvivesLifecycleWithoutLateinitCrash() {
+        Intent[] badIntents = new Intent[] {
+            new Intent(Intent.ACTION_MAIN, NotePad.Notes.CONTENT_URI),
+            new Intent(Intent.ACTION_EDIT, ContentUris.withAppendedId(NotePad.Notes.CONTENT_URI, 999999L))
+        };
+        for (Intent intent : badIntents) {
+            ActivityController<NoteEditor> controller = Robolectric.buildActivity(NoteEditor.class, intent).setup();
+            try {
+                NoteEditor editor = controller.get();
+                assertTrue("Early exit must finish activity on invalid intent", editor.isFinishing());
+                assertEquals(editor.getString(R.string.error_message), ShadowToast.getTextOfLatestToast());
+
+                // Full uninitialized lifecycle callbacks must remain crash-free (R-LIFECYCLE-01)
+                editor.onWindowFocusChanged(true);
+                editor.onBackPressed();
+                PopupMenu popup = new PopupMenu(editor, editor.findViewById(R.id.editor_more));
+                editor.onCreateOptionsMenu(popup.getMenu());
+                assertFalse(editor.onPrepareOptionsMenu(popup.getMenu()));
+                Bundle state = new Bundle();
+                controller.saveInstanceState(state);
+                assertFalse(state.containsKey("note_uri"));
+            } finally {
+                controller.pause().stop().destroy();
+            }
+        }
+    }
+
+    @Test
+    public void noteExportTaskRetainsAcrossConfigurationChangeAndDeliversResultOnce() throws Exception {
+        Robolectric.getBackgroundThreadScheduler().pause();
+        Robolectric.getForegroundThreadScheduler().pause();
+        ShadowToast.reset();
+        Uri noteUri = insertNote("旋转导出", "跨配置变更正文", 1704139440000L);
+        Uri target = Uri.parse("content://test-output/rotated.txt");
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        ShadowContentResolver shadowResolver = Shadow.extract(
+                RuntimeEnvironment.getApplication().getContentResolver());
+        shadowResolver.registerOutputStream(target, bytes);
+
+        ActivityController<NoteEditor> controller = Robolectric.buildActivity(
+                NoteEditor.class, new Intent(Intent.ACTION_EDIT, noteUri)).setup();
+        try {
+            NoteEditor original = controller.get();
+            original.onActivityResult(701, Activity.RESULT_OK, new Intent().setData(target));
+            assertEquals(original.getString(R.string.exporting),
+                    ((TextView) original.findViewById(R.id.save_status)).getText().toString());
+
+            // Simulate screen rotation configuration change while AsyncTask is still queued
+            Configuration rotated = new Configuration(original.getResources().getConfiguration());
+            rotated.orientation = rotated.orientation == Configuration.ORIENTATION_LANDSCAPE
+                    ? Configuration.ORIENTATION_PORTRAIT
+                    : Configuration.ORIENTATION_LANDSCAPE;
+            controller.configurationChange(rotated);
+            NoteEditor recreated = controller.get();
+            assertNotSame(original, recreated);
+            assertTrue("Recreated NoteEditor must retain the in-flight NoteExportTask",
+                    recreated.getLastNonConfigurationInstance() instanceof NoteExportTask);
+
+            // Finish background export and deliver result to the recreated Activity
+            Robolectric.flushBackgroundThreadScheduler();
+            ShadowLooper.idleMainLooper();
+            assertTrue(bytes.toString("UTF-8").contains("旋转导出"));
+            assertTrue(bytes.toString("UTF-8").contains("跨配置变更正文"));
+            assertEquals(recreated.getString(R.string.saved),
+                    ((TextView) recreated.findViewById(R.id.save_status)).getText().toString());
+            assertEquals(recreated.getString(R.string.export_success), ShadowToast.getTextOfLatestToast());
+            assertEquals(1, ShadowToast.shownToastCount());
+
+            // Another configuration change after completion must not re-deliver the export result
+            Configuration rotatedBack = new Configuration(recreated.getResources().getConfiguration());
+            rotatedBack.orientation = rotatedBack.orientation == Configuration.ORIENTATION_LANDSCAPE
+                    ? Configuration.ORIENTATION_PORTRAIT
+                    : Configuration.ORIENTATION_LANDSCAPE;
+            controller.configurationChange(rotatedBack);
+            assertEquals(1, ShadowToast.shownToastCount());
+        } finally {
+            Robolectric.flushBackgroundThreadScheduler();
+            ShadowLooper.idleMainLooper();
+            controller.pause().stop().destroy();
+        }
+    }
+
+    @Test
+    public void noteEditorEmptyCheckMatchesJavaTrimSemanticsForControlAndFullWidthSpaces() {
+        ActivityController<NoteEditor> controller = Robolectric.buildActivity(
+                NoteEditor.class, new Intent(Intent.ACTION_INSERT, NotePad.Notes.CONTENT_URI)).setup();
+        try {
+            NoteEditor editor = controller.get();
+            ((EditText) editor.findViewById(R.id.title)).setText("\u0000\u0007");
+            ((EditText) editor.findViewById(R.id.note)).setText("\u001B");
+            editor.findViewById(R.id.editor_save).performClick();
+            assertFalse("Control-char-only draft must be treated as empty like Java String.trim()",
+                    editor.isFinishing());
+            assertEquals(editor.getString(R.string.nothing_to_save), ShadowToast.getTextOfLatestToast());
+
+            ((EditText) editor.findViewById(R.id.title)).setText("　");
+            editor.findViewById(R.id.editor_save).performClick();
+            assertTrue("Full-width space must be treated as non-empty like Java String.trim()",
+                    editor.isFinishing());
+        } finally {
+            controller.pause().stop().destroy();
+        }
+    }
+
+    @Test
+    public void noteEditorMenuDeleteDialogAndNewNoteRevertRemoveDraft() {
+        Uri noteUri = insertNote("待删笔记", "确认删除测试", 1704139440000L);
+        ActivityController<NoteEditor> editController = Robolectric.buildActivity(
+                NoteEditor.class, new Intent(Intent.ACTION_EDIT, noteUri)).setup();
+        try {
+            NoteEditor editor = editController.get();
+            assertTrue(editor.onOptionsItemSelected(new RoboMenuItem(R.id.menu_delete)));
+            AlertDialog dialog = ShadowAlertDialog.getLatestAlertDialog();
+            assertNotNull("Editor delete must show confirmation dialog", dialog);
+            assertTrue(dialog.isShowing());
+            assertFalse(editor.isFinishing());
+
+            dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
+            assertTrue(editor.isFinishing());
+            try (Cursor cursor = RuntimeEnvironment.getApplication().getContentResolver()
+                    .query(noteUri, null, null, null, null)) {
+                assertNotNull(cursor);
+                assertEquals(0, cursor.getCount());
+            }
+        } finally {
+            editController.pause().stop().destroy();
+        }
+
+        ActivityController<NoteEditor> newController = Robolectric.buildActivity(
+                NoteEditor.class, new Intent(Intent.ACTION_INSERT, NotePad.Notes.CONTENT_URI)).setup();
+        try {
+            NoteEditor editor = newController.get();
+            ((EditText) editor.findViewById(R.id.note)).setText("临时草稿");
+            assertTrue(editor.onOptionsItemSelected(new RoboMenuItem(R.id.menu_revert)));
+            assertTrue(editor.isFinishing());
+            try (Cursor cursor = RuntimeEnvironment.getApplication().getContentResolver()
+                    .query(NotePad.Notes.CONTENT_URI, null, null, null, null)) {
+                assertNotNull(cursor);
+                assertEquals(0, cursor.getCount());
+            }
+        } finally {
+            newController.pause().stop().destroy();
         }
     }
 
