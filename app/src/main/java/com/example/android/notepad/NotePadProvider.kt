@@ -397,8 +397,7 @@ class NotePadProvider : ContentProvider(), PipeDataWriter<Cursor> {
             addURI(NotePad.AUTHORITY, "live_folders/notes", LIVE_FOLDER_NOTES)
         }
 
-        @JvmField
-        val NOTE_STREAM_TYPES: ClipDescription = ClipDescription(
+        private val NOTE_STREAM_TYPES: ClipDescription = ClipDescription(
             null,
             arrayOf(ClipDescription.MIMETYPE_TEXT_PLAIN),
         )

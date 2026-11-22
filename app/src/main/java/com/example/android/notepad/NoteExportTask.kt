@@ -10,7 +10,7 @@ import java.io.IOException
 import java.lang.ref.WeakReference
 
 /** A local document write; retained across rotation, with no strong Activity reference. */
-class NoteExportTask(
+internal class NoteExportTask(
     private val resolver: ContentResolver,
     private val document: String,
 ) : AsyncTask<Uri?, Void?, Exception?>() {
@@ -20,7 +20,7 @@ class NoteExportTask(
     private var delivered: Boolean = false
     private var failure: Exception? = null
 
-    fun attach(activity: NoteEditor) {
+    internal fun attach(activity: NoteEditor) {
         editor = WeakReference(activity)
         if (finished) {
             deliver()
@@ -29,7 +29,7 @@ class NoteExportTask(
         }
     }
 
-    fun detach() {
+    internal fun detach() {
         editor.clear()
     }
 
