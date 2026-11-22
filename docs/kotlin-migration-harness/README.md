@@ -41,5 +41,5 @@
 | **L1 构建检查** | `./gradlew assembleDebug` | 验证 Java/Kotlin 混编、Kotlin 插件配置与资源打包 |
 | **L2 本地单测** | `./gradlew testDebugUnitTest` | 运行 11 个测试类 / 56 项 JUnit + Robolectric 回归测试 |
 | **静态检查** | `./gradlew lintDebug` | 对比基线（0 Error/Fatal，37 Warning），检查是否引入新告警 |
-| **L3 仪器测试** | `./gradlew connectedDebugAndroidTest` | 需已连接模拟器/真机；验证真实进程下 Provider 与 Activity 行为 |
+| **L3 仪器 / 设备测试** | 项目已有 `tools/device-test` 设备验收脚本（注：历史遗留 `app/src/androidTest` 依赖已从 compileSdk 35 移除的 `android.test.*`，当前基线不可直接跑 `connectedDebugAndroidTest`，详见 `NR-003`） | 需已连接模拟器/真机；验证真实进程下 Provider 与 Activity 行为 |
 | **L4 人工走查** | 按核心路径实机/模拟器走查 | 覆盖屏幕旋转、剪贴板、导出、返回键等自动化盲区 |

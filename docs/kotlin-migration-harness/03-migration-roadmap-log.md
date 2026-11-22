@@ -10,7 +10,7 @@
 | :--- | :--- | :---: | :---: | :---: | :---: | :---: | :--- |
 | **Batch 0** | 基线确认 + Kotlin 插件接入（Groovy） | 0（仅构建） | `DONE` | `d3dcf25` | 56/56 PASS | PASS（0 Error） | `NR-001` → `R-EVOLVED-01` |
 | **Batch 1** | 依赖末端纯逻辑工具类（5 个） | 5 | `DONE` | `aba4458` | 56/56 PASS | PASS（0 Error） | `NR-002` → `R-EVOLVED-02` |
-| **Batch 2** | 契约类 + ContentProvider（2 个） | 2 | `PLANNED` | — | — | — | — |
+| **Batch 2** | 契约类 + ContentProvider（2 个） | 2 | `DONE` | `a038b77` | 56/56 PASS | PASS（0 Error） | `NR-003` → `R-EVOLVED-03` |
 | **Batch 3** | 导出异步任务 + 轻量兼容 Activity（3 个） | 3 | `PLANNED` | — | — | — | — |
 | **Batch 4a** | 核心列表页 `NotesList`（1 个） | 1 | `PLANNED` | — | — | — | — |
 | **Batch 4b** | 核心编辑页 `NoteEditor`（1 个） | 1 | `PLANNED` | — | — | — | — |
@@ -66,15 +66,15 @@
 - **遇到的问题与处理**：
   - 触发新增风险 `NR-002`（详见 [02-new-risks-and-fixes.md](02-new-risks-and-fixes.md)）：首次编译 `.kt` 时才触发 `:app:kotlinBuildToolsApiClasspath` 懒解析并撞上失效代理；通过单次清空代理参数拉取 `2.3.21` 编译器依赖入本地缓存后，常规无参构建恢复全绿，并晋升为 `R-EVOLVED-02`。
 - **验证证据与盲区**：
-  - 5 个新 `.kt` 文件 IDE 静态分析 0 Error。
+  - 5 个新 `.kt` 文件静态分析 0 Error。
   - 常规无参命令 `assembleDebug testDebugUnitTest lintDebug` 通过；`:app:testDebugUnitTest --rerun-tasks` 全部 **56 passed, 0 skipped, 0 failed**（包含未改动的全部 Java 混编单测：`NoteTimestampTest`、`NoteTextTest`、`NoteSearchTest`、`NoteExportTest` 及所有调用方组件测试）。
   - 盲区：本批尚未执行真机/模拟器测试；`NoteSearch`/`NoteText` 改为 Kotlin `trim()` 后会额外裁剪 Unicode 空白（如全角空格），对现有 ASCII 用例全兼容且更符合中文场景，但未额外覆盖特殊 Unicode 控制字符样本。
 
 ---
 
 ### Batch 2：契约类与数据访问层
-- **状态**：`PLANNED`
-- **Commit**：`待填写`
+- **状态**：`DONE`
+- **Commit**：`a038b77`
 - **计划迁移文件（2 个）**：
   1. `NotePad.java` → `NotePad.kt`
      - 关键成员：`AUTHORITY`、`Notes` 表名/列名/MIME/排序常量（`const val`）、URI 常量（`@JvmField val`）
@@ -82,9 +82,16 @@
      - 关键类/函数：`DatabaseHelper`（`onCreate`、`onUpgrade`）、`onCreate`、`query`、`getType`、`getStreamTypes`、`openTypedAssetFile`、`writeDataToPipe`、`insert`、`delete`、`update`、`getOpenHelperForTest`
 - **选择依据**：全应用共享数据契约与持久化核心，向下仅依赖 Batch 1 的 `NoteCategory`，向上被所有 Activity 与 Provider 测试依赖。
 - **重点核对风险**：`R-BYTECODE-01`、`R-BYTECODE-03`、`R-BYTECODE-05`、`R-NULL-03`、`R-BEHAVIOR-01`、`R-BEHAVIOR-04`、`R-BEHAVIOR-05`
-- **实际更改函数与签名调整**：_（执行后填写）_
-- **遇到的问题与处理**：_（执行后填写，关联 `R-xxx` / `NR-xxx`）_
-- **验证证据与盲区**：_（执行后填写）_
+- **实际更改函数与签名调整**：
+  - `NotePad.kt`：转为 `object NotePad` 与嵌套 `object Notes : BaseColumns`。针对 Kotlin 不继承 Java 接口静态常量的特性，在 `Notes` 内显式转发 `const val _ID = BaseColumns._ID` 与 `_COUNT`；`Uri` 静态常量全部标注 `@JvmField`，保留 `CONTENT_ID_URI_PATTERN` 原始路径语义。
+  - `NotePadProvider.kt`：`DatabaseHelper` 保持公开普通嵌套类（非 `inner`），`getOpenHelperForTest()` 保持 `public` 避免 `$app_debug` 名称修饰；`NOTE_STREAM_TYPES` 标注 `@JvmField`；`openTypedAssetFile` 标注 `@Throws(FileNotFoundException::class)`。
+  - 数组不变性处理：在 `update()` 中将 `whereArgs: Array<String>?` 映射为局部 `Array<String?>?`，避免因 Kotlin `Array` 不变性导致追加可空列值 `incomingValues.getAsString(column)` 时编译失败，完整保留 `IS NOT ?` 变更检测与 `AND (...)` 括号优先级逻辑。
+- **遇到的问题与处理**：
+  - 触发新增风险 `NR-003`（详见 [02-new-risks-and-fixes.md](02-new-risks-and-fixes.md)）：尝试跑 `:app:compileDebugAndroidTestJavaWithJavac` 检验历史 `androidTest` 时，暴露出旧基线在 `compileSdk 35` 下缺少 `android.test.*` 的既有限制（对 `NotePad`/`NotePadProvider` 引用 0 报错）。已修正 `README.md` L3 说明并晋升 `R-EVOLVED-03`。
+- **验证证据与盲区**：
+  - `NotePad.kt` 与 `NotePadProvider.kt` 静态分析 0 Error。
+  - `assembleDebug testDebugUnitTest lintDebug` 通过；`:app:testDebugUnitTest --rerun-tasks` 全部 **56 passed, 0 skipped, 0 failed**（包含 `NoteDatabaseMigrationTest` 真实 `v2 → v3` 文件升级与未知版本拒升测试、`NotePadProviderBehaviorTest` 全 12 项行为回归）。
+  - 盲区：`openTypedAssetFile` / `writeDataToPipe` 流式读取链路原有验证位于 `androidTest`（见 `NR-003`），当前未在真机/模拟器或新增本地单测中覆盖。
 
 ---
 
