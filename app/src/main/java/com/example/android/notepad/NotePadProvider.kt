@@ -279,7 +279,7 @@ class NotePadProvider : ContentProvider(), PipeDataWriter<Cursor> {
         where: String?,
         whereArgs: Array<String>?,
     ): Int {
-        val incomingValues = values ?: ContentValues()
+        val incomingValues = values ?: throw NullPointerException("ContentValues must not be null")
         if (incomingValues.containsKey(NotePad.Notes.COLUMN_NAME_CATEGORY)) {
             NoteCategory.requireValid(incomingValues.getAsString(NotePad.Notes.COLUMN_NAME_CATEGORY))
         }

@@ -3,7 +3,7 @@ package com.example.android.notepad
 /** Parameterized, literal substring search shared by the list and its tests. */
 object NoteSearch {
     @JvmStatic
-    fun normalize(keyword: String?): String = keyword?.trim() ?: ""
+    fun normalize(keyword: String?): String = keyword?.trim { it <= ' ' } ?: ""
 
     @JvmStatic
     @JvmOverloads

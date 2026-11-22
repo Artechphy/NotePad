@@ -18,13 +18,13 @@ object NoteText {
         return if (text == null) {
             ""
         } else {
-            truncate(text.replace(WHITESPACE, " ").trim(), 160)
+            truncate(text.replace(WHITESPACE, " ").trim { it <= ' ' }, 160)
         }
     }
 
     @JvmStatic
     fun title(entered: String, body: String?): String {
-        val trimmed = entered.trim()
+        val trimmed = entered.trim { it <= ' ' }
         if (trimmed.isNotEmpty()) {
             return trimmed
         }

@@ -10,7 +10,7 @@ object NoteExport {
 
     @JvmStatic
     fun filename(title: String): String {
-        var name = title.replace(INVALID_FILENAME_CHARS, "_").trim()
+        var name = title.replace(INVALID_FILENAME_CHARS, "_").trim { it <= ' ' }
         name = name.replace(EDGE_DOTS_OR_SPACES, "")
         if (name.isEmpty()) name = "笔记"
         name = NoteText.truncate(name, 64)
@@ -18,7 +18,7 @@ object NoteExport {
     }
 
     @JvmStatic
-    fun document(title: String, body: String, category: String, time: String): String {
+    fun document(title: String?, body: String?, category: String?, time: String?): String {
         return "$title\n\n分类：$category\n修改时间：$time\n\n$body\n"
     }
 
