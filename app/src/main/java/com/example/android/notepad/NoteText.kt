@@ -1,9 +1,8 @@
 package com.example.android.notepad
 
-object NoteText {
+internal object NoteText {
     private val WHITESPACE = Regex("\\s+")
 
-    @JvmStatic
     fun truncate(text: String, maxCodePoints: Int): String {
         val count = text.codePointCount(0, text.length)
         return if (count <= maxCodePoints) {
@@ -13,7 +12,6 @@ object NoteText {
         }
     }
 
-    @JvmStatic
     fun preview(text: String?): String {
         return if (text == null) {
             ""
@@ -22,7 +20,6 @@ object NoteText {
         }
     }
 
-    @JvmStatic
     fun title(entered: String, body: String?): String {
         val trimmed = entered.trim { it <= ' ' }
         if (trimmed.isNotEmpty()) {

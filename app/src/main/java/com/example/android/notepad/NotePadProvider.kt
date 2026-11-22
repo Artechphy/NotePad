@@ -53,7 +53,7 @@ class NotePadProvider : ContentProvider(), PipeDataWriter<Cursor> {
     /**
      * Helps open, create, and upgrade the database file. Kept accessible for tests.
      */
-    class DatabaseHelper(context: Context?) :
+    internal class DatabaseHelper(context: Context?) :
         SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
         override fun onCreate(db: SQLiteDatabase) {
@@ -352,9 +352,9 @@ class NotePadProvider : ContentProvider(), PipeDataWriter<Cursor> {
     }
 
     /**
-     * Test hook for accessing the underlying [DatabaseHelper] without Kotlin internal name mangling.
+     * Test hook for accessing the underlying [DatabaseHelper] within the Kotlin module.
      */
-    fun getOpenHelperForTest(): DatabaseHelper = mOpenHelper
+    internal fun getOpenHelperForTest(): DatabaseHelper = mOpenHelper
 
     companion object {
         private const val TAG = "NotePadProvider"

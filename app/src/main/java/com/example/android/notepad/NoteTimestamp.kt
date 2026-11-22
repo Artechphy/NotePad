@@ -5,9 +5,8 @@ import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
 
-object NoteTimestamp {
+internal object NoteTimestamp {
     /** Null means the stored timestamp is missing or invalid. */
-    @JvmStatic
     fun format(millis: Long?, timeZone: TimeZone, locale: Locale): String? {
         if (millis == null || millis <= 0L) {
             return null

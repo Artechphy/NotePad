@@ -1,12 +1,9 @@
 package com.example.android.notepad
 
 /** Parameterized, literal substring search shared by the list and its tests. */
-object NoteSearch {
-    @JvmStatic
+internal object NoteSearch {
     fun normalize(keyword: String?): String = keyword?.trim { it <= ' ' } ?: ""
 
-    @JvmStatic
-    @JvmOverloads
     fun selection(keyword: String?, category: String? = null): String? {
         if (category != null) {
             NoteCategory.requireValid(category)
@@ -21,8 +18,6 @@ object NoteSearch {
         return if (text == null) "category = ?" else "$text AND category = ?"
     }
 
-    @JvmStatic
-    @JvmOverloads
     fun arguments(keyword: String?, category: String? = null): Array<String>? {
         if (category != null) {
             NoteCategory.requireValid(category)
