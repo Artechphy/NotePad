@@ -73,29 +73,29 @@
 
 | 风险编号 | Batch 0 | Batch 1 | Batch 2 | Batch 3 | Batch 4a | Batch 4b | Batch 5 |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| `R-BUILD-01` | TRIGGERED (`NR-001`) | N/A | N/A | N/A | N/A | N/A | PENDING |
-| `R-BUILD-02` | PASS | PASS | PASS | PASS | PASS | PASS | PENDING |
-| `R-BUILD-03` | PASS | TRIGGERED (`NR-002`) | N/A | N/A | N/A | N/A | PENDING |
-| `R-BYTECODE-01` | N/A | TRIGGERED (`NR-008`) | TRIGGERED (`NR-008`) | TRIGGERED (`NR-004`/`008`) | N/A | PASS (`internal` 收敛) | PENDING |
-| `R-BYTECODE-02` | N/A | PASS | N/A | N/A | N/A | N/A | PENDING |
-| `R-BYTECODE-03` | N/A | N/A | PASS (`javap`) | N/A | N/A | N/A | PENDING |
-| `R-BYTECODE-04` | N/A | N/A | N/A | TRIGGERED (`NR-009`→补测通过) | N/A | N/A | PENDING |
-| `R-BYTECODE-05` | N/A | N/A | PASS (`javap`+单测) | N/A | N/A | N/A | PENDING |
-| `R-BYTECODE-06` | N/A | N/A | N/A | N/A | N/A | N/A | PENDING |
-| `R-NULL-01` | N/A | TRIGGERED (`NR-005`) | N/A | N/A | N/A | N/A | PENDING |
-| `R-NULL-02` | N/A | PASS | N/A | N/A | N/A | N/A | PENDING |
-| `R-NULL-03` | N/A | N/A | TRIGGERED (`NR-007`) | N/A | N/A | N/A | PENDING |
-| `R-NULL-04` | N/A | N/A | N/A | PASS (补测 `NotesLiveFolder`) | PASS (`javap -c`+补测) | PASS (`javap -c`+单测) | PENDING |
-| `R-LIFECYCLE-01` | N/A | N/A | N/A | N/A | N/A | PASS (早退全周期补测) | PENDING |
-| `R-LIFECYCLE-02` | N/A | N/A | N/A | N/A | PASS (`javap`+反射单测) | N/A | PENDING |
-| `R-LIFECYCLE-03` | N/A | N/A | N/A | UNVERIFIED (已于 4b 补测关闭) | N/A | PASS (旋转重绑单测) | PENDING |
-| `R-LIFECYCLE-04` | N/A | N/A | N/A | N/A | N/A | PASS (`javap -v` 0 引用) | PENDING |
-| `R-LIFECYCLE-05` | N/A | N/A | N/A | PASS | N/A | N/A | PENDING |
-| `R-BEHAVIOR-01` | N/A | N/A | PASS | N/A | N/A | N/A | PENDING |
-| `R-BEHAVIOR-02` | N/A | TRIGGERED (`NR-006`) | N/A | N/A | PASS (`trim` 补测通过) | PASS (`isEmpty` `trim` 补测) | PENDING |
-| `R-BEHAVIOR-03` | N/A | N/A | N/A | N/A | N/A | PASS (全套单测) | PENDING |
-| `R-BEHAVIOR-04` | N/A | N/A | PASS | N/A | N/A | N/A | PENDING |
-| `R-BEHAVIOR-05` | UNVERIFIED (仅证0E) | UNVERIFIED (仅证0E) | UNVERIFIED (仅证0E) | UNVERIFIED (仅证0E) | UNVERIFIED (仅证0E) | TRIGGERED (`NR-010`→0E/37W) | PENDING |
+| `R-BUILD-01` | TRIGGERED (`NR-001`) | N/A | N/A | N/A | N/A | N/A | PASS |
+| `R-BUILD-02` | PASS | PASS | PASS | PASS | PASS | PASS | PASS (A/B 双分支) |
+| `R-BUILD-03` | PASS | TRIGGERED (`NR-002`) | N/A | N/A | N/A | N/A | PASS (A/B 双分支) |
+| `R-BYTECODE-01` | N/A | TRIGGERED (`NR-008`) | TRIGGERED (`NR-008`) | TRIGGERED (`NR-004`/`008`) | N/A | PASS (`internal` 收敛) | PASS (A局部/B全量收敛) |
+| `R-BYTECODE-02` | N/A | PASS | N/A | N/A | N/A | N/A | PASS (A保留/B移除对照) |
+| `R-BYTECODE-03` | N/A | N/A | PASS (`javap`) | N/A | N/A | N/A | PASS (A/B 均保留) |
+| `R-BYTECODE-04` | N/A | N/A | N/A | TRIGGERED (`NR-009`→补测通过) | N/A | N/A | PASS (69/69 复跑) |
+| `R-BYTECODE-05` | N/A | N/A | PASS (`javap`+单测) | N/A | N/A | N/A | PASS (A公开/B internal) |
+| `R-BYTECODE-06` | N/A | N/A | N/A | N/A | N/A | N/A | N/A (本仓测试无 `@Rule`) |
+| `R-NULL-01` | N/A | TRIGGERED (`NR-005`) | N/A | N/A | N/A | N/A | PASS |
+| `R-NULL-02` | N/A | PASS | N/A | N/A | N/A | N/A | PASS |
+| `R-NULL-03` | N/A | N/A | TRIGGERED (`NR-007`) | N/A | N/A | N/A | PASS |
+| `R-NULL-04` | N/A | N/A | N/A | PASS (补测 `NotesLiveFolder`) | PASS (`javap -c`+补测) | PASS (`javap -c`+单测) | PASS |
+| `R-LIFECYCLE-01` | N/A | N/A | N/A | N/A | N/A | PASS (早退全周期补测) | PASS |
+| `R-LIFECYCLE-02` | N/A | N/A | N/A | N/A | PASS (`javap`+反射单测) | N/A | PASS |
+| `R-LIFECYCLE-03` | N/A | N/A | N/A | UNVERIFIED (已于 4b 补测关闭) | N/A | PASS (旋转重绑单测) | PASS |
+| `R-LIFECYCLE-04` | N/A | N/A | N/A | N/A | N/A | PASS (`javap -v` 0 引用) | PASS |
+| `R-LIFECYCLE-05` | N/A | N/A | N/A | PASS | N/A | N/A | PASS |
+| `R-BEHAVIOR-01` | N/A | N/A | PASS | N/A | N/A | N/A | PASS |
+| `R-BEHAVIOR-02` | N/A | TRIGGERED (`NR-006`) | N/A | N/A | PASS (`trim` 补测通过) | PASS (`isEmpty` `trim` 补测) | PASS |
+| `R-BEHAVIOR-03` | N/A | N/A | N/A | N/A | N/A | PASS (全套单测) | PASS |
+| `R-BEHAVIOR-04` | N/A | N/A | PASS | N/A | N/A | N/A | PASS |
+| `R-BEHAVIOR-05` | UNVERIFIED (仅证0E) | UNVERIFIED (仅证0E) | UNVERIFIED (仅证0E) | UNVERIFIED (仅证0E) | UNVERIFIED (仅证0E) | TRIGGERED (`NR-010`→0E/37W) | PASS (A/B 均 0E/37W) |
 
 ---
 
@@ -115,3 +115,4 @@
 | `R-EVOLVED-08` | `NR-008` | **包级私有 → `public` 可见性扩张追踪**：混编期因规避 `internal` 名字修饰（`$app_debug`）而被迫放宽为 `public` 的内部类与测试后门（如 `getOpenHelperForTest()`），必须登记清账，不得永久遗忘 | Batch 1–4 所有原 package-private 类及测试钩子，Batch 5 收口复核 | 在 Batch 5 逐一复核临时 `public` 列表：确认哪些在纯 Kotlin 后应收窄为 `internal`，哪些保留给 Java 测试并记录原因 |
 | `R-EVOLVED-09` | `NR-009` | **反“橡皮图章式 PASS”验收红线**：现有测试全绿绝不等于当前风险项被覆盖。凡是没有直接单测、`javap` 或设备运行证据的检查项，严禁标为 `PASS`，必须标为 `UNVERIFIED` 并给出补测计划 | 全部批次验收打卡 | 每个 `PASS` 标记都能指明对应的具体测试用例名、字节码输出或实机日志；0 覆盖项必须诚实标 `UNVERIFIED` |
 | `R-EVOLVED-10` | `NR-010` | **低 `minSdk` 禁止盲目将 Java `try (Cursor)` 替换为 Kotlin `Closeable.use {}`**：`android.database.Cursor` 自 API 16 起才实现 `java.io.Closeable`；在 `minSdk < 16` 项目中调用 `kotlin.io.use {}` 会生成 `Closeable` 隐式强转并触发 Lint `[NewApi]` Error（且 IDE 反而会误推荐 `use()`） | 所有 `minSdk < 16` 项目中含 `Cursor`、`SQLiteDatabase`、`AssetFileDescriptor` 等晚于 API 1 实现 `Closeable` 的资源类 | 改用基于原生 `close()` 的 `try/finally` 或自定义 `useCompat` 内联扩展；以 `lintDebug` 0 Error 与 `javap -v` 常量池 0 `Closeable` 引用验收 |
+| `R-EVOLVED-11` | `NR-011` | **测试迁移时的 `protected` 同包可见性语义差**：Java `protected` 允许同包测试直接调用（如 `onActivityResult`、`onListItemClick`），而 Kotlin `protected` 仅允许子类访问、禁止同包调用 | 将同包 Java 单元测试迁移为 Kotlin（如方案 B） | 预先评估测试中直接调用生产类 `protected` 生命周期回调的点，选择反射调用、Robolectric Shadow 或显式 `internal` 测试入口，避免为了迁测试擅自把生产 `protected` 方法改成 `public` |

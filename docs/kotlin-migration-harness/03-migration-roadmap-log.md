@@ -15,7 +15,7 @@
 | **Batch 1–3 复审** | 字节码/语义/覆盖率深度审计与纠偏 | 5 修复 + 1 测试 | `DONE` | `3089648` | **61/61 PASS** | 0 Error（增量未导出） | 实锤 `NR-004`～`NR-009` → `R-EVOLVED-04`～`09` |
 | **Batch 4a** | 核心列表页 `NotesList`（1 个） | 1 | `DONE` | `6eda74a` | **65/65 PASS** | 0 Error（增量未导出） | 0 新增故障；前置命中 `R-EVOLVED-04`/`05`/`06`/`09` |
 | **Batch 4b** | 核心编辑页 `NoteEditor`（1 个） | 1 | `DONE` | `15e7724` | **69/69 PASS** | **PASS（0E / 37W）** | `NR-010` → `R-EVOLVED-10`（顺带关闭 3 批 `R-LIFECYCLE-03`） |
-| **Batch 5** | 收口复核 / 可选测试迁移与四层验收 | 待定 | `PLANNED` | — | — | — | — |
+| **Batch 5 (镜像对照 A/B)** | 收口清账 `NR-008` + 方案 A/B 双分支镜像对照与四层验收 | A: 2 收敛 / B: 6 收敛 + 12 测试迁 Kotlin | `DONE` | A:`e9ac7ec` / B:`503cfba` | **双分支 69/69 PASS** | **双分支 0E / 37W** | 方案 B 命中 `NR-011` → `R-EVOLVED-11` |
 
 ---
 
@@ -207,15 +207,26 @@
 
 ---
 
-### Batch 5：收口复核、可选测试迁移与四层验收
-- **状态**：`PLANNED`
-- **Commit**：`待填写`
-- **收口核查项**：
-  1. 确认是否保留 Java 测试作为混编黑盒护栏，或挑拣/全量迁移 `app/src/test`（若迁移测试则重点核对 `R-BYTECODE-06`）。
-  2. 汇总全部 4 层验收结果：
-     - L1：`./gradlew assembleDebug`
-     - L2：`./gradlew testDebugUnitTest`（56/56）
-     - 静态检查：`./gradlew lintDebug`（对比基线 0 Error / 37 Warning）
-     - L3：`./gradlew connectedDebugAndroidTest`（标注是否具备设备环境）
-     - L4：人工走查记录与明确未验证盲区声明
-  3. 复盘模块二（`02-new-risks-and-fixes.md`）中的新增风险与演进成果，提炼博客实践结论。
+### Batch 5：收口复核、方案 A vs B 镜像对照与四层最终验收
+- **状态**：`DONE`
+- **双分支镜像 Commit**：
+  - **方案 A（`exp/kotlin-migration`，推荐作混编护栏基准）**：`e9ac7ec` — `refactor(batch-5a): reconcile internal visibility for Scheme A (Java test guardrail)`
+  - **方案 B（`exp/kotlin-migration-pure-kotlin-tests`，纯 Kotlin 测试对照镜像）**：`503cfba` — `refactor(batch-5b): migrate unit tests to Kotlin and tighten internal visibility (Scheme B)`
+- **实际变更明细**：
+  - **方案 A（`e9ac7ec`）**：
+    1. `NoteExportTask.kt`：收敛为 `internal class NoteExportTask` 及 `internal fun attach` / `detach`（实证 Java 测试的 `instanceof NoteExportTask` 仍可零改动通过编译）；
+    2. `NotePadProvider.kt`：`NOTE_STREAM_TYPES` 由 `@JvmField val` 收敛为 `private val`；
+    3. 保留全部 12 个 Java 单元测试（69 项）作为持久的 Java→Kotlin 互操作黑盒护栏，并显式登记 7 项因 Java 测试保留 `public` 的符号清账理由。
+  - **方案 B（`503cfba`，基于 `e9ac7ec` 切出）**：
+    1. 将 `NoteCategory`、`NoteSearch`、`NoteText`、`NoteTimestamp`、`NoteExport` 全部收敛为 `internal object` 并移除冗余 `@JvmStatic` / `@JvmOverloads`；
+    2. 将 `NotePadProvider.DatabaseHelper` 与 `NotePadProvider.getOpenHelperForTest()` 收敛为 `internal`（字节码变为 `getOpenHelperForTest$app_debug()`，彻底关闭测试后门泄漏）；
+    3. 将 `app/src/test` 全部 12 个测试文件（69 项用例）1:1 迁移为 Kotlin（移除 12 个 `.java` 测试文件），完整落地并验证 Robolectric `@Implements(ClipboardManager::class)` 自定义 Shadow 的 Kotlin 写法。
+- **遇到的问题与处理**：
+  - 方案 B 触发新增风险 **`NR-011`**（详见 [02-new-risks-and-fixes.md](02-new-risks-and-fixes.md)）：Java `protected` 同包可见，而 Kotlin `protected` 仅子类可见，导致 `NoteEditorBehaviorTest.kt` 和 `KotlinMigrationParityTest.kt` 无法直接裸调 `onActivityResult` 与 `onListItemClick`。采用测试侧反射封装，保住生产类 `protected` 契约不被反向破坏，并晋升为 `R-EVOLVED-11`。
+  - 完整镜像对照与选型矩阵已独立沉淀至 [04-scheme-a-vs-b-comparison.md](04-scheme-a-vs-b-comparison.md)。
+- **四层最终验收结果与盲区（双分支一致）**：
+  - **L1 构建**：`assembleDebug` PASS（Groovy DSL / AGP 8.12.2 / Gradle 8.13 / minSdk 11 / 0 新增第三方库）。
+  - **L1.5 字节码核验**：双分支均执行全量 `javap -p` 快照对比，完整验证了 `@JvmStatic` / `@JvmOverloads` / `$app_debug` 修饰差异与 `NoteEditor` API 33 / API 11 常量池隔离。
+  - **L2 本地单测**：双分支均执行 `:app:testDebugUnitTest --rerun-tasks`，均获得 **69 passed, 0 skipped, 0 failed**。
+  - **静态检查**：双分支 `lintDebug` 均通过（**0 Error / 37 Warnings**，较纯 Java 基线增量严格为 0）。
+  - **L3 / L4 诚实盲区**：未连接真机或模拟器，故 `tools/device-test` 设备测试、API 33+ 预测性返回手势实机体验、API 11–15 低版本实机兼容性、`NotePadProvider.openTypedAssetFile/writeDataToPipe` 流式读取及 `list_more`/长按菜单真实触摸走查均诚实保持 `UNVERIFIED` 状态。

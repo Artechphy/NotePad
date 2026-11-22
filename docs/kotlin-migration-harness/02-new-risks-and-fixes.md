@@ -20,6 +20,7 @@
 | `NR-008` | Batch 1–3 深度复审（原 Batch 1–3） | 6 个工具/任务类 + `DatabaseHelper` + `getOpenHelperForTest()` + `NOTE_STREAM_TYPES` | `javap -p` 实证：为规避 Kotlin `internal` 方法名修饰（`$app_debug`）对 Java 混编的破坏，将原本 package-private 的 6 个类与测试后门 `getOpenHelperForTest()` 全部静默扩张为 `public` API | `字节码/互操作` | 登记“混编期临时 `public` 清账清单”，待 Batch 5 根据是否保留 Java 测试统一决定收敛为 `internal` 还是显式保留文档说明 | 在模块一新增“临时可见性扩张清账”两阶段检查规则，晋升 `R-EVOLVED-08` | `R-EVOLVED-08` |
 | `NR-009` | Batch 1–3 深度复审（Harness 自身缺陷） | `01-risk-checklist.md`（Batch 0–3 打卡表） | 现有 56 项单测从未点击 `TitleEditor` 的 `R.id.ok`（`android:onClick` 0 覆盖）、从未执行 `NotesLiveFolder`、从未测试 `NoteExportTask` 旋转重绑，且未核对 Lint 精确 Warning 增量，却被直接标成了 `PASS` | `Agent 越界改写` / 验收失真 | 引入 `UNVERIFIED` 状态并降级所有缺证项；同时在 `KotlinMigrationParityTest` 中补齐 `TitleEditor` XML 点击反射与 `NotesLiveFolder` 实测覆盖 | 修改 `README.md` 闭环协议与打卡状态定义，设立“反橡皮图章式 PASS”红线，晋升 `R-EVOLVED-09` | `R-EVOLVED-09` |
 | `NR-010` | Batch 4b | `NoteEditor.kt` → `onCreate` / `saveNote` / `pasteNote` / `onActivityResult`（4 处 `Cursor?.use {}`） | `:app:lintDebug` 直接失败：`Lint found 4 errors, 37 warnings, 10 hints` — `Error: Implicit cast from Cursor to Closeable requires API level 16 (current min is 11) [NewApi]`（而编译与 API 34 单测完全不报错） | `Lint/静态检查` / `行为/语义漂移` | 编写基于原生 `Cursor.close()`（API 1）的 `private inline fun <R> Cursor.useCompat(...)` 替换全部 4 处 `kotlin.io.use {}`（无 `Closeable` 强转，也不引入 API 19 `addSuppressed`） | `lintDebug` 恢复 0 Error（同时实证全仓 Warning 精准维持基线 37 条）；`javap -v` 验证 0 `Closeable` 引用；晋升 `R-EVOLVED-10` | `R-EVOLVED-10` |
+| `NR-011` | Batch 5（方案 B 测试迁移） | `NoteEditorBehaviorTest.kt`、`KotlinMigrationParityTest.kt` → 调用 `onActivityResult` / `onListItemClick` | 将同包 Java 单测迁移为 Kotlin 后，原 Java 测试中直接调用 `editor.onActivityResult(...)` 与 `activity.onListItemClick(...)` 无法编译：`Cannot access 'onActivityResult': it is protected in 'NoteEditor'` | `字节码/互操作` / `测试框架/Robolectric` | 不破坏生产代码原有的 `protected` 覆写可见性（守住 `R-EVOLVED-04`），在 Kotlin 测试侧改用反射辅助方法调用 | 将“Java `protected`（同包+子类）vs Kotlin `protected`（仅子类）”纳入方案 A/B 镜像对照报告，晋升 `R-EVOLVED-11` | `R-EVOLVED-11` |
 
 > **根因分类建议枚举**：`构建/插件`、`字节码/互操作`、`空安全/平台类型`、`生命周期/并发`、`行为/语义漂移`、`测试框架/Robolectric`、`Lint/静态检查`、`Agent 越界改写`。
 
@@ -240,12 +241,34 @@
   - [ ] 是否更新边界/提示词约束：`否`
 - **博客素材价值**：`推荐收录`（极佳的“编译通过、API 34 单测全绿、连 IDE 都劝你用 `use()`，唯独 Android Lint 揪出 `minSdk 11` 隐式 `Closeable` 强转炸弹”的实战案例）
 
+### NR-011：Java `protected` 同包可见 vs Kotlin `protected` 仅子类可见，阻断同包单测直接调用生命周期回调
+- **发现批次**：Batch 5（方案 B：镜像对照分支 `exp/kotlin-migration-pure-kotlin-tests`）
+- **涉及位置**：`NoteEditorBehaviorTest.kt`（调用 `NoteEditor.onActivityResult`）、`KotlinMigrationParityTest.kt`（调用 `NotesList.onListItemClick` 与 `NoteEditor.onActivityResult`）
+- **发现手段**：将 12 个 Java 单元测试 1:1 迁移为 Kotlin 时编译可见性规则核查
+- **真实报错 / 现象**：
+  ```text
+  Cannot access 'onActivityResult': it is protected in 'NoteEditor'
+  Cannot access 'onListItemClick': it is protected in 'NotesList'
+  ```
+- **根因分析**：
+  - 在 Java 中，`protected` 表示“**同包内所有类 + 任意包子类**均可见”，因此位于同包 `com.example.android.notepad` 下的 Java 单元测试可以直接调用 `Activity` 的 `protected` 回调（如 `onActivityResult`、`onListItemClick`）。
+  - 在 Kotlin 中，`protected` **严格收窄为“仅子类可见”**，同包内的非子类（包括测试类）无权访问。若草率把生产代码中的 `onActivityResult` / `onListItemClick` 改成 `public` 来迁就 Kotlin 测试，反而会违背 `R-EVOLVED-04` 破坏原字节码可见性契约。
+- **修复方式**：
+  - 严守生产代码原有 `protected` 签名不变；
+  - 在方案 B 的 Kotlin 测试类内封装最小反射辅助函数 `invokeOnActivityResult(...)` / `invokeOnListItemClick(...)` 完成调用（方案 A 因保留 Java 测试无此摩擦，形成鲜明对照）。
+- **验证证据**：方案 B 分支 `503cfba` 运行 `assembleDebug :app:testDebugUnitTest --rerun-tasks lintDebug` 全部通过（**69 passed, 0 skipped, 0 failed**），且生产类字节码保持原 `protected` 签名不变。
+- **Harness 演进动作**：
+  - [x] 是否晋升到模块一：`是（R-EVOLVED-11）`
+  - [ ] 是否补充回归测试：`否`（直接覆盖于方案 B 全量 69 项单测）
+  - [x] 是否更新边界/提示词约束：`是（写入模块四方案 A vs B 镜像对照选型决策）`
+- **博客素材价值**：`推荐收录`（非常真实的“迁移测试语言反而产生反直觉摩擦”案例，直接回答“为什么很多团队迁完生产代码后刻意保留 Java 单测”）
+
 ---
 
 > 每次新增 `NR-xxx` 时，复制下方模板并据实填写：
 
 ```markdown
-### NR-011：<简短标题>
+### NR-012：<简短标题>
 - **发现批次**：Batch X
 - **涉及位置**：`path/to/File.kt` → `functionName(...)`
 - **发现手段**：`assembleDebug` / `javap -p` / `testDebugUnitTest` / `lintDebug` / 人工走查

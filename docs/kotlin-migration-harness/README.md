@@ -9,6 +9,7 @@
 | **模块一：风险与验收对照表** | [01-risk-checklist.md](01-risk-checklist.md) | 预先沉淀已知风险（构建、字节码/可见性/反射、跨语言空安全、生命周期、核心业务契约），每批验收时逐项核对 |
 | **模块二：新增风险与修复演进表** | [02-new-risks-and-fixes.md](02-new-risks-and-fixes.md) | 记录迁移实操中新暴露的未预期问题、真实报错、修复方式与规则沉淀，驱动 Harness 自身持续演进 |
 | **模块三：迁移路线图与提交日志** | [03-migration-roadmap-log.md](03-migration-roadmap-log.md) | 规划并追踪每次提交迁移的文件、变更函数/签名、遇到的问题与四层验证证据，可直接作为博客实战素材 |
+| **模块四：方案 A vs B 镜像对照报告** | [04-scheme-a-vs-b-comparison.md](04-scheme-a-vs-b-comparison.md) | 通过双分支镜像对比“保留 Java 测试护栏”与“纯 Kotlin 测试 + 全量 `internal` 收敛”的字节码、成本与权衡 |
 
 ## 不可突破的迁移边界（Invariants）
 
