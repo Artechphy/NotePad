@@ -11,7 +11,7 @@
 | **Batch 0** | 基线确认 + Kotlin 插件接入（Groovy） | 0（仅构建） | `DONE` | `d3dcf25` | 56/56 PASS | PASS（0 Error） | `NR-001` → `R-EVOLVED-01` |
 | **Batch 1** | 依赖末端纯逻辑工具类（5 个） | 5 | `DONE` | `aba4458` | 56/56 PASS | PASS（0 Error） | `NR-002` → `R-EVOLVED-02` |
 | **Batch 2** | 契约类 + ContentProvider（2 个） | 2 | `DONE` | `a038b77` | 56/56 PASS | PASS（0 Error） | `NR-003` → `R-EVOLVED-03` |
-| **Batch 3** | 导出异步任务 + 轻量兼容 Activity（3 个） | 3 | `PLANNED` | — | — | — | — |
+| **Batch 3** | 导出异步任务 + 轻量兼容 Activity（3 个） | 3 | `DONE` | `e7ce6da` | 56/56 PASS | PASS（0 Error） | 无新增（预期风险全拦截） |
 | **Batch 4a** | 核心列表页 `NotesList`（1 个） | 1 | `PLANNED` | — | — | — | — |
 | **Batch 4b** | 核心编辑页 `NoteEditor`（1 个） | 1 | `PLANNED` | — | — | — | — |
 | **Batch 5** | 收口复核 / 可选测试迁移与四层验收 | 待定 | `PLANNED` | — | — | — | — |
@@ -96,8 +96,8 @@
 ---
 
 ### Batch 3：异步导出任务与兼容型轻量 Activity
-- **状态**：`PLANNED`
-- **Commit**：`待填写`
+- **状态**：`DONE`
+- **Commit**：`e7ce6da`
 - **计划迁移文件（3 个）**：
   1. `NoteExportTask.java` → `NoteExportTask.kt`
      - 关键函数：`attach`、`detach`、`doInBackground`、`onPostExecute`、`deliver`
@@ -107,9 +107,16 @@
      - 关键常量/函数：`EDIT_TITLE_ACTION`、`onCreate`、`onResume`、`onPause`、`onClickOk`
 - **选择依据**：生命周期较简单、与其他页面耦合低，适合提前验证 `AsyncTask`、`WeakReference` 及 XML `android:onClick` 反射契约。
 - **重点核对风险**：`R-BYTECODE-01`、`R-BYTECODE-04`、`R-NULL-04`、`R-LIFECYCLE-03`、`R-LIFECYCLE-05`、`R-BEHAVIOR-05`
-- **实际更改函数与签名调整**：_（执行后填写）_
-- **遇到的问题与处理**：_（执行后填写，关联 `R-xxx` / `NR-xxx`）_
-- **验证证据与盲区**：_（执行后填写）_
+- **实际更改函数与签名调整**：
+  - `NoteExportTask.kt`：保持类与 `attach`/`detach` 为 `public`（供尚未迁移的 Java `NoteEditor` 直接调用，满足 `R-BYTECODE-01`）；`AsyncTask<Uri?, Void?, Exception?>` 的 `doInBackground(vararg uris: Uri?)` 增加空 URI 防御，保留 `WeakReference<NoteEditor?>` 与单次投递标志（满足 `R-LIFECYCLE-03`）。
+  - `NotesLiveFolder.kt`：保留旧版 `LiveFolders` 兼容逻辑，`intent?.action` 采用安全调用（满足 `R-NULL-04`）。
+  - `TitleEditor.kt`：`EDIT_TITLE_ACTION` 以 `companion object` + `const val` 暴露，保证 `NoteEditorBehaviorTest` 零改动编译；`mCursor`/`mText`/`mUri` 全部可空（满足 `R-LIFECYCLE-05`）；`onClickOk(v: View?)` 保持公开无默认参数单参签名以匹配 XML `android:onClick="onClickOk"` 反射调用（满足 `R-BYTECODE-04`）。
+- **遇到的问题与处理**：
+  - 本批未触发新增风险（预期风险 `R-BYTECODE-01`/`04`、`R-NULL-04`、`R-LIFECYCLE-03`/`05` 在批前编码阶段已全部前置拦截）。
+- **验证证据与盲区**：
+  - 3 个新 `.kt` 文件静态分析 0 Error。
+  - `assembleDebug testDebugUnitTest lintDebug` 全部通过（`:app:testDebugUnitTest` **56 passed, 0 skipped, 0 failed**，含 `NoteEditorBehaviorTest` 中 `TitleEditor` 标题弹窗修改并更新时间戳用例）。
+  - 盲区：`NotesLiveFolder` 与 `TitleEditor` XML `onClickOk` 反射点击路径未在真机/模拟器走查；`NoteExportTask` 跨旋转重绑需待真机/模拟器或后续定向测试进一步覆盖。
 
 ---
 
