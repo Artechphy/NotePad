@@ -11,6 +11,7 @@
 | 新增编号 | 发现批次 | 涉及文件 / 函数 | 真实报错 / 异常现象 | 根因分类 | 修复方式（核心要点） | Harness 演进动作（规则 / 单测 / 提示词） | 晋升至模块一 |
 | :--- | :---: | :--- | :--- | :---: | :--- | :--- | :---: |
 | `NR-001` | Batch 0 | `build.gradle`（Kotlin Gradle Plugin 版本） | 引入最新稳定版 `2.4.21` 时 Gradle Sync 超时，随后构建报错 `Connect to 127.0.0.1:65533 failed: Connection refused` | `构建/插件` | 交叉核对官方兼容矩阵与本地 `~/.gradle/caches`，改用本地已缓存且官方完整支持 `AGP 8.12.2 + Gradle 8.13` 的 `2.3.21`（不修改用户全局 `~/.gradle/gradle.properties`） | 提炼版本选型前先查“官方兼容矩阵 + 本地缓存/代理”规则，避免盲取 latest 阻断构建 | `R-EVOLVED-01` |
+| `NR-002` | Batch 1 | `:app:compileDebugKotlin`（首次编译 `.kt` 源码） | Batch 0 空接构建已通过，但 Batch 1 放入首个 `.kt` 文件后编译失败：`Could not resolve ':app:kotlinBuildToolsApiClasspath'`（缺失 `kotlin-compiler-embeddable-2.3.21.jar` 等 7 个编译器依赖） | `构建/插件` | 使用单次命令行参数 `-Dhttp.proxyHost= -Dhttps.proxyHost= -Dhttp.proxyPort= -Dhttps.proxyPort=` 绕过失效本机代理完成 `2.3.21` 编译器依赖拉取与本地缓存，后续常规构建不再需要参数 | 揭示“无 `.kt` 文件时 Batch 0 通过属于延迟解析假绿”，晋升编译器工具链真实落盘验收条款 | `R-EVOLVED-02` |
 
 > **根因分类建议枚举**：`构建/插件`、`字节码/互操作`、`空安全/平台类型`、`生命周期/并发`、`行为/语义漂移`、`测试框架/Robolectric`、`Lint/静态检查`、`Agent 越界改写`。
 
@@ -55,12 +56,35 @@
   - [ ] 是否更新边界/提示词约束：`否`
 - **博客素材价值**：`推荐收录`（生动说明“连写第一行 `.kt` 之前，Agent 盲选 latest 版本就可能翻车，而兼容性矩阵 + 缓存自检能立刻化险为夷”）
 
+### NR-002：Batch 0“空接假绿”——首个 `.kt` 文件才触发 `kotlinBuildToolsApiClasspath` 懒解析
+- **发现批次**：Batch 1
+- **涉及位置**：`:app:compileDebugKotlin` → `ClasspathEntrySnapshotTransform` / `kotlinBuildToolsApiClasspath`
+- **发现手段**：Batch 1 首次运行 `assembleDebug testDebugUnitTest lintDebug`
+- **真实报错 / 现象**：
+  ```text
+  Execution failed for task ':app:compileDebugKotlin'.
+  > Could not resolve all files for configuration ':app:kotlinBuildToolsApiClasspath'.
+     > Could not download kotlin-compiler-embeddable-2.3.21.jar ...
+     > Could not download kotlin-build-tools-impl-2.3.21.jar ...
+     > Connect to 127.0.0.1:65533 [/127.0.0.1] failed: Connection refused
+  ```
+- **根因分析**：Gradle 与 KGP 2.x 采用懒解析策略。Batch 0 仓库中尚无 `.kt` 文件，`:app:compileDebugKotlin` 因 `NO-SOURCE` 直接跳过，因此当时仅校验了插件本身（`kotlin-gradle-plugin:2.3.21`），并未实际解析编译期所需的 `kotlin-compiler-embeddable` 与 `kotlin-build-tools-impl`；而本地缓存中此前仅有 `2.0.21` 的编译器 Jar。当 Batch 1 引入首个 `.kt` 文件后，编译器依赖解析才真正发生并撞上失效代理。
+- **修复方式**：
+  - 单次执行 `assembleDebug testDebugUnitTest lintDebug -Dhttp.proxyHost= -Dhttps.proxyHost= -Dhttp.proxyPort= -Dhttps.proxyPort=` 绕过失效代理完成 `2.3.21` 编译器依赖拉取并落盘至 `~/.gradle/caches`。
+  - 随后去掉所有代理覆盖参数，复跑常规 `assembleDebug testDebugUnitTest lintDebug` 与 `:app:testDebugUnitTest --rerun-tasks` 验证通过。
+- **验证证据**：常规无参构建与 `:app:testDebugUnitTest --rerun-tasks` 全部通过（56 passed, 0 skipped, 0 failed）。
+- **Harness 演进动作**：
+  - [x] 是否晋升到模块一：`是（R-EVOLVED-02）`
+  - [ ] 是否补充回归测试：`否`（由首批 `.kt` 编译自然覆盖）
+  - [ ] 是否更新边界/提示词约束：`否`
+- **博客素材价值**：`推荐收录`（极佳的工程细节：解释为什么“插件装上去、空编译变绿”并不等于 Kotlin 编译链路真正打通）
+
 ---
 
 > 每次新增 `NR-xxx` 时，复制下方模板并据实填写：
 
 ```markdown
-### NR-002：<简短标题>
+### NR-003：<简短标题>
 - **发现批次**：Batch X
 - **涉及位置**：`path/to/File.kt` → `functionName(...)`
 - **发现手段**：`assembleDebug` / `testDebugUnitTest` / `lintDebug` / `connectedDebugAndroidTest` / 人工走查

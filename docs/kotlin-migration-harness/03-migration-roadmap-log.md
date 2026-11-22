@@ -9,7 +9,7 @@
 | 批次 | 目标范围 | 目标文件数 | 状态 | Commit | 本地单测（56项） | Lint（基线 0E/37W） | 命中/新增风险 |
 | :--- | :--- | :---: | :---: | :---: | :---: | :---: | :--- |
 | **Batch 0** | 基线确认 + Kotlin 插件接入（Groovy） | 0（仅构建） | `DONE` | `d3dcf25` | 56/56 PASS | PASS（0 Error） | `NR-001` → `R-EVOLVED-01` |
-| **Batch 1** | 依赖末端纯逻辑工具类（5 个） | 5 | `PLANNED` | — | — | — | — |
+| **Batch 1** | 依赖末端纯逻辑工具类（5 个） | 5 | `DONE` | `aba4458` | 56/56 PASS | PASS（0 Error） | `NR-002` → `R-EVOLVED-02` |
 | **Batch 2** | 契约类 + ContentProvider（2 个） | 2 | `PLANNED` | — | — | — | — |
 | **Batch 3** | 导出异步任务 + 轻量兼容 Activity（3 个） | 3 | `PLANNED` | — | — | — | — |
 | **Batch 4a** | 核心列表页 `NotesList`（1 个） | 1 | `PLANNED` | — | — | — | — |
@@ -43,24 +43,32 @@
 ---
 
 ### Batch 1：依赖末端纯逻辑工具类
-- **状态**：`PLANNED`
-- **Commit**：`待填写`
+- **状态**：`DONE`
+- **Commit**：`aba4458`
 - **计划迁移文件（5 个）**：
   1. `NoteTimestamp.java` → `NoteTimestamp.kt`
      - 关键函数：`format(millis: Long?, timeZone: TimeZone, locale: Locale): String?`
   2. `NoteText.java` → `NoteText.kt`
-     - 关键函数：`truncate(text: String, maxCodePoints: Int)`、`preview(text: String?)`、`title(entered: String, body: String)`
+     - 关键函数：`truncate(text: String, maxCodePoints: Int)`、`preview(text: String?)`、`title(entered: String, body: String?)`
   3. `NoteCategory.java` → `NoteCategory.kt`
      - 关键常量/函数：`DEFAULT`、`indexOf(id: String?)`、`requireValid(id: String?)`、`idAt(position: Int)`、`label(context: Context, id: String?)`、`labels(context: Context)`
   4. `NoteSearch.java` → `NoteSearch.kt`
-     - 关键函数：`normalize(keyword: String?)`、`selection(keyword: String?)`、`selection(keyword: String?, category: String?)`、`arguments(...)`
+     - 关键函数：`normalize(keyword: String?)`、`selection(keyword: String?, category: String? = null)`、`arguments(keyword: String?, category: String? = null)`
   5. `NoteExport.java` → `NoteExport.kt`
      - 关键函数：`filename(title: String)`、`document(title, body, category, time)`、`write(stream: OutputStream?, document: String)`
 - **选择依据**：处于依赖图最末端，无 Android 组件生命周期，且均有独立单元测试覆盖；保留 Java 测试不动可真实检验混编互操作。
 - **重点核对风险**：`R-BYTECODE-01`、`R-BYTECODE-02`、`R-NULL-01`、`R-NULL-02`、`R-BEHAVIOR-02`、`R-BEHAVIOR-05`
-- **实际更改函数与签名调整**：_（执行后填写）_
-- **遇到的问题与处理**：_（执行后填写，关联 `R-xxx` / `NR-xxx`）_
-- **验证证据与盲区**：_（执行后填写）_
+- **实际更改函数与签名调整**：
+  - 5 个 `final class` 统一迁移为 `object`，全部供 Java 调用的方法标注 `@JvmStatic`，避免 `internal` 名称修饰和 `.INSTANCE` 调用破坏（满足 `R-BYTECODE-01`、`R-BYTECODE-02`）。
+  - `NoteCategory.DEFAULT` 使用 `const val` 暴露为 JVM 静态常量字段；`NoteSearch.selection` 与 `arguments` 使用 `@JvmStatic @JvmOverloads` 合并单参/双参重载。
+  - 空安全与异常契约：`NoteTimestamp.format` 保持 `Long?`；`NoteSearch` / `NoteCategory` / `NoteText.preview` 保持可空 `String?`；`NoteText.title` 将 `body` 放宽为 `String?`；`NoteExport.write` 保持 `stream: OutputStream?` 并额外标注 `@Throws(IOException::class)` 以保留 Java 受检异常契约，字符集采用全 API 兼容的 `Charsets.UTF_8`（规避 `StandardCharsets` 的 API 19 限制）与 `.use {}` 自动关闭流。
+  - 正则预编译：`NoteText.WHITESPACE`、`NoteExport.INVALID_FILENAME_CHARS` / `EDGE_DOTS_OR_SPACES` 抽为 `private val Regex` 常量。
+- **遇到的问题与处理**：
+  - 触发新增风险 `NR-002`（详见 [02-new-risks-and-fixes.md](02-new-risks-and-fixes.md)）：首次编译 `.kt` 时才触发 `:app:kotlinBuildToolsApiClasspath` 懒解析并撞上失效代理；通过单次清空代理参数拉取 `2.3.21` 编译器依赖入本地缓存后，常规无参构建恢复全绿，并晋升为 `R-EVOLVED-02`。
+- **验证证据与盲区**：
+  - 5 个新 `.kt` 文件 IDE 静态分析 0 Error。
+  - 常规无参命令 `assembleDebug testDebugUnitTest lintDebug` 通过；`:app:testDebugUnitTest --rerun-tasks` 全部 **56 passed, 0 skipped, 0 failed**（包含未改动的全部 Java 混编单测：`NoteTimestampTest`、`NoteTextTest`、`NoteSearchTest`、`NoteExportTest` 及所有调用方组件测试）。
+  - 盲区：本批尚未执行真机/模拟器测试；`NoteSearch`/`NoteText` 改为 Kotlin `trim()` 后会额外裁剪 Unicode 空白（如全角空格），对现有 ASCII 用例全兼容且更符合中文场景，但未额外覆盖特殊 Unicode 控制字符样本。
 
 ---
 
