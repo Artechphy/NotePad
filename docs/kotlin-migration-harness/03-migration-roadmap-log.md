@@ -230,17 +230,16 @@
   - **L2 本地单测**：双分支均执行 `:app:testDebugUnitTest --rerun-tasks`，均获得 **69 passed, 0 skipped, 0 failed**。
   - **静态检查**：双分支 `lintDebug` 均通过（**0 Error / 37 Warnings**，较纯 Java 基线增量严格为 0）。
   - **L3 / L4 模拟器实机验收（`Pixel_6`，`emulator-5554`，Android 17 / API 37）**：
-    - **方案 A（`8dc0e37`）全链路 E2E 实测 PASS**：
+    - **方案 A（`8dc0e37`）与方案 B（`cb699e0`）均已完成对等全链路 9 项 E2E 实测 PASS**：
       1. **冷启动与空态渲染**：`NotesList` 正常展示 `"0 条笔记"`、5 个分类芯片、搜索栏、`list_more` 与 `+` 按钮；
-      2. **新建、分类与 API 33+ 真实系统返回手势**：新建笔记选择 `"学习"` 分类，按系统返回键触发真实 `OnBackInvokedDispatcher` → `NoteEditor$BackNavigation`（Logcat 实证 `WindowOnBackDispatcher` 注册了 `NoteEditor$BackNavigation$$ExternalSyntheticLambda0`）→ `leaveEditor()` 自动保存返回列表；
+      2. **新建、分类与 API 33+ 真实系统返回手势**：新建笔记选择 `"学习"` 分类（A：`Kotlin_Migration_Note` / B：`SchemeB_E2E_Note`），按系统返回键触发真实 `OnBackInvokedDispatcher` → `NoteEditor$BackNavigation`（双分支 Logcat 均实证 `WindowOnBackDispatcher` 注册了 `NoteEditor$BackNavigation$$ExternalSyntheticLambda0`）→ `leaveEditor()` 自动保存返回列表；
       3. **长按 `ContextMenu` + 真实剪贴板复制 + `list_more` `PopupMenu` + API 37 焦点门控粘贴**：长按弹出原生菜单（含动态 `CATEGORY_ALTERNATIVE` 项 `"Edit title"`），点击 `"复制"` 后打开 `list_more` 菜单点击已启用的 `"粘贴"`，成功在 Android 17 焦点门控下自动填充标题、正文与 `"学习"` 分类并保存；
-      4. **分类筛选 + 正文检索 + 真实横竖屏旋转重建**：切换 `"工作"` 显示 `"这个分类还没有笔记"`；`"学习"` + 搜索 `"API37"` 命中正文；真实旋转至横屏（`rotation=1`，新 Window 实例）后搜索词、选中分类与 2 条结果完整恢复；
-      5. **真实端到端 SAF 导出（`DocumentsUI` + `NoteExportTask`）**：点击 `editor_more` → `"导出为文本"` 拉起系统 `com.google.android.documentsui` 且预填 `Kotlin_Migration_Note.txt`，点击 `SAVE` 完成后实测读回 `/sdcard/Download/Kotlin_Migration_Note.txt`（99 字节 UTF-8，标题/分类/时间/正文格式完全吻合）；
-      6. **`TitleEditor` 与 XML `android:onClick="onClickOk"` 实机反射**：从长按菜单 `"Edit title"` 进入对话框修改标题为 `Kotlin_Migration_Note_Renamed`，点击 `"确定"` 正常反射提交并实时刷新列表；
+      4. **分类筛选 + 正文检索 + 真实横竖屏旋转重建**：切换 `"工作"` 显示 `"这个分类还没有笔记"`；`"学习"` + 正文搜索（A：`API37` / B：`SchemeB_API37`）命中 2 条；真实旋转至横屏（`rotation=1`，新 Window 实例）后搜索词、选中分类与 2 条结果完整恢复；
+      5. **真实端到端 SAF 导出（`DocumentsUI` + `NoteExportTask`）**：点击 `editor_more` → `"导出为文本"` 拉起系统 `com.google.android.documentsui`（A：`Kotlin_Migration_Note.txt` / B：`SchemeB_E2E_Note.txt`），点击 `SAVE` 后实测读回 `/sdcard/Download/*.txt`（A：99 字节 / B：90 字节 UTF-8，标题/分类/时间/正文格式完全吻合）；
+      6. **`TitleEditor` 与 XML `android:onClick="onClickOk"` 实机反射**：从长按菜单 `"Edit title"` 进入对话框追加 `_Renamed`，点击 `"确定"` 正常反射提交并实时刷新列表；
       7. **双删除契约实证**：编辑页 `"删除笔记"` 弹出 `AlertDialog`（`"确定删除这篇笔记？"`）二次确认删除；列表长按菜单 `"删除笔记"` 无弹窗直接删除至 `"0 条笔记"`；
-      8. **跨进程 `NotePadProvider` Binder IPC**：`adb shell content query` 与 `content gettype` 正常返回全部列及 `vnd.android.cursor.{item,dir}/vnd.google.note`；
-      9. **Logcat 体检**：`AndroidRuntime:E` 与全部业务 Tag（`NoteEditor`/`NotesList`/`NotePadProvider`/`TitleEditor`/`NoteExportTask`）`W+` 均为 **0 报错 / 0 崩溃**。
-    - **方案 B（`a655110`）实机冒烟 PASS**：`assembleDebug` 安装至同台 API 37 模拟器，冷启动、新建 `SchemeB_Smoke` 并保存返回列表正常渲染，Logcat 0 报错。
+      8. **跨进程 `NotePadProvider` Binder IPC**：双分支均实测 `adb shell content query` 与 `content gettype`，正常返回全部列及 `vnd.android.cursor.{item,dir}/vnd.google.note`；
+      9. **Logcat 体检**：双分支全程 `AndroidRuntime:E` 与全部业务 Tag（`NoteEditor`/`NotesList`/`NotePadProvider`/`TitleEditor`/`NoteExportTask`）`W+` 均为 **0 报错 / 0 崩溃**。
     - **仍诚实保留的 `UNVERIFIED` 盲区**：
       1. **API 11–15 低版本真机/模拟器实测**（当前环境仅有 API 37 镜像；API 11 兼容性仅由 `lintDebug` 0 `[NewApi]` Error 与 `javap -v` 0 `Closeable` 引用提供静态/字节码保证）；
       2. **`NotePadProvider.openTypedAssetFile` / `writeDataToPipe` 流式导出**：实测 `:app:connectedDebugAndroidTest` 再次确认历史 `app/src/androidTest` 在 `compileSdk 35` 基线下因缺少 `android.test.*` 无法编译（`NR-003`），且 `adb shell content read` 仅调用 `openFile()` 而非 `openTypedAssetFile()`，故该流式管道仍保持 `UNVERIFIED`；
