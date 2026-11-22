@@ -11,7 +11,8 @@
 | **Batch 0** | 基线确认 + Kotlin 插件接入（Groovy） | 0（仅构建） | `DONE` | `d3dcf25` | 56/56 PASS | PASS（0 Error） | `NR-001` → `R-EVOLVED-01` |
 | **Batch 1** | 依赖末端纯逻辑工具类（5 个） | 5 | `DONE` | `aba4458` | 56/56 PASS | PASS（0 Error） | `NR-002` → `R-EVOLVED-02` |
 | **Batch 2** | 契约类 + ContentProvider（2 个） | 2 | `DONE` | `a038b77` | 56/56 PASS | PASS（0 Error） | `NR-003` → `R-EVOLVED-03` |
-| **Batch 3** | 导出异步任务 + 轻量兼容 Activity（3 个） | 3 | `DONE` | `e7ce6da` | 56/56 PASS | PASS（0 Error） | 无新增（预期风险全拦截） |
+| **Batch 3** | 导出异步任务 + 轻量兼容 Activity（3 个） | 3 | `DONE` | `e7ce6da` | 56/56 PASS | 0 Error（增量未导出） | 复审暴露 `NR-004`/`008`/`009` |
+| **Batch 1–3 复审** | 字节码/语义/覆盖率深度审计与纠偏 | 5 修复 + 1 测试 | `DONE` | `3089648` | **61/61 PASS** | 0 Error（增量未导出） | 实锤 `NR-004`～`NR-009` → `R-EVOLVED-04`～`09` |
 | **Batch 4a** | 核心列表页 `NotesList`（1 个） | 1 | `PLANNED` | — | — | — | — |
 | **Batch 4b** | 核心编辑页 `NoteEditor`（1 个） | 1 | `PLANNED` | — | — | — | — |
 | **Batch 5** | 收口复核 / 可选测试迁移与四层验收 | 待定 | `PLANNED` | — | — | — | — |
@@ -117,6 +118,24 @@
   - 3 个新 `.kt` 文件静态分析 0 Error。
   - `assembleDebug testDebugUnitTest lintDebug` 全部通过（`:app:testDebugUnitTest` **56 passed, 0 skipped, 0 failed**，含 `NoteEditorBehaviorTest` 中 `TitleEditor` 标题弹窗修改并更新时间戳用例）。
   - 盲区：`NotesLiveFolder` 与 `TitleEditor` XML `onClickOk` 反射点击路径未在真机/模拟器走查；`NoteExportTask` 跨旋转重绑需待真机/模拟器或后续定向测试进一步覆盖。
+
+---
+
+### Batch 1–3 深度复审与纠偏（字节码 / 语义 / 覆盖率审计）
+- **状态**：`DONE`
+- **Commit**：`3089648`
+- **审计动因**：Batch 1–3 表面上“全部 56 项单测一次通过”，但逐行比对原 Java、执行全量 `javap -p` 字节码检查及核查测试覆盖率后，揪出 **6 类真实被忽略的隐性退化与验收失真（`NR-004`～`NR-009`）**。
+- **实际修改文件与函数清单**：
+  1. `TitleEditor.kt` → `public override fun onCreate(savedInstanceState: Bundle?)`：修正 Kotlin `override` 隐式继承 `Activity.onCreate` 的 `protected` 可见性导致的静默收窄（`NR-004`）。
+  2. `NoteExport.kt` → `document(title: String?, body: String?, category: String?, time: String?)` & `filename`：修复非空参数在 Java 传 `null` 时触发新 NPE 的退化（`NR-005`）；将 `.trim()` 改为 `.trim { it <= ' ' }` 对齐 Java 语义（`NR-006`）。
+  3. `NoteSearch.kt` → `normalize(keyword: String?)`：`.trim()` → `.trim { it <= ' ' }`（`NR-006`）。
+  4. `NoteText.kt` → `preview(text: String?)` & `title(entered: String, body: String?)`：`.trim()` → `.trim { it <= ' ' }`（`NR-006`）。
+  5. `NotePadProvider.kt` → `update(...)`：将 `values ?: ContentValues()` 改回显式抛 `NullPointerException`，恢复原异常契约（`NR-007`）。
+  6. 新增 `app/src/test/java/com/example/android/notepad/KotlinMigrationParityTest.java`（5 项定向回归单测）：覆盖 `TitleEditor.onCreate` 公开可见性 + `R.id.ok` XML `android:onClick` 反射点击、`NoteExport.document` 全 `null` 入参、`\u0000`/`\u3000` `trim` 等价性、`NotePadProvider.update(uri, null, ...)` NPE 契约、`NotesLiveFolder` 支持/不支持 Action 双分支（关闭 `NR-004`～`NR-007` 及 `NR-009` 部分 0 覆盖盲区）。
+- **验证证据与仍保留的诚实盲区**：
+  - `javap -p TitleEditor.class` 实证 `onCreate` 已恢复为 `public void onCreate(android.os.Bundle);`。
+  - `assembleDebug testDebugUnitTest lintDebug` 全部通过（`:app:testDebugUnitTest` **61 passed, 0 skipped, 0 failed**）。
+  - 仍保持 `UNVERIFIED` 的真实盲区：`NoteExportTask` 跨屏幕旋转重绑（`R-LIFECYCLE-03`）、`NotePadProvider.openTypedAssetFile/writeDataToPipe` 流式导出、以及 `lintDebug` 具体 Warning 增量条数；同时登记 `NR-008`（6 个工具/任务类与 `getOpenHelperForTest()` 临时 `public` 扩张）待 Batch 5 清账。
 
 ---
 

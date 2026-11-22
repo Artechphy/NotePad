@@ -21,15 +21,20 @@
 ## 每批次标准执行闭环
 
 ```text
-1. 批前检查：阅读模块三当前批次范围 + 查阅模块一对应风险项（R-xxx）
+1. 批前检查：阅读模块三当前批次范围 + 查阅模块一对应风险项（含动态晋升的 R-EVOLVED-xx）
        ↓
 2. 增量迁移：仅迁移当前批次文件，严格守住边界，保持每批原子提交
        ↓
-3. 自动化验证：运行 ./gradlew assembleDebug testDebugUnitTest lintDebug
+3. 自动化与字节码验证：
+   - 运行 assembleDebug testDebugUnitTest lintDebug
+   - 对迁移后的 .class 执行 javap -p，逐项比对原 Java 可见性、final/open、静态字段与异常签名
        ↓
-4. 逐项验收：对照模块一风险清单逐条核验；若发现新问题，立即修复并登记到模块二（NR-xxx）
+4. 诚实逐项验收：对照模块一风险清单逐条核验：
+   - 有直接测试或 javap/实机证据才可标 PASS；
+   - 仅有目测/编译通过但 0 测试覆盖的项，必须标为 UNVERIFIED（不得伪造 PASS）或先补回归单测再关闭；
+   - 发现任何遗漏或新问题，立即登记到模块二（NR-xxx）
        ↓
-5. Harness 演进：将模块二中具有共性的新风险提炼为新检查项，反向晋升补充到模块一
+5. Harness 演进：将模块二中共性问题提炼为 R-EVOLVED-xx 晋升到模块一，必要时补充回归测试
        ↓
 6. 沉淀日志：在模块三补全本批次 Commit、迁移文件、函数变更清单、问题链接与实测证据
 ```
@@ -39,7 +44,8 @@
 | 层级 | 命令 | 作用 |
 | :--- | :--- | :--- |
 | **L1 构建检查** | `./gradlew assembleDebug` | 验证 Java/Kotlin 混编、Kotlin 插件配置与资源打包 |
-| **L2 本地单测** | `./gradlew testDebugUnitTest` | 运行 11 个测试类 / 56 项 JUnit + Robolectric 回归测试 |
-| **静态检查** | `./gradlew lintDebug` | 对比基线（0 Error/Fatal，37 Warning），检查是否引入新告警 |
+| **L1.5 字节码核验** | `javap -p app/build/tmp/kotlin-classes/debug/.../*.class` | 校验可见性（如 `override fun` 是否意外收窄 `public`）、`final`/`open`、`@JvmField`/`@JvmStatic` 与 `throws` 签名 |
+| **L2 本地单测** | `./gradlew testDebugUnitTest` | 运行 JUnit + Robolectric 回归测试（原 11 类 56 项 + 新增 `KotlinMigrationParityTest` 5 项 = **61 项**） |
+| **静态检查** | `./gradlew lintDebug` | 校验 0 Error/Fatal；注：具体 Warning 条数增量需显式导出报告比对，未导出时须标明 `PARTIAL/UNVERIFIED` |
 | **L3 仪器 / 设备测试** | 项目已有 `tools/device-test` 设备验收脚本（注：历史遗留 `app/src/androidTest` 依赖已从 compileSdk 35 移除的 `android.test.*`，当前基线不可直接跑 `connectedDebugAndroidTest`，详见 `NR-003`） | 需已连接模拟器/真机；验证真实进程下 Provider 与 Activity 行为 |
 | **L4 人工走查** | 按核心路径实机/模拟器走查 | 覆盖屏幕旋转、剪贴板、导出、返回键等自动化盲区 |

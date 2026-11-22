@@ -64,33 +64,38 @@
 
 ## 批次验收打卡表
 
-> 状态约定：`PENDING`（待检） / `PASS`（通过） / `TRIGGERED`（命中并已修复，需关联 `NR-xxx` 或日志说明） / `N/A`（本批不涉及）
+> 状态约定：
+> - `PENDING`（待检）
+> - `PASS`（已有明确测试/`javap`/实机证据证明通过）
+> - `TRIGGERED`（实操或复审中命中缺陷，已按 `NR-xxx` 修复并补证）
+> - `UNVERIFIED`（仅通过静态阅读或编译，缺少运行时/单测/精确指标实证，严禁冒充 `PASS`）
+> - `N/A`（本批不涉及）
 
 | 风险编号 | Batch 0 | Batch 1 | Batch 2 | Batch 3 | Batch 4a | Batch 4b | Batch 5 |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| `R-BUILD-01` | PASS | N/A | N/A | N/A | N/A | N/A | PENDING |
+| `R-BUILD-01` | TRIGGERED (`NR-001`) | N/A | N/A | N/A | N/A | N/A | PENDING |
 | `R-BUILD-02` | PASS | PASS | PASS | PASS | PENDING | PENDING | PENDING |
-| `R-BUILD-03` | PASS | N/A | N/A | N/A | N/A | N/A | PENDING |
-| `R-BYTECODE-01` | N/A | PASS | PASS | PASS | N/A | PENDING | PENDING |
+| `R-BUILD-03` | PASS | TRIGGERED (`NR-002`) | N/A | N/A | N/A | N/A | PENDING |
+| `R-BYTECODE-01` | N/A | TRIGGERED (`NR-008`) | TRIGGERED (`NR-008`) | TRIGGERED (`NR-004`/`008`) | N/A | PENDING | PENDING |
 | `R-BYTECODE-02` | N/A | PASS | N/A | N/A | N/A | N/A | PENDING |
-| `R-BYTECODE-03` | N/A | N/A | PASS | N/A | N/A | N/A | PENDING |
-| `R-BYTECODE-04` | N/A | N/A | N/A | PASS | N/A | N/A | PENDING |
-| `R-BYTECODE-05` | N/A | N/A | PASS | N/A | N/A | N/A | PENDING |
+| `R-BYTECODE-03` | N/A | N/A | PASS (`javap`) | N/A | N/A | N/A | PENDING |
+| `R-BYTECODE-04` | N/A | N/A | N/A | TRIGGERED (`NR-009`→补测通过) | N/A | N/A | PENDING |
+| `R-BYTECODE-05` | N/A | N/A | PASS (`javap`+单测) | N/A | N/A | N/A | PENDING |
 | `R-BYTECODE-06` | N/A | N/A | N/A | N/A | N/A | N/A | PENDING |
-| `R-NULL-01` | N/A | PASS | N/A | N/A | N/A | N/A | PENDING |
+| `R-NULL-01` | N/A | TRIGGERED (`NR-005`) | N/A | N/A | N/A | N/A | PENDING |
 | `R-NULL-02` | N/A | PASS | N/A | N/A | N/A | N/A | PENDING |
-| `R-NULL-03` | N/A | N/A | PASS | N/A | N/A | N/A | PENDING |
-| `R-NULL-04` | N/A | N/A | N/A | PASS | PENDING | PENDING | PENDING |
+| `R-NULL-03` | N/A | N/A | TRIGGERED (`NR-007`) | N/A | N/A | N/A | PENDING |
+| `R-NULL-04` | N/A | N/A | N/A | PASS (补测 `NotesLiveFolder`) | PENDING | PENDING | PENDING |
 | `R-LIFECYCLE-01` | N/A | N/A | N/A | N/A | N/A | PENDING | PENDING |
 | `R-LIFECYCLE-02` | N/A | N/A | N/A | N/A | PENDING | N/A | PENDING |
-| `R-LIFECYCLE-03` | N/A | N/A | N/A | PASS | N/A | PENDING | PENDING |
+| `R-LIFECYCLE-03` | N/A | N/A | N/A | UNVERIFIED (旋转重绑未测) | N/A | PENDING | PENDING |
 | `R-LIFECYCLE-04` | N/A | N/A | N/A | N/A | N/A | PENDING | PENDING |
 | `R-LIFECYCLE-05` | N/A | N/A | N/A | PASS | N/A | N/A | PENDING |
 | `R-BEHAVIOR-01` | N/A | N/A | PASS | N/A | N/A | N/A | PENDING |
-| `R-BEHAVIOR-02` | N/A | PASS | N/A | N/A | N/A | N/A | PENDING |
+| `R-BEHAVIOR-02` | N/A | TRIGGERED (`NR-006`) | N/A | N/A | N/A | N/A | PENDING |
 | `R-BEHAVIOR-03` | N/A | N/A | N/A | N/A | N/A | PENDING | PENDING |
 | `R-BEHAVIOR-04` | N/A | N/A | PASS | N/A | N/A | N/A | PENDING |
-| `R-BEHAVIOR-05` | PASS | PASS | PASS | PASS | PENDING | PENDING | PENDING |
+| `R-BEHAVIOR-05` | UNVERIFIED (仅证0E) | UNVERIFIED (仅证0E) | UNVERIFIED (仅证0E) | UNVERIFIED (仅证0E) | PENDING | PENDING | PENDING |
 
 ---
 
@@ -103,3 +108,9 @@
 | `R-EVOLVED-01` | `NR-001` | 引入 Kotlin Gradle Plugin 时须同时核对官方 `KGP × AGP × Gradle` 兼容性矩阵与本地 Gradle 缓存/代理环境，避免盲取最新稳定版导致下载受阻或跨大版本不兼容 | Batch 0 及任何构建插件版本变更 | 所选 KGP 版本落在官方兼容矩阵内，且在当前机器网络/缓存条件下可完成 `Gradle Sync`、`assembleDebug` 与 `testDebugUnitTest` |
 | `R-EVOLVED-02` | `NR-002` | 警惕 Batch 0“无 `.kt` 源码时的空接假绿”：没有 `.kt` 文件时 Gradle 会因 `NO-SOURCE` 跳过 `compileDebugKotlin` 并延迟解析 `kotlinBuildToolsApiClasspath`（含 `kotlin-compiler-embeddable`） | 任何老项目首次接入 Kotlin 构建链路验收 | 只有当至少 1 个真实 `.kt` 文件完成 `compileDebugKotlin` 编译，才能认定 Kotlin 编译工具链已完整就绪 |
 | `R-EVOLVED-03` | `NR-003` | 在将 `connectedDebugAndroidTest` 纳入 L3 验收前，须先在纯 Java 基线上核验 `compileDebugAndroidTestJavaWithJavac` 是否可用，防止把老项目遗留的 `android.test.*` 缺失误判为 Kotlin 迁移退化 | 任何升级过 `compileSdk >= 28` 的老 Android 工程迁移基线检查 | 明确记录 `androidTest` 在旧基线下的可编译状态；不可编译时在 Harness 中改列实际可用的设备验证链路，不越界修改 `useLibrary` |
+| `R-EVOLVED-04` | `NR-004` | **覆写可见性隐式收窄检查**：Kotlin `override fun` 默认继承父类方法可见性（如 `Activity.onCreate` 的 `protected`），而不是默认 `public`；若原 Java 显式放宽为 `public`，Kotlin 必须显式写 `public override fun` | 所有 `Activity` / `ContentProvider` / 子类覆写方法（Batch 3、4a、4b） | 用 `javap -p` 对照原 Java 方法修饰符，确保不存在 `public → protected` 的静默收窄 |
+| `R-EVOLVED-05` | `NR-005` | **Java 容忍 `null` 的操作转 Kotlin 非空参数反噬检查**：原 Java 中字符串拼接（`a + b`）、`Objects.equals`、`Map.get` 等本不抛 NPE 的参数，迁入 Kotlin 若写为非空类型会因 `Intrinsics.checkNotNullParameter` 制造新 NPE | 所有仍可能被 Java 调用或无 `@NonNull` 契约的参数 | 对原 Java 不抛 NPE 的入参一律声明为可空类型，并补充传 `null` 回归单测 |
+| `R-EVOLVED-06` | `NR-006` | **标准库同名方法语义漂移检查**：Kotlin `String.trim()`（`Char.isWhitespace()`）与 Java `String.trim()`（`<= '\u0020'`）在 ASCII 控制字符（如 `\u0000`）和 Unicode 全角空格（`\u3000`）上行为不同 | 所有调用 `trim()` / `replace` / `split` / `toLowerCase` 等标准库同名方法的迁移类 | 严格等价迁移时使用 `trim { it <= ' ' }`，并补充控制字符与全角空格对照单测 |
+| `R-EVOLVED-07` | `NR-007` | **异常类型漂移与 `open`/`final` 可继承性检查**：(1) 禁止随意用 `?: DefaultValue()` 静默改变原 Java 在 `null` 处的异常类型；(2) 检查原 Java 非 `final` 公共组件类在 Kotlin 变 `final` 后是否影响外部继承或测试替身 | `ContentProvider`、`Activity` 及所有公开类 | 用 `javap -p` 检查 `final` 修饰变更并评估影响；异常契约通过边界单测锁定 |
+| `R-EVOLVED-08` | `NR-008` | **包级私有 → `public` 可见性扩张追踪**：混编期因规避 `internal` 名字修饰（`$app_debug`）而被迫放宽为 `public` 的内部类与测试后门（如 `getOpenHelperForTest()`），必须登记清账，不得永久遗忘 | Batch 1–4 所有原 package-private 类及测试钩子，Batch 5 收口复核 | 在 Batch 5 逐一复核临时 `public` 列表：确认哪些在纯 Kotlin 后应收窄为 `internal`，哪些保留给 Java 测试并记录原因 |
+| `R-EVOLVED-09` | `NR-009` | **反“橡皮图章式 PASS”验收红线**：现有测试全绿绝不等于当前风险项被覆盖。凡是没有直接单测、`javap` 或设备运行证据的检查项，严禁标为 `PASS`，必须标为 `UNVERIFIED` 并给出补测计划 | 全部批次验收打卡 | 每个 `PASS` 标记都能指明对应的具体测试用例名、字节码输出或实机日志；0 覆盖项必须诚实标 `UNVERIFIED` |
