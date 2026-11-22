@@ -74,9 +74,9 @@
 | 风险编号 | Batch 0 | Batch 1 | Batch 2 | Batch 3 | Batch 4a | Batch 4b | Batch 5 |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 | `R-BUILD-01` | TRIGGERED (`NR-001`) | N/A | N/A | N/A | N/A | N/A | PENDING |
-| `R-BUILD-02` | PASS | PASS | PASS | PASS | PASS | PENDING | PENDING |
+| `R-BUILD-02` | PASS | PASS | PASS | PASS | PASS | PASS | PENDING |
 | `R-BUILD-03` | PASS | TRIGGERED (`NR-002`) | N/A | N/A | N/A | N/A | PENDING |
-| `R-BYTECODE-01` | N/A | TRIGGERED (`NR-008`) | TRIGGERED (`NR-008`) | TRIGGERED (`NR-004`/`008`) | N/A | PENDING | PENDING |
+| `R-BYTECODE-01` | N/A | TRIGGERED (`NR-008`) | TRIGGERED (`NR-008`) | TRIGGERED (`NR-004`/`008`) | N/A | PASS (`internal` 收敛) | PENDING |
 | `R-BYTECODE-02` | N/A | PASS | N/A | N/A | N/A | N/A | PENDING |
 | `R-BYTECODE-03` | N/A | N/A | PASS (`javap`) | N/A | N/A | N/A | PENDING |
 | `R-BYTECODE-04` | N/A | N/A | N/A | TRIGGERED (`NR-009`→补测通过) | N/A | N/A | PENDING |
@@ -85,17 +85,17 @@
 | `R-NULL-01` | N/A | TRIGGERED (`NR-005`) | N/A | N/A | N/A | N/A | PENDING |
 | `R-NULL-02` | N/A | PASS | N/A | N/A | N/A | N/A | PENDING |
 | `R-NULL-03` | N/A | N/A | TRIGGERED (`NR-007`) | N/A | N/A | N/A | PENDING |
-| `R-NULL-04` | N/A | N/A | N/A | PASS (补测 `NotesLiveFolder`) | PASS (`javap -c`+补测) | PENDING | PENDING |
-| `R-LIFECYCLE-01` | N/A | N/A | N/A | N/A | N/A | PENDING | PENDING |
+| `R-NULL-04` | N/A | N/A | N/A | PASS (补测 `NotesLiveFolder`) | PASS (`javap -c`+补测) | PASS (`javap -c`+单测) | PENDING |
+| `R-LIFECYCLE-01` | N/A | N/A | N/A | N/A | N/A | PASS (早退全周期补测) | PENDING |
 | `R-LIFECYCLE-02` | N/A | N/A | N/A | N/A | PASS (`javap`+反射单测) | N/A | PENDING |
-| `R-LIFECYCLE-03` | N/A | N/A | N/A | UNVERIFIED (旋转重绑未测) | N/A | PENDING | PENDING |
-| `R-LIFECYCLE-04` | N/A | N/A | N/A | N/A | N/A | PENDING | PENDING |
+| `R-LIFECYCLE-03` | N/A | N/A | N/A | UNVERIFIED (已于 4b 补测关闭) | N/A | PASS (旋转重绑单测) | PENDING |
+| `R-LIFECYCLE-04` | N/A | N/A | N/A | N/A | N/A | PASS (`javap -v` 0 引用) | PENDING |
 | `R-LIFECYCLE-05` | N/A | N/A | N/A | PASS | N/A | N/A | PENDING |
 | `R-BEHAVIOR-01` | N/A | N/A | PASS | N/A | N/A | N/A | PENDING |
-| `R-BEHAVIOR-02` | N/A | TRIGGERED (`NR-006`) | N/A | N/A | PASS (`trim` 补测通过) | N/A | PENDING |
-| `R-BEHAVIOR-03` | N/A | N/A | N/A | N/A | N/A | PENDING | PENDING |
+| `R-BEHAVIOR-02` | N/A | TRIGGERED (`NR-006`) | N/A | N/A | PASS (`trim` 补测通过) | PASS (`isEmpty` `trim` 补测) | PENDING |
+| `R-BEHAVIOR-03` | N/A | N/A | N/A | N/A | N/A | PASS (全套单测) | PENDING |
 | `R-BEHAVIOR-04` | N/A | N/A | PASS | N/A | N/A | N/A | PENDING |
-| `R-BEHAVIOR-05` | UNVERIFIED (仅证0E) | UNVERIFIED (仅证0E) | UNVERIFIED (仅证0E) | UNVERIFIED (仅证0E) | UNVERIFIED (仅证0E) | PENDING | PENDING |
+| `R-BEHAVIOR-05` | UNVERIFIED (仅证0E) | UNVERIFIED (仅证0E) | UNVERIFIED (仅证0E) | UNVERIFIED (仅证0E) | UNVERIFIED (仅证0E) | TRIGGERED (`NR-010`→0E/37W) | PENDING |
 
 ---
 
@@ -114,3 +114,4 @@
 | `R-EVOLVED-07` | `NR-007` | **异常类型漂移与 `open`/`final` 可继承性检查**：(1) 禁止随意用 `?: DefaultValue()` 静默改变原 Java 在 `null` 处的异常类型；(2) 检查原 Java 非 `final` 公共组件类在 Kotlin 变 `final` 后是否影响外部继承或测试替身 | `ContentProvider`、`Activity` 及所有公开类 | 用 `javap -p` 检查 `final` 修饰变更并评估影响；异常契约通过边界单测锁定 |
 | `R-EVOLVED-08` | `NR-008` | **包级私有 → `public` 可见性扩张追踪**：混编期因规避 `internal` 名字修饰（`$app_debug`）而被迫放宽为 `public` 的内部类与测试后门（如 `getOpenHelperForTest()`），必须登记清账，不得永久遗忘 | Batch 1–4 所有原 package-private 类及测试钩子，Batch 5 收口复核 | 在 Batch 5 逐一复核临时 `public` 列表：确认哪些在纯 Kotlin 后应收窄为 `internal`，哪些保留给 Java 测试并记录原因 |
 | `R-EVOLVED-09` | `NR-009` | **反“橡皮图章式 PASS”验收红线**：现有测试全绿绝不等于当前风险项被覆盖。凡是没有直接单测、`javap` 或设备运行证据的检查项，严禁标为 `PASS`，必须标为 `UNVERIFIED` 并给出补测计划 | 全部批次验收打卡 | 每个 `PASS` 标记都能指明对应的具体测试用例名、字节码输出或实机日志；0 覆盖项必须诚实标 `UNVERIFIED` |
+| `R-EVOLVED-10` | `NR-010` | **低 `minSdk` 禁止盲目将 Java `try (Cursor)` 替换为 Kotlin `Closeable.use {}`**：`android.database.Cursor` 自 API 16 起才实现 `java.io.Closeable`；在 `minSdk < 16` 项目中调用 `kotlin.io.use {}` 会生成 `Closeable` 隐式强转并触发 Lint `[NewApi]` Error（且 IDE 反而会误推荐 `use()`） | 所有 `minSdk < 16` 项目中含 `Cursor`、`SQLiteDatabase`、`AssetFileDescriptor` 等晚于 API 1 实现 `Closeable` 的资源类 | 改用基于原生 `close()` 的 `try/finally` 或自定义 `useCompat` 内联扩展；以 `lintDebug` 0 Error 与 `javap -v` 常量池 0 `Closeable` 引用验收 |

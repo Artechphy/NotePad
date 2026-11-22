@@ -14,7 +14,7 @@
 | **Batch 3** | 导出异步任务 + 轻量兼容 Activity（3 个） | 3 | `DONE` | `e7ce6da` | 56/56 PASS | 0 Error（增量未导出） | 复审暴露 `NR-004`/`008`/`009` |
 | **Batch 1–3 复审** | 字节码/语义/覆盖率深度审计与纠偏 | 5 修复 + 1 测试 | `DONE` | `3089648` | **61/61 PASS** | 0 Error（增量未导出） | 实锤 `NR-004`～`NR-009` → `R-EVOLVED-04`～`09` |
 | **Batch 4a** | 核心列表页 `NotesList`（1 个） | 1 | `DONE` | `6eda74a` | **65/65 PASS** | 0 Error（增量未导出） | 0 新增故障；前置命中 `R-EVOLVED-04`/`05`/`06`/`09` |
-| **Batch 4b** | 核心编辑页 `NoteEditor`（1 个） | 1 | `PLANNED` | — | — | — | — |
+| **Batch 4b** | 核心编辑页 `NoteEditor`（1 个） | 1 | `DONE` | `15e7724` | **69/69 PASS** | **PASS（0E / 37W）** | `NR-010` → `R-EVOLVED-10`（顺带关闭 3 批 `R-LIFECYCLE-03`） |
 | **Batch 5** | 收口复核 / 可选测试迁移与四层验收 | 待定 | `PLANNED` | — | — | — | — |
 
 ---
@@ -173,16 +173,37 @@
 ---
 
 ### Batch 4b：核心编辑页 `NoteEditor`
-- **状态**：`PLANNED`
-- **Commit**：`待填写`
+- **状态**：`DONE`
+- **Commit**：`15e7724`
 - **计划迁移文件（1 个）**：
-  1. `NoteEditor.java` → `NoteEditor.kt`
-     - 关键类/函数：`onCreate`、`onWindowFocusChanged`、`updateStatus`、`saveNote`、`saveAndFinish`、`leaveEditor`、`onBackPressed`、`onPause`、`onSaveInstanceState`、`showActions`、`onCreateOptionsMenu`、`onPrepareOptionsMenu`、`onOptionsItemSelected`、`removeNote`、`saveAsNewNote`、`revertNote`、`pasteNote`、`exportNote`、`onActivityResult`、`showExportProgress`、`showExportResult`、`onRetainNonConfigurationInstance`、`onDestroy`、`BackNavigation`
+  1. `NoteEditor.java` → `NoteEditor.kt`（全项目最后一个生产 Java 文件，至此 12 / 12 生产类 100% 迁移完成）
+     - 关键类/函数：`onCreate`、`onWindowFocusChanged`、`category`、`isEmpty`、`updateStatus`、`saveNote`、`saveAndFinish`、`leaveEditor`、`onBackPressed`、`onPause`、`onSaveInstanceState`、`showActions`、`onCreateOptionsMenu`、`onPrepareOptionsMenu`、`onOptionsItemSelected`、`removeNote`、`saveAsNewNote`、`revertNote`、`pasteNote`、`exportNote`、`onActivityResult`、`showExportProgress`、`showExportResult`、`onRetainNonConfigurationInstance`、`onDestroy`、`BackNavigation`、`useCompat`
 - **选择依据**：全项目状态机最复杂、风险最高的页面，放在业务代码最后单独迁移，充分依托 `NoteEditorBehaviorTest`、`NoteEditorSaveFailureTest`、`NotePasteLifecycleTest` 护航。
-- **重点核对风险**：`R-BYTECODE-01`、`R-NULL-04`、`R-LIFECYCLE-01`、`R-LIFECYCLE-03`、`R-LIFECYCLE-04`、`R-BEHAVIOR-03`、`R-BEHAVIOR-05`
-- **实际更改函数与签名调整**：_（执行后填写）_
-- **遇到的问题与处理**：_（执行后填写，关联 `R-xxx` / `NR-xxx`）_
-- **验证证据与盲区**：_（执行后填写）_
+- **重点核对风险**：`R-BYTECODE-01`、`R-NULL-04`、`R-LIFECYCLE-01`、`R-LIFECYCLE-03`、`R-LIFECYCLE-04`、`R-BEHAVIOR-03`、`R-BEHAVIOR-05`、`R-EVOLVED-04`～`R-EVOLVED-10`
+- **实际更改函数与签名调整**：
+  - **早退安全初始化（`R-LIFECYCLE-01`）**：仅在 `setContentView` 后立即赋值的 4 个 View 字段使用 `lateinit var`；`try` 块中才赋值的 `mUri` 声明为可空 `Uri? = null`，6 个原始/已保存快照字符串默认初始化为空串 `""`，彻底杜绝 `onCreate` 异常早退（`finish(); return;`）后生命周期回调触发 `UninitializedPropertyAccessException`。
+  - **可见性收敛（`R-BYTECODE-01`、`R-EVOLVED-08`）**：因调用方 `NoteExportTask.kt` 已先期迁入 Kotlin 且无 Java 测试引用，直接将 `showExportProgress()` 与 `showExportResult(success: Boolean)` 收敛为 `internal fun`，0 新增 `NR-008` 临时 `public` 债务。
+  - **API 33 类隔离（`R-LIFECYCLE-04`）**：保留 `@TargetApi(33) private object BackNavigation` 独立类封装 `OnBackInvokedDispatcher` / `OnBackInvokedCallback`，仅在 `Build.VERSION.SDK_INT >= 33` 分支调用。
+  - **API 11 `Cursor` 兼容（`NR-010`）**：新增 `private inline fun <R> Cursor.useCompat(...)` 替代 4 处 `kotlin.io.use {}`，避免对 `Cursor` 的 `Closeable`（API 16+）隐式强转。
+  - **标准库等价（`R-EVOLVED-06`）**：`isEmpty()` 前置采用 `.trim { it <= ' ' }.isEmpty()`，严格对齐 Java `String.trim()` 对 `\u0000` 控制字符与 `\u3000` 全角空格的判定。
+  - **定向补测与关闭遗留盲区（`R-EVOLVED-09`）**：在 `KotlinMigrationParityTest.java` 新增 4 项回归测试：
+    1. `noteEditorEarlyExitOnInvalidUriSurvivesLifecycleWithoutLateinitCrash`（实证关闭 `R-LIFECYCLE-01`）；
+    2. `noteExportTaskRetainsAcrossConfigurationChangeAndDeliversResultOnce`（使用 `controller.configurationChange(...)` 实测屏幕旋转时 `NoteExportTask` 保留、后台完成后向新实例投递结果、以及二次旋转不重复弹 Toast，**顺带将 Batch 3 遗留的 `R-LIFECYCLE-03` 从 `UNVERIFIED` 关闭为 `PASS`**）；
+    3. `noteEditorEmptyCheckMatchesJavaTrimSemanticsForControlAndFullWidthSpaces`（实证 `isEmpty()` 符合 `R-EVOLVED-06`）；
+    4. `noteEditorMenuDeleteDialogAndNewNoteRevertRemoveDraft`（补齐确认删除弹窗与新建撤销草稿路径）。
+- **遇到的问题与处理**：
+  - 触发新增风险 **`NR-010`**（详见 [02-new-risks-and-fixes.md](02-new-risks-and-fixes.md)）：初版将原 Java 4 处 `try (Cursor row = ...)` 惯性改为 Kotlin `?.use {}`，被 `:app:lintDebug` 拦截（`Lint found 4 errors, 37 warnings, 10 hints` — `Implicit cast from Cursor to Closeable requires API level 16 (current min is 11) [NewApi]`）。改用基于原生 `Cursor.close()` 的 `useCompat` 修复，并晋升为 `R-EVOLVED-10`；该次报错同时也意外给出了全仓 Lint Warning 的精确计数（`37 warnings`，与基线 37 增量严格为 0）。
+  - 编写旋转测试时还观察到一个 Robolectric 与 Android 原生生命周期细节：`ActivityController.recreate()` 不模拟 `onRetainNonConfigurationInstance` 传递，须用 `configurationChange(newConfig)`；此外 `onRestoreInstanceState` 发生在 `onCreate` 之后会触发 `TextWatcher.onTextChanged -> updateStatus()`，这与原 Java 行为一致，未擅自改写业务逻辑。
+- **验证证据与盲区**：
+  - **L1 构建与静态检查**：`NoteEditor.kt` 静态分析 0 Error；`assembleDebug testDebugUnitTest lintDebug` 全部通过（`lintDebug` 0 Error / 37 Warnings，增量 0）。
+  - **L1.5 字节码核验**：
+    - `javap -p NoteEditor.class` 确认全部 11 个覆写方法可见性与原 Java 100% 一致，`showExportProgress$app_debug` / `showExportResult$app_debug` 正确为 `internal`；
+    - `javap -v NoteEditor.class` 确认常量池中 `OnBackInvoked*` 与 `Closeable*` 引用均为 **0**（API 33 隔离与 API 11 兼容性字节码铁证），`OnBackInvoked*` 仅存在于 `NoteEditor$BackNavigation.class`；
+    - `javap -c -p NoteEditor.class` 确认 `onCreate`、`onActivityResult` 为 0 `checkNotNullParameter`。
+  - **L2 本地单测**：`:app:testDebugUnitTest` **69 passed, 0 skipped, 0 failed**（原 56 + `KotlinMigrationParityTest` 13 项，全套 `NoteEditorBehaviorTest`、`NoteEditorSaveFailureTest`、`NotePasteLifecycleTest`、`NoteUiPreviewTest` 全绿）。
+  - **仍保留的诚实盲区**：
+    1. 未在真实 Android 设备 / 模拟器上执行 API 33+ 预测性返回手势（`BackNavigation` 回调真正触发 `leaveEditor()`）与 API 11–15 低版本实机验证；
+    2. `Build.VERSION.SDK_INT < 19` 分支的 `exportNote()` 提示与 `ActivityNotFoundException` 兜底路径未在 `@Config(sdk = ...)` 多 SDK 矩阵下执行。
 
 ---
 

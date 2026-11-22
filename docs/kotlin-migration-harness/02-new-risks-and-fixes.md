@@ -19,6 +19,7 @@
 | `NR-007` | Batch 1–3 深度复审（原 Batch 2/3） | `NotePadProvider.kt#update` 及 `NotePadProvider`/`TitleEditor`/`NotesLiveFolder` 类修饰符 | (1) `update` 随手写成 `values ?: ContentValues()`，使传 `null` 时从原 Java 的 `NullPointerException` 漂移为 SQLite 的 `IllegalArgumentException: Empty values`；(2) `javap -p` 显示原非 `final` 公开组件类全部静默变为 `public final class` | `行为/语义漂移` / `字节码/互操作` | `update` 恢复显式抛 `NullPointerException` 保持异常契约一致；记录组件类默认 `final` 的可继承性收窄（当前仓库无子类继承，暂不盲目全加 `open`） | 补充 `notePadProviderUpdateWithNullValuesPreservesNullPointerException` 回归单测，晋升 `R-EVOLVED-07` | `R-EVOLVED-07` |
 | `NR-008` | Batch 1–3 深度复审（原 Batch 1–3） | 6 个工具/任务类 + `DatabaseHelper` + `getOpenHelperForTest()` + `NOTE_STREAM_TYPES` | `javap -p` 实证：为规避 Kotlin `internal` 方法名修饰（`$app_debug`）对 Java 混编的破坏，将原本 package-private 的 6 个类与测试后门 `getOpenHelperForTest()` 全部静默扩张为 `public` API | `字节码/互操作` | 登记“混编期临时 `public` 清账清单”，待 Batch 5 根据是否保留 Java 测试统一决定收敛为 `internal` 还是显式保留文档说明 | 在模块一新增“临时可见性扩张清账”两阶段检查规则，晋升 `R-EVOLVED-08` | `R-EVOLVED-08` |
 | `NR-009` | Batch 1–3 深度复审（Harness 自身缺陷） | `01-risk-checklist.md`（Batch 0–3 打卡表） | 现有 56 项单测从未点击 `TitleEditor` 的 `R.id.ok`（`android:onClick` 0 覆盖）、从未执行 `NotesLiveFolder`、从未测试 `NoteExportTask` 旋转重绑，且未核对 Lint 精确 Warning 增量，却被直接标成了 `PASS` | `Agent 越界改写` / 验收失真 | 引入 `UNVERIFIED` 状态并降级所有缺证项；同时在 `KotlinMigrationParityTest` 中补齐 `TitleEditor` XML 点击反射与 `NotesLiveFolder` 实测覆盖 | 修改 `README.md` 闭环协议与打卡状态定义，设立“反橡皮图章式 PASS”红线，晋升 `R-EVOLVED-09` | `R-EVOLVED-09` |
+| `NR-010` | Batch 4b | `NoteEditor.kt` → `onCreate` / `saveNote` / `pasteNote` / `onActivityResult`（4 处 `Cursor?.use {}`） | `:app:lintDebug` 直接失败：`Lint found 4 errors, 37 warnings, 10 hints` — `Error: Implicit cast from Cursor to Closeable requires API level 16 (current min is 11) [NewApi]`（而编译与 API 34 单测完全不报错） | `Lint/静态检查` / `行为/语义漂移` | 编写基于原生 `Cursor.close()`（API 1）的 `private inline fun <R> Cursor.useCompat(...)` 替换全部 4 处 `kotlin.io.use {}`（无 `Closeable` 强转，也不引入 API 19 `addSuppressed`） | `lintDebug` 恢复 0 Error（同时实证全仓 Warning 精准维持基线 37 条）；`javap -v` 验证 0 `Closeable` 引用；晋升 `R-EVOLVED-10` | `R-EVOLVED-10` |
 
 > **根因分类建议枚举**：`构建/插件`、`字节码/互操作`、`空安全/平台类型`、`生命周期/并发`、`行为/语义漂移`、`测试框架/Robolectric`、`Lint/静态检查`、`Agent 越界改写`。
 
@@ -211,12 +212,40 @@
   - [x] 是否更新边界/提示词约束：`是（更新 README.md 闭环第 4 步与打卡表状态定义）`
 - **博客素材价值**：`推荐收录`（最能体现 Harness 价值的核心反思：Harness 不是写完就一劳永逸的“打勾表单”，而是用来戳穿“假 PASS”的照妖镜）
 
+### NR-010：Java `try (Cursor)` 惯性改为 Kotlin `Cursor.use {}` 在 `minSdk 11` 触发 `[NewApi]` 致命报错
+- **发现批次**：Batch 4b
+- **涉及位置**：`app/src/main/java/com/example/android/notepad/NoteEditor.kt` → `onCreate`、`saveNote`、`pasteNote`、`onActivityResult`（共 4 处）
+- **发现手段**：Android Studio 静态分析 + `:app:lintDebug` 构建阻断
+- **真实报错 / 现象**：
+  ```text
+  Lint found 4 errors, 37 warnings, 10 hints. First failure:
+  NoteEditor.kt:113: Error: Implicit cast from Cursor to Closeable requires API level 16 (current min is 11) [NewApi]
+                  contentResolver.query(noteUri, null, null, null, null)?.use { row ->
+                                                                          ~~~
+  ```
+- **根因分析**：
+  1. `android.database.Cursor` 自带 `close()`（API 1），但直到 **Android API 16（Jelly Bean）** 才实现 `java.io.Closeable` 接口。
+  2. Kotlin 标准库的 `kotlin.io.use {}` 扩展定义在 `Closeable?` 上，内联展开后会调用 `kotlin.io.CloseableKt.closeFinally(Closeable, Throwable)`，在字节码层面对 `Cursor` 进行向 `java.io.Closeable` 的隐式类型转换。在 API 11–15 设备上运行会触发运行时兼容性崩溃，且直接击穿 Android Lint `NewApi` Error。
+  3. 极具迷惑性的是：`:app:assembleDebug` 编译与 Robolectric（`@Config(sdk = 34)`）单测对此完全无感、全部通过；且修复为 `try/finally { close() }` 后，Kotlin IDE 检查甚至还会反向给出 `Warning: try-finally can be replaced with 'use()'` 的误导建议！这正印证了“必须跑通 `lintDebug` 且不能盲从 IDE 自动建议”的工程价值。
+- **修复方式**：
+  - 修复前：`contentResolver.query(...)?.use { row -> ... }`（4 处）
+  - 修复后：在 `NoteEditor.Companion` 中定义仅调用 API 1 `Cursor.close()` 的 `private inline fun <R> Cursor.useCompat(block: (Cursor) -> R): R`（内部 `try { block(this) } finally { close() }`），替换全部 4 处调用。
+- **验证证据**：
+  - 修复后 `assembleDebug testDebugUnitTest lintDebug` 全部通过（0 Error；结合故障时 Lint 汇总，全仓 Warning 精准维持基线 **37 warnings**，0 增量）；
+  - `javap -v NoteEditor.class` 确认常量池中 `Closeable` 引用数为 **0**；
+  - 全部 **69** 项本地单测通过（`15e7724`）。
+- **Harness 演进动作**：
+  - [x] 是否晋升到模块一：`是（R-EVOLVED-10）`
+  - [ ] 是否补充回归测试：`否`（由 `:app:lintDebug` `[NewApi]` 与 `javap -v` 常量池检查覆盖）
+  - [ ] 是否更新边界/提示词约束：`否`
+- **博客素材价值**：`推荐收录`（极佳的“编译通过、API 34 单测全绿、连 IDE 都劝你用 `use()`，唯独 Android Lint 揪出 `minSdk 11` 隐式 `Closeable` 强转炸弹”的实战案例）
+
 ---
 
 > 每次新增 `NR-xxx` 时，复制下方模板并据实填写：
 
 ```markdown
-### NR-010：<简短标题>
+### NR-011：<简短标题>
 - **发现批次**：Batch X
 - **涉及位置**：`path/to/File.kt` → `functionName(...)`
 - **发现手段**：`assembleDebug` / `javap -p` / `testDebugUnitTest` / `lintDebug` / 人工走查
