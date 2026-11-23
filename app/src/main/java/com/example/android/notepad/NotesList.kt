@@ -18,8 +18,10 @@
 
 package com.example.android.notepad
 
+import android.annotation.TargetApi
 import android.app.ListActivity
 import android.app.LoaderManager
+import android.app.UiModeManager
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.ComponentName
@@ -28,8 +30,11 @@ import android.content.Context
 import android.content.CursorLoader
 import android.content.Intent
 import android.content.Loader
+import android.content.res.Configuration
 import android.database.Cursor
+import android.graphics.Typeface
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.ContextMenu
@@ -39,6 +44,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.ListView
 import android.widget.PopupMenu
@@ -104,8 +110,11 @@ class NotesList : ListActivity(), LoaderManager.LoaderCallbacks<Cursor> {
                     true
                 }
                 R.id.note_category -> {
-                    (view as TextView).text =
-                        NoteCategory.label(this@NotesList, cursor.getString(columnIndex))
+                    val categoryId = cursor.getString(columnIndex)
+                    val badge = view as TextView
+                    badge.text = NoteCategory.label(this@NotesList, categoryId)
+                    badge.setBackgroundResource(NoteCategory.badgeBackground(categoryId))
+                    badge.setTextColor(resources.getColor(NoteCategory.badgeTextColor(categoryId)))
                     true
                 }
                 android.R.id.text1 -> {
@@ -146,6 +155,9 @@ class NotesList : ListActivity(), LoaderManager.LoaderCallbacks<Cursor> {
         for (i in labels.indices) addCategoryFilter(NoteCategory.idAt(i), labels[i])
         updateCategorySelection()
         findViewById<View>(R.id.new_note).setOnClickListener { createNote() }
+        if (Build.VERSION.SDK_INT >= 31) {
+            setupThemeToggle()
+        }
         findViewById<View>(R.id.list_more).setOnClickListener { view ->
             val popup = PopupMenu(this, view)
             menuInflater.inflate(R.menu.list_options_menu, popup.menu)
@@ -196,9 +208,38 @@ class NotesList : ListActivity(), LoaderManager.LoaderCallbacks<Cursor> {
 
     private fun updateCategorySelection() {
         for (i in 0 until mCategoryFilters.childCount) {
-            val button = mCategoryFilters.getChildAt(i)
-            val category = button.tag
-            button.isSelected = category == mCategory
+            val button = mCategoryFilters.getChildAt(i) as Button
+            val selected = button.tag == mCategory
+            button.isSelected = selected
+            button.setTypeface(null, if (selected) Typeface.BOLD else Typeface.NORMAL)
+        }
+    }
+
+    private fun isNightMode(): Boolean =
+        (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) ==
+            Configuration.UI_MODE_NIGHT_YES
+
+    private fun setupThemeToggle() {
+        val toggle = findViewById<ImageButton>(R.id.theme_toggle) ?: return
+        val night = isNightMode()
+        toggle.visibility = View.VISIBLE
+        toggle.setImageResource(if (night) R.drawable.ic_light_mode_24 else R.drawable.ic_dark_mode_24)
+        toggle.contentDescription = getString(
+            if (night) R.string.switch_theme_light else R.string.switch_theme_dark
+        )
+        toggle.setOnClickListener {
+            NightModeToggle.toggle(this, !isNightMode())
+        }
+    }
+
+    /** Keep API 31 platform calls out of legacy API paths. */
+    @TargetApi(31)
+    private object NightModeToggle {
+        fun toggle(context: Context, enableNight: Boolean) {
+            val manager = context.getSystemService(Context.UI_MODE_SERVICE) as? UiModeManager ?: return
+            manager.setApplicationNightMode(
+                if (enableNight) UiModeManager.MODE_NIGHT_YES else UiModeManager.MODE_NIGHT_NO
+            )
         }
     }
 

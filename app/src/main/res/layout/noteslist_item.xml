@@ -1,11 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="116dp"
-    android:orientation="vertical" android:paddingLeft="24dp" android:paddingRight="24dp" android:paddingTop="18dp" android:paddingBottom="18dp">
-    <TextView android:id="@android:id/text1" android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="@color/ink" android:textSize="18sp" android:textStyle="bold" android:maxLines="1" android:ellipsize="end"/>
-    <TextView android:id="@+id/note_preview" android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="@color/muted" android:textSize="14sp" android:maxLines="2" android:ellipsize="end" android:layout_marginTop="6dp" android:lineSpacingExtra="3dp"/>
-    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="10dp" android:gravity="center_vertical">
-        <TextView android:id="@+id/note_modified" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:textColor="@color/muted" android:textSize="11sp"/>
-        <TextView android:id="@+id/note_category" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@color/accent" android:textSize="11sp" android:paddingLeft="8dp"/>
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="104dp"
+    android:orientation="vertical"
+    android:background="@drawable/card_item_background"
+    android:paddingLeft="18dp"
+    android:paddingRight="18dp"
+    android:paddingTop="16dp"
+    android:paddingBottom="16dp">
+
+    <TextView
+        android:id="@android:id/text1"
+        style="@style/HeadingCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:ellipsize="end" />
+
+    <TextView
+        android:id="@+id/note_preview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/muted"
+        android:textSize="14sp"
+        android:maxLines="2"
+        android:ellipsize="end"
+        android:layout_marginTop="6dp"
+        android:lineSpacingExtra="4dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/note_modified"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textColor="@color/tertiary"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/note_category"
+            style="@style/BadgeLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/category_badge_uncategorized"
+            android:textColor="@color/cat_uncategorized_text"
+            android:paddingLeft="7dp"
+            android:paddingRight="7dp"
+            android:paddingTop="2dp"
+            android:paddingBottom="2dp" />
     </LinearLayout>
 </LinearLayout>

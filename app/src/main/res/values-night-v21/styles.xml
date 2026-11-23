@@ -1,0 +1,26 @@
+<resources>
+    <style name="AppTheme" parent="android:style/Theme.Material.NoActionBar">
+        <item name="android:windowBackground">@color/page</item>
+        <item name="android:colorBackground">@color/page</item>
+        <item name="android:textColorPrimary">@color/ink</item>
+        <item name="android:textColorSecondary">@color/muted</item>
+        <item name="android:colorAccent">@color/accent</item>
+        <item name="android:colorPrimary">@color/accent</item>
+        <item name="android:colorPrimaryDark">@color/page</item>
+        <item name="android:colorControlHighlight">@color/ripple_color</item>
+        <item name="android:searchViewStyle">@style/NoteSearchStyle</item>
+        <item name="android:statusBarColor">@color/page</item>
+        <item name="android:navigationBarColor">@color/page</item>
+        <item name="android:windowActionModeOverlay">true</item>
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+
+    <style name="AppDialogTheme" parent="android:style/Theme.Material.Dialog">
+        <item name="android:colorAccent">@color/accent</item>
+    </style>
+
+    <style name="NoteSearchStyle" parent="android:style/Widget.Material.SearchView">
+        <item name="android:queryBackground">@android:color/transparent</item>
+        <item name="android:submitBackground">@android:color/transparent</item>
+    </style>
+</resources>

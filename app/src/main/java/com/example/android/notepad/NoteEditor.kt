@@ -78,10 +78,10 @@ class NoteEditor : Activity() {
         mStatus = findViewById(R.id.save_status)
         val categories = ArrayAdapter(
             this,
-            android.R.layout.simple_spinner_item,
+            R.layout.spinner_category_item,
             NoteCategory.labels(this)
         )
-        categories.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        categories.setDropDownViewResource(R.layout.spinner_category_dropdown)
         mCategory.adapter = categories
 
         try {
@@ -196,19 +196,39 @@ class NoteEditor : Activity() {
             mText.text.toString().trim { it <= ' ' }.isEmpty()
     }
 
+    private fun setStatusBadge(textRes: Int, bgRes: Int, colorRes: Int) {
+        mStatus.setText(textRes)
+        mStatus.setBackgroundResource(bgRes)
+        mStatus.setTextColor(resources.getColor(colorRes))
+    }
+
     private fun updateStatus() {
         if (!mInitialized || mBinding) return
         val changed = mTitle.text.toString() != mSavedTitle ||
             mText.text.toString() != mSavedBody ||
             category() != mSavedCategory
-        mStatus.setText(
-            when {
-                mSaveFailed -> R.string.save_failed
-                changed -> R.string.editing
-                mNewNote && isEmpty() -> R.string.new_draft
-                else -> R.string.saved
-            }
-        )
+        when {
+            mSaveFailed -> setStatusBadge(
+                R.string.save_failed,
+                R.drawable.status_badge_error,
+                R.color.status_error_text
+            )
+            changed -> setStatusBadge(
+                R.string.editing,
+                R.drawable.status_badge_editing,
+                R.color.status_editing_text
+            )
+            mNewNote && isEmpty() -> setStatusBadge(
+                R.string.new_draft,
+                R.drawable.status_badge_neutral,
+                R.color.status_neutral_text
+            )
+            else -> setStatusBadge(
+                R.string.saved,
+                R.drawable.status_badge_saved,
+                R.color.status_saved_text
+            )
+        }
     }
 
     private fun saveNote(notify: Boolean): Boolean {
@@ -244,12 +264,16 @@ class NoteEditor : Activity() {
             mBinding = true
             if (mTitle.text.toString() != title) mTitle.setText(title)
             mBinding = false
-            mStatus.setText(R.string.saved)
+            setStatusBadge(R.string.saved, R.drawable.status_badge_saved, R.color.status_saved_text)
             true
         } catch (error: RuntimeException) {
             Log.e("NoteEditor", "Unable to save note", error)
             mSaveFailed = true
-            mStatus.setText(R.string.save_failed)
+            setStatusBadge(
+                R.string.save_failed,
+                R.drawable.status_badge_error,
+                R.color.status_error_text
+            )
             if (notify) Toast.makeText(this, R.string.save_failed, Toast.LENGTH_LONG).show()
             false
         }
@@ -383,7 +407,11 @@ class NoteEditor : Activity() {
             finish()
         } catch (error: RuntimeException) {
             Log.e("NoteEditor", "Unable to save recovery note", error)
-            mStatus.setText(R.string.save_failed)
+            setStatusBadge(
+                R.string.save_failed,
+                R.drawable.status_badge_error,
+                R.color.status_error_text
+            )
             Toast.makeText(this, R.string.save_failed, Toast.LENGTH_LONG).show()
         }
     }
@@ -495,7 +523,11 @@ class NoteEditor : Activity() {
     }
 
     internal fun showExportProgress() {
-        mStatus.setText(R.string.exporting)
+        setStatusBadge(
+            R.string.exporting,
+            R.drawable.status_badge_neutral,
+            R.color.status_neutral_text
+        )
     }
 
     internal fun showExportResult(success: Boolean) {

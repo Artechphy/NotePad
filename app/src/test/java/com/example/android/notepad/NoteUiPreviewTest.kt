@@ -24,7 +24,7 @@ import java.io.FileOutputStream
 
 /** Native Android View renders with fixture data, not screenshots from a running device. */
 @RunWith(RobolectricTestRunner::class)
-@Config(sdk = [34], qualifiers = "w390dp-h844dp-port-xhdpi")
+@Config(sdk = [34], qualifiers = "w390dp-h844dp-port-notnight-xhdpi")
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
 @LooperMode(LooperMode.Mode.LEGACY)
 class NoteUiPreviewTest {
@@ -56,8 +56,7 @@ class NoteUiPreviewTest {
         bitmap.recycle()
     }
 
-    @Test
-    fun rendersListAndEditorAtPhoneSize() {
+    private fun renderSuite(suffix: String) {
         Robolectric.getBackgroundThreadScheduler().pause()
         Robolectric.getForegroundThreadScheduler().pause()
         val note = insert(
@@ -73,6 +72,12 @@ class NoteUiPreviewTest {
             1794053400000L
         )
         insert(
+            "期中项目进度同步",
+            "确认 Material 3 卡片样式、深色模式切换和 SAF 文本导出回归检查清单。",
+            "work",
+            1794051600000L
+        )
+        insert(
             "本周的小目标",
             "读完一本书，整理桌面，试着把每一天过得更有条理。",
             "uncategorized",
@@ -84,18 +89,37 @@ class NoteUiPreviewTest {
             Robolectric.flushBackgroundThreadScheduler()
         }
         Robolectric.flushForegroundThreadScheduler()
-        assertEquals(3, list.get().listAdapter.count)
-        render(list.get(), "notes-list")
+        assertEquals(4, list.get().listAdapter.count)
+        render(list.get(), "notes-list-$suffix")
+        list.get().findViewById<android.widget.SearchView>(R.id.search_notes).setQuery("未命中关键词", false)
+        repeat(3) {
+            Robolectric.flushForegroundThreadScheduler()
+            Robolectric.flushBackgroundThreadScheduler()
+        }
+        Robolectric.flushForegroundThreadScheduler()
+        assertEquals(0, list.get().listAdapter.count)
+        render(list.get(), "notes-empty-$suffix")
         list.pause().stop().destroy()
         val editor = Robolectric.buildActivity(
             NoteEditor::class.java,
             Intent(Intent.ACTION_EDIT, note)
         ).setup().visible()
-        render(editor.get(), "note-editor")
+        render(editor.get(), "note-editor-$suffix")
         editor.pause().stop().destroy()
         val client = RuntimeEnvironment.getApplication().contentResolver
             .acquireContentProviderClient(NotePad.Notes.CONTENT_URI)!!
         (client.localContentProvider as NotePadProvider).getOpenHelperForTest().close()
         client.release()
+    }
+
+    @Test
+    fun rendersListAndEditorAtPhoneSize() {
+        renderSuite("light")
+    }
+
+    @Test
+    @Config(sdk = [34], qualifiers = "w390dp-h844dp-port-night-xhdpi")
+    fun rendersDarkModeListAndEditorAtPhoneSize() {
+        renderSuite("dark")
     }
 }

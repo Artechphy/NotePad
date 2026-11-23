@@ -2,5 +2,5 @@
 <Button xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/CategoryTab"
     android:layout_width="wrap_content"
-    android:layout_height="48dp"
-    android:layout_marginRight="4dp" />
+    android:layout_height="36dp"
+    android:layout_marginRight="8dp" />

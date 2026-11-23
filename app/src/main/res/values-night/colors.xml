@@ -1,0 +1,39 @@
+<resources>
+    <!-- OpenAI Apps SDK UI (MIT) Surface & Neutral Tokens (Dark) -->
+    <color name="page">#212121</color>
+    <color name="card_surface">#303030</color>
+    <color name="card_stroke">#00000000</color>
+    <color name="soft">#303030</color>
+    <color name="divider">#1FFFFFFF</color>
+    <color name="border_subtle">#0FFFFFFF</color>
+    <color name="ink">#FFFFFF</color>
+    <color name="muted">#AFAFAF</color>
+    <color name="tertiary">#8F8F8F</color>
+    <color name="accent">#F3F3F3</color>
+    <color name="accent_pressed">#EDEDED</color>
+    <color name="selected">#F3F3F3</color>
+    <color name="on_primary_container">#0D0D0D</color>
+    <color name="ripple_color">#1FFFFFFF</color>
+    <color name="status_bar_legacy">#212121</color>
+    <color name="nav_bar_legacy">#212121</color>
+
+    <!-- Editor Save Status Badges (soft-alpha semantic) -->
+    <color name="status_neutral_bg">#1FFFFFFF</color>
+    <color name="status_neutral_text">#AFAFAF</color>
+    <color name="status_editing_bg">#29FB6A22</color>
+    <color name="status_editing_text">#FF8549</color>
+    <color name="status_saved_bg">#2604B84C</color>
+    <color name="status_saved_text">#40C977</color>
+    <color name="status_error_bg">#29FA423E</color>
+    <color name="status_error_text">#FF6764</color>
+
+    <!-- Category Semantic Badges (Apps SDK UI soft-alpha: secondary/info/warning/discovery) -->
+    <color name="cat_uncategorized_bg">#1FFFFFFF</color>
+    <color name="cat_uncategorized_text">#AFAFAF</color>
+    <color name="cat_study_bg">#210285FF</color>
+    <color name="cat_study_text">#66B5FF</color>
+    <color name="cat_life_bg">#29FB6A22</color>
+    <color name="cat_life_text">#FF9E6C</color>
+    <color name="cat_work_bg">#26924FF7</color>
+    <color name="cat_work_text">#BE95FA</color>
+</resources>

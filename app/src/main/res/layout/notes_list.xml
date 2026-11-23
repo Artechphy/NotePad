@@ -1,28 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent"
-    android:orientation="vertical" android:background="@color/page">
-    <LinearLayout android:layout_width="match_parent" android:layout_height="80dp"
-        android:paddingLeft="24dp" android:paddingRight="12dp" android:gravity="center_vertical">
-        <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:orientation="vertical">
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/title_notes_list" android:textColor="@color/ink" android:textSize="28sp" android:textStyle="bold"/>
-            <TextView android:id="@+id/note_count" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@color/muted" android:textSize="12sp" android:layout_marginTop="3dp"/>
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/page">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="78dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="4dp"
+        android:paddingTop="4dp"
+        android:gravity="center_vertical">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/HeadingLg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/title_notes_list" />
+
+            <TextView
+                android:id="@+id/note_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/tertiary"
+                android:textSize="12sp"
+                android:layout_marginTop="2dp" />
         </LinearLayout>
-        <Button android:id="@+id/list_more" style="@style/PlainButton" android:layout_width="48dp" android:layout_height="48dp" android:text="⋮" android:textSize="26sp" android:contentDescription="@string/more_actions"/>
+
+        <ImageButton
+            android:id="@+id/theme_toggle"
+            style="@style/IconActionButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_dark_mode_24"
+            android:tint="@color/ink"
+            android:contentDescription="@string/switch_theme_dark"
+            android:visibility="gone" />
+
+        <ImageButton
+            android:id="@+id/list_more"
+            style="@style/IconActionButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_more_vert_24"
+            android:tint="@color/ink"
+            android:contentDescription="@string/more_actions" />
     </LinearLayout>
-    <SearchView android:id="@+id/search_notes" android:layout_width="match_parent" android:layout_height="48dp"
-        android:layout_marginLeft="20dp" android:layout_marginRight="20dp" android:background="@drawable/search_background"
-        android:iconifiedByDefault="false" android:queryHint="@string/search_hint" android:saveEnabled="false"/>
-    <HorizontalScrollView android:layout_width="match_parent" android:layout_height="56dp" android:scrollbars="none" android:fillViewport="false">
-        <LinearLayout android:id="@+id/category_filters" android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="match_parent" android:paddingLeft="16dp" android:paddingRight="16dp" android:gravity="center_vertical"/>
+
+    <SearchView
+        android:id="@+id/search_notes"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@drawable/search_background"
+        android:iconifiedByDefault="false"
+        android:queryHint="@string/search_hint"
+        android:saveEnabled="false" />
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:scrollbars="none"
+        android:fillViewport="false">
+
+        <LinearLayout
+            android:id="@+id/category_filters"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:gravity="center_vertical" />
     </HorizontalScrollView>
-    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/divider"/>
-    <FrameLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1">
-        <ListView android:id="@android:id/list" android:layout_width="match_parent" android:layout_height="match_parent"
-            android:divider="@color/divider" android:dividerHeight="1dp" android:paddingBottom="88dp" android:clipToPadding="false" android:scrollbarStyle="outsideOverlay"/>
-        <TextView android:id="@android:id/empty" android:layout_width="match_parent" android:layout_height="match_parent"
-            android:gravity="center" android:padding="32dp" android:text="@string/notes_loading" android:textColor="@color/muted" android:textSize="15sp" android:lineSpacingExtra="8dp"/>
-        <Button android:id="@+id/new_note" android:layout_width="56dp" android:layout_height="56dp" android:layout_gravity="bottom|right"
-            android:layout_margin="24dp" android:background="@drawable/new_note_background" android:text="+" android:textColor="#FFFFFF" android:textSize="32sp" android:gravity="center" android:padding="0dp" android:contentDescription="@string/menu_add"/>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <ListView
+            android:id="@android:id/list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="10dp"
+            android:listSelector="@android:color/transparent"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="96dp"
+            android:clipToPadding="false"
+            android:scrollbarStyle="outsideOverlay" />
+
+        <TextView
+            android:id="@android:id/empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:drawableTop="@drawable/empty_icon_badge"
+            android:drawablePadding="14dp"
+            android:padding="32dp"
+            android:text="@string/notes_loading"
+            android:textColor="@color/muted"
+            android:textSize="14sp"
+            android:lineSpacingExtra="6dp" />
+
+        <ImageButton
+            android:id="@+id/new_note"
+            style="@style/FabButton"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_gravity="bottom|right"
+            android:layout_margin="20dp"
+            android:src="@drawable/ic_add_24"
+            android:tint="@color/on_primary_container"
+            android:contentDescription="@string/menu_add" />
     </FrameLayout>
 </LinearLayout>

@@ -1,10 +1,39 @@
 <resources>
-    <color name="page">#FFFFFF</color>
-    <color name="ink">#202832</color>
-    <color name="muted">#78838F</color>
-    <color name="accent">#1877D2</color>
-    <color name="accent_pressed">#105AA3</color>
-    <color name="soft">#F4F6F8</color>
-    <color name="selected">#EAF3FD</color>
-    <color name="divider">#EBEEF2</color>
+    <!-- OpenAI Apps SDK UI (MIT) Surface & Neutral Tokens (Light) -->
+    <color name="page">#F9F9F9</color>
+    <color name="card_surface">#FFFFFF</color>
+    <color name="card_stroke">#140D0D0D</color>
+    <color name="soft">#F3F3F3</color>
+    <color name="divider">#1A0D0D0D</color>
+    <color name="border_subtle">#0D0D0D0D</color>
+    <color name="ink">#0D0D0D</color>
+    <color name="muted">#5D5D5D</color>
+    <color name="tertiary">#8F8F8F</color>
+    <color name="accent">#181818</color>
+    <color name="accent_pressed">#303030</color>
+    <color name="selected">#181818</color>
+    <color name="on_primary_container">#FFFFFF</color>
+    <color name="ripple_color">#140D0D0D</color>
+    <color name="status_bar_legacy">#181818</color>
+    <color name="nav_bar_legacy">#181818</color>
+
+    <!-- Editor Save Status Badges (soft-alpha semantic) -->
+    <color name="status_neutral_bg">#140D0D0D</color>
+    <color name="status_neutral_text">#5D5D5D</color>
+    <color name="status_editing_bg">#29FB6A22</color>
+    <color name="status_editing_text">#923B0F</color>
+    <color name="status_saved_bg">#2604B84C</color>
+    <color name="status_saved_text">#008635</color>
+    <color name="status_error_bg">#29FA423E</color>
+    <color name="status_error_text">#BA2623</color>
+
+    <!-- Category Semantic Badges (Apps SDK UI soft-alpha: secondary/info/warning/discovery) -->
+    <color name="cat_uncategorized_bg">#140D0D0D</color>
+    <color name="cat_uncategorized_text">#5D5D5D</color>
+    <color name="cat_study_bg">#210285FF</color>
+    <color name="cat_study_text">#004F99</color>
+    <color name="cat_life_bg">#29FB6A22</color>
+    <color name="cat_life_text">#923B0F</color>
+    <color name="cat_work_bg">#26924FF7</color>
+    <color name="cat_work_text">#6B3AB4</color>
 </resources>

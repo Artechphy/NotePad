@@ -82,7 +82,7 @@
             android:exported="true"
             android:label="@string/title_edit_title"
             android:icon="@drawable/ic_menu_edit"
-            android:theme="@android:style/Theme.Holo.Dialog"
+            android:theme="@style/AppDialogTheme"
             android:windowSoftInputMode="stateVisible">
             <!-- This activity implements an alternative action that can be
                  performed on notes: editing their title.  It can be used as

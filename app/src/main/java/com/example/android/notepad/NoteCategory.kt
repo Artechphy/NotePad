@@ -13,6 +13,18 @@ internal object NoteCategory {
         R.string.category_life,
         R.string.category_work,
     )
+    private val BADGE_BACKGROUNDS = intArrayOf(
+        R.drawable.category_badge_uncategorized,
+        R.drawable.category_badge_study,
+        R.drawable.category_badge_life,
+        R.drawable.category_badge_work,
+    )
+    private val BADGE_TEXT_COLORS = intArrayOf(
+        R.color.cat_uncategorized_text,
+        R.color.cat_study_text,
+        R.color.cat_life_text,
+        R.color.cat_work_text,
+    )
 
     fun indexOf(id: String?): Int {
         for (i in IDS.indices) {
@@ -36,4 +48,14 @@ internal object NoteCategory {
 
     fun labels(context: Context): Array<String> =
         Array(IDS.size) { i -> context.getString(LABELS[i]) }
+
+    fun badgeBackground(id: String?): Int {
+        val index = indexOf(id)
+        return BADGE_BACKGROUNDS[if (index < 0) 0 else index]
+    }
+
+    fun badgeTextColor(id: String?): Int {
+        val index = indexOf(id)
+        return BADGE_TEXT_COLORS[if (index < 0) 0 else index]
+    }
 }
